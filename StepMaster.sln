@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepMaster.Android", "StepMaster\StepMaster.Android\StepMaster.Android.csproj", "{6ED03028-4043-4FC7-8AEB-E45E3DF4FE20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepMaster", "StepMaster\StepMaster\StepMaster.csproj", "{0ECFF605-EC1D-4598-A721-1BAC8716E1D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StepMaster", "StepMaster\StepMaster\StepMaster.csproj", "{0ECFF605-EC1D-4598-A721-1BAC8716E1D1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StepMaster.Tests", "StepMaster\StepMaster.Tests\StepMaster.Tests.csproj", "{BB59A7D8-D521-4592-8959-2AA90D63F5C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{0ECFF605-EC1D-4598-A721-1BAC8716E1D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0ECFF605-EC1D-4598-A721-1BAC8716E1D1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0ECFF605-EC1D-4598-A721-1BAC8716E1D1}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BB59A7D8-D521-4592-8959-2AA90D63F5C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB59A7D8-D521-4592-8959-2AA90D63F5C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB59A7D8-D521-4592-8959-2AA90D63F5C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB59A7D8-D521-4592-8959-2AA90D63F5C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
