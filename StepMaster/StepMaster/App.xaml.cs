@@ -1,5 +1,4 @@
-﻿using StepMaster.Services;
-using StepMaster.Views;
+﻿using StepMaster.Views;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -13,13 +12,20 @@ namespace StepMaster
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
+            
             MainPage = new AppShell();
         }
 
         protected override void OnStart()
         {
+            //login();
         }
+
+        private async void login()
+        {
+            await Shell.Current.GoToAsync("//LoginPage");
+        }
+
 
         protected override void OnSleep()
         {

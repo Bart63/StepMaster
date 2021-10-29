@@ -1,6 +1,4 @@
-﻿using StepMaster.Models;
-using StepMaster.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -10,7 +8,7 @@ namespace StepMaster.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+        
 
         bool isBusy = false;
         public bool IsBusy

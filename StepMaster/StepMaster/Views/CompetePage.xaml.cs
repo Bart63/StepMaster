@@ -1,4 +1,4 @@
-﻿using StepMaster.Models;
+﻿
 using StepMaster.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -8,14 +8,12 @@ using Xamarin.Forms.Xaml;
 
 namespace StepMaster.Views
 {
-    public partial class NewItemPage : ContentPage
+    public partial class CompetePage : ContentPage
     {
-        public Item Item { get; set; }
-
-        public NewItemPage()
+        public CompetePage()
         {
             InitializeComponent();
-            BindingContext = new NewItemViewModel();
+            BindingContext = new CompeteViewModel();
         }
     }
 }

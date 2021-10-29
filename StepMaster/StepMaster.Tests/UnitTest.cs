@@ -8,7 +8,7 @@ namespace StepMaster.Tests
         [Fact]
         public void TestViewModel()
         {
-            var itemsViewModel = new ItemsViewModel();
+            var itemsViewModel = new StatisticsViewModel();
             itemsViewModel.OnAppearing();
             Assert.True(itemsViewModel.IsBusy);
         }

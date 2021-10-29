@@ -1,4 +1,4 @@
-﻿using StepMaster.Models;
+﻿
 using StepMaster.ViewModels;
 using StepMaster.Views;
 using System;
@@ -12,21 +12,17 @@ using Xamarin.Forms.Xaml;
 
 namespace StepMaster.Views
 {
-    public partial class ItemsPage : ContentPage
+    public partial class StatisticsPage : ContentPage
     {
-        ItemsViewModel _viewModel;
+        StatisticsViewModel _viewModel;
 
-        public ItemsPage()
+        public StatisticsPage()
         {
             InitializeComponent();
 
-            BindingContext = _viewModel = new ItemsViewModel();
+            BindingContext = _viewModel = new StatisticsViewModel();
         }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            _viewModel.OnAppearing();
-        }
+        
     }
 }
