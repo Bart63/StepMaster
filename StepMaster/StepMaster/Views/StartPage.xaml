@@ -12,20 +12,23 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="Accent">#96d1ff</Color>
+            <Color x:Key="numberOfStepsColor">#96d1ff</Color>
         </ResourceDictionary>
     </ContentPage.Resources>
+    
+    <StackLayout>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        
-        <ScrollView Grid.Row="1">
-            
-            <Label Text="To strona startowa" />
-           
-        </ScrollView>
-    </Grid>
+        <Label Text="Twoja liczba kroków dzisiaj:" FontSize="30" />
+
+        <Label Text="{Binding NumberOfSteps}" FontSize="30" HorizontalOptions="Center" TextColor="Red"/>
+
+        <Button Text="Start" HeightRequest="70" WidthRequest="100" FontSize="20" HorizontalOptions="Center"
+                Command="{Binding CountStepsCommand}" IsEnabled="{Binding StartButtonEnabled}"></Button>
+
+        <Button Text="Stop" HeightRequest="70" WidthRequest="100" FontSize="20" HorizontalOptions="Center"
+                Command="{Binding StopCountingStepsCommand}" IsEnabled="{Binding StopButtonEnabled}"></Button>
+
+    </StackLayout>
+
 
 </ContentPage>
