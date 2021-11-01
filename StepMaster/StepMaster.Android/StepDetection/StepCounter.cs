@@ -43,7 +43,7 @@ namespace StepMaster.Droid.StepDetection
 
         public void OnSensorChanged(SensorEvent e)
         {
-            Steps = (int)e;
+            Steps = (int)e.Values[0];
 
             ValueChangedCallback();
         }
