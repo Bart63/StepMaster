@@ -1,2 +1,2 @@
 # StepMaster
-Xamarin.Android project for uni
+Xamarin.Forms project for uni
