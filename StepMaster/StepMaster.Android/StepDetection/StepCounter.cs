@@ -23,7 +23,7 @@ namespace StepMaster.Droid.StepDetection
             set { StepsCounter = value; }
         }
 
-        public new void Dispose()
+        public new void Dispose() 
         {
             sManager.UnregisterListener(this);
             sManager.Dispose();
@@ -33,7 +33,8 @@ namespace StepMaster.Droid.StepDetection
         {
 
             sManager = Android.App.Application.Context.GetSystemService(Context.SensorService) as SensorManager;
-            sManager.RegisterListener(this, sManager.GetDefaultSensor(SensorType.StepCounter), SensorDelay.Normal);
+            sManager.RegisterListener(this, sManager.GetDefaultSensor(SensorType.StepDetector), SensorDelay.Normal);
+            
         }
 
         public void OnAccuracyChanged(Sensor sensor, [GeneratedEnum] SensorStatus accuracy)
@@ -43,7 +44,7 @@ namespace StepMaster.Droid.StepDetection
 
         public void OnSensorChanged(SensorEvent e)
         {
-            Steps = (int)e.Values[0];
+            Steps += 1;
 
             ValueChangedCallback();
         }
@@ -56,6 +57,8 @@ namespace StepMaster.Droid.StepDetection
         public void StopSensorService()
         {
             sManager.UnregisterListener(this);
+
+            Steps = 0;
         }
 
     }
