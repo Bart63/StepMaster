@@ -12,7 +12,7 @@ namespace StepMaster.ViewModels
        
         public StatisticsViewModel()
         {
-            Title = "Statystyki";
+            
             
             
         }

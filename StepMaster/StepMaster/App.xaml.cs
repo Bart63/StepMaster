@@ -12,7 +12,8 @@ namespace StepMaster
         {
             InitializeComponent();
 
-            
+            XF.Material.Forms.Material.Init(this);
+
             MainPage = new AppShell();
         }
 

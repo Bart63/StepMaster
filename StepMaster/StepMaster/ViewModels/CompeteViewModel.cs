@@ -11,7 +11,7 @@ namespace StepMaster.ViewModels
     {
         public CompeteViewModel()
         {
-            Title = "Rywalizuj";
+            
             
         }
 

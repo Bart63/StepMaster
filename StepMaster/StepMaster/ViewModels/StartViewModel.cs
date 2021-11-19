@@ -3,70 +3,125 @@ using System;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Microcharts;
+using SkiaSharp;
 
 namespace StepMaster.ViewModels
 {
     public class StartViewModel : BaseViewModel
     {
-        private int numberOfSteps;
-        private bool startButtonEnabled;
-        private bool stopButtonEnabled;
+        private int _numberOfSteps;
+        private bool _startedCountingSteps = false;
+        private string _startStopButtonText = "START!";
+        private ChartEntry[] chartEntries = new[]
+        {
+            new ChartEntry(1256)
+            {
+                
+                Color = SKColor.Parse("#4585fa"),
+                
+            },
+            new ChartEntry(5000)
+            {
+                
+                Color = SKColor.Parse("#4cc5fa"),
+                
+            }
+        };
+        private Chart stepsChart;
 
         public int NumberOfSteps
         {
-            get => numberOfSteps;
-            set => SetProperty(ref numberOfSteps, value);
+            get => _numberOfSteps;
+            set => SetProperty(ref _numberOfSteps, value);
         }
 
-        public bool StartButtonEnabled
+        public Chart StepsChart
         {
-            get => startButtonEnabled;
-            set => SetProperty(ref startButtonEnabled, value);
+            get => stepsChart;
+            set => SetProperty(ref stepsChart, value);
         }
 
-        public bool StopButtonEnabled
+        public string StartStopButtonText
         {
-            get => stopButtonEnabled;
-            set => SetProperty(ref stopButtonEnabled, value);
+            get => _startStopButtonText;
+            set => SetProperty(ref _startStopButtonText, value);
         }
-
 
         public Command CountStepsCommand { get; }
-        public Command StopCountingStepsCommand { get; }
+       
 
         public StartViewModel()
         {
-            Title = "Start";
+            
+            CountStepsCommand = new Command(StartStopCountingSteps);
+            
 
-            CountStepsCommand = new Command(StartCountingSteps);
-            StopCountingStepsCommand = new Command(StopCountingSteps);
-
-            StartButtonEnabled = true;
-            StopButtonEnabled = false;
+            StepsChart = new RadialGaugeChart
+            {
+                Entries = chartEntries,
+                LabelTextSize = 40,
+                IsAnimated = true,
+                AnimationDuration = TimeSpan.FromSeconds(1.5),
+                BackgroundColor = SKColor.Parse("#D4ECDD")
+            };
+            
         }
 
         private void UpdateNumberOfSteps()
         {
             NumberOfSteps = DependencyService.Get<IStepCounter>().Steps;
+
+            setStepsChartEntries(NumberOfSteps);
         }
 
-        private void StartCountingSteps()
+        private void StartStopCountingSteps()
         {
-            DependencyService.Get<IStepCounter>().InitSensorService();
-            DependencyService.Get<IStepCounter>().SetValueChangedCallbackAction(UpdateNumberOfSteps);
+            if (!_startedCountingSteps)
+            {
+                DependencyService.Get<IStepCounter>().InitSensorService();
+                DependencyService.Get<IStepCounter>().SetValueChangedCallbackAction(UpdateNumberOfSteps);
 
-            StartButtonEnabled = false;
-            StopButtonEnabled = true;
+                _startedCountingSteps = true;
+
+                StartStopButtonText = "STOP!";
+
+                setStepsChartEntries(1356);
+            }
+            else
+            {
+                DependencyService.Get<IStepCounter>().StopSensorService();
+
+                _startedCountingSteps = false;
+
+                StartStopButtonText = "START!";
+
+                
+            }
+            
         }
 
-        private void StopCountingSteps()
+        private void setStepsChartEntries(int steps)
         {
-            DependencyService.Get<IStepCounter>().StopSensorService();
+            chartEntries = new[]
+            {
+                new ChartEntry(steps)
+                {
 
-            StartButtonEnabled = true;
-            StopButtonEnabled = false;
+                    Color = SKColor.Parse("#4585fa"),
+
+                },
+                new ChartEntry(5000)
+                {
+
+                    Color = SKColor.Parse("#4cc5fa"),
+
+                }
+            };
+
+            StepsChart.Entries = chartEntries;
         }
 
-        
+
     }
 }

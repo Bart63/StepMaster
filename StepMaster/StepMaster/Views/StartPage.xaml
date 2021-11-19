@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="StepMaster.Views.StartPage"
              xmlns:vm="clr-namespace:StepMaster.ViewModels"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              Title="{Binding Title}">
     
     <ContentPage.BindingContext>
@@ -13,22 +15,36 @@
         <ResourceDictionary>
             <Color x:Key="Accent">#96d1ff</Color>
             <Color x:Key="numberOfStepsColor">#96d1ff</Color>
+            <Color x:Key="backgroundColor">#D4ECDD</Color>
+         
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-    <StackLayout>
 
-        <Label Text="Twoja liczba kroków dzisiaj:" FontSize="30" />
+    <StackLayout BackgroundColor="{StaticResource backgroundColor}">
 
-        <Label Text="{Binding NumberOfSteps}" FontSize="30" HorizontalOptions="Center" TextColor="Red"/>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5">
 
-        <Button Text="Start" HeightRequest="70" WidthRequest="100" FontSize="20" HorizontalOptions="Center"
-                Command="{Binding CountStepsCommand}" IsEnabled="{Binding StartButtonEnabled}"></Button>
+            <material:MaterialButton BackgroundColor="#edb287" HorizontalOptions="Center"
+                Text="{Binding StartStopButtonText}" TextColor="White" VerticalOptions="Center"
+                Command="{Binding CountStepsCommand}" HeightRequest="70" WidthRequest="160"
+                FontSize="25" FontAttributes="Bold" BorderColor="{StaticResource Primary}" BorderWidth="3" ButtonType="Flat" FontFamily="Exo-Bold"/>
 
-        <Button Text="Stop" HeightRequest="70" WidthRequest="100" FontSize="20" HorizontalOptions="Center"
-                Command="{Binding StopCountingStepsCommand}" IsEnabled="{Binding StopButtonEnabled}"></Button>
+
+        </StackLayout>
+
+        <microcharts:ChartView x:Name="chartNumberOfSteps" Chart="{Binding StepsChart}" HeightRequest="370" Margin="-10"/>
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5">
+            <material:MaterialChip BackgroundColor="#4585fa" Text="Twoje kroki:" TextColor="#DE000000" FontSize="24" FontFamily="Exo-Regular"/>
+            <material:MaterialChip BackgroundColor="#4585fa" Text="{Binding NumberOfSteps}" TextColor="#DE000000" FontSize="24" FontFamily="Exo-Regular"/>
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5">
+            <material:MaterialChip BackgroundColor="#4cc5fa" Text="Cel:" TextColor="#DE000000" FontSize="24" FontFamily="Exo-Regular"/>
+            <material:MaterialChip BackgroundColor="#4cc5fa" Text="5000" TextColor="#DE000000" FontSize="24" FontFamily="Exo-Regular"/>
+        </StackLayout>
 
     </StackLayout>
-
+    
 
 </ContentPage>
