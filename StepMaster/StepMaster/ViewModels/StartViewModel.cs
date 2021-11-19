@@ -55,7 +55,7 @@ namespace StepMaster.ViewModels
         {
             
             CountStepsCommand = new Command(StartStopCountingSteps);
-            
+
 
             StepsChart = new RadialGaugeChart
             {
@@ -63,7 +63,7 @@ namespace StepMaster.ViewModels
                 LabelTextSize = 40,
                 IsAnimated = true,
                 AnimationDuration = TimeSpan.FromSeconds(1.5),
-                BackgroundColor = SKColor.Parse("#D4ECDD")
+                BackgroundColor = SKColor.Empty
             };
             
         }

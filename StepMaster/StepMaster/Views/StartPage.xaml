@@ -35,13 +35,13 @@
         <microcharts:ChartView x:Name="chartNumberOfSteps" Chart="{Binding StepsChart}" HeightRequest="370" Margin="-10"/>
 
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5">
-            <material:MaterialChip BackgroundColor="#4585fa" Text="Twoje kroki:" TextColor="#DE000000" FontSize="24" FontFamily="Exo-Regular"/>
-            <material:MaterialChip BackgroundColor="#4585fa" Text="{Binding NumberOfSteps}" TextColor="#DE000000" FontSize="24" FontFamily="Exo-Regular"/>
+            <material:MaterialChip BackgroundColor="#4585fa" Text="Twoje kroki:" TextColor="White" FontSize="24" FontFamily="Exo-Bold"/>
+            <material:MaterialChip BackgroundColor="#4585fa" Text="{Binding NumberOfSteps}" TextColor="White" FontSize="24" FontFamily="Exo-Bold"/>
         </StackLayout>
 
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5">
-            <material:MaterialChip BackgroundColor="#4cc5fa" Text="Cel:" TextColor="#DE000000" FontSize="24" FontFamily="Exo-Regular"/>
-            <material:MaterialChip BackgroundColor="#4cc5fa" Text="5000" TextColor="#DE000000" FontSize="24" FontFamily="Exo-Regular"/>
+            <material:MaterialChip BackgroundColor="#4cc5fa" Text="Cel:" TextColor="White" FontSize="24" FontFamily="Exo-Bold"/>
+            <material:MaterialChip BackgroundColor="#4cc5fa" Text="5000" TextColor="White" FontSize="24" FontFamily="Exo-Bold"/>
         </StackLayout>
 
     </StackLayout>
