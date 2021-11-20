@@ -4,15 +4,32 @@
              x:Class="StepMaster.Views.StatisticsPage"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:StepMaster.ViewModels"  
-             xmlns:model="clr-namespace:StepMaster.Models"  
+             xmlns:model="clr-namespace:StepMaster.Models" 
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              x:Name="BrowseItemsPage">
 
-    
-        <Label Text="Tutaj będziemy przegladać statystyki" />
-    
-    <!--
-      x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
-      https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
-    -->
+    <ContentPage.BindingContext>
+        <local:StatisticsViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid>
+
+        <ScrollView Orientation="Vertical">
+
+            <StackLayout HorizontalOptions="Center">
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="15" VerticalOptions="Center">
+
+                    <material:MaterialChip BackgroundColor="#F9564F" Text="Średnio dziennie: 5215" TextColor="White"
+                                            FontSize="25" FontFamily="Exo-Bold" />
+
+                </StackLayout>
+
+                <microcharts:ChartView x:Name="chartStepsPerDay" Chart="{Binding WeeklyStepsChart}" WidthRequest="400" HeightRequest="400" Margin="5"/>
+            </StackLayout>
+
+        </ScrollView>
+
+    </Grid>
     
 </ContentPage>

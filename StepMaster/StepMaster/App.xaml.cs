@@ -14,6 +14,8 @@ namespace StepMaster
 
             XF.Material.Forms.Material.Init(this);
 
+            Device.SetFlags(new[] { "Brush_Experimental" });
+
             MainPage = new AppShell();
         }
 

@@ -5,6 +5,10 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Microcharts;
 using SkiaSharp;
+using StepMaster.Models;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using StepMaster.Extensions;
 
 namespace StepMaster.ViewModels
 {
@@ -13,22 +17,17 @@ namespace StepMaster.ViewModels
         private int _numberOfSteps;
         private bool _startedCountingSteps = false;
         private string _startStopButtonText = "START!";
-        private ChartEntry[] chartEntries = new[]
+        private Chart _stepsChart;
+
+        private readonly SKColor[] _chartColors = new SKColor[]
         {
-            new ChartEntry(1256)
-            {
-                
-                Color = SKColor.Parse("#4585fa"),
-                
-            },
-            new ChartEntry(5000)
-            {
-                
-                Color = SKColor.Parse("#4cc5fa"),
-                
-            }
+            SKColor.Parse("#020887"),
+            SKColor.Parse("#3e50b6"),
+            SKColor.Parse("#04c9db"),
+            SKColor.Parse("#567674"),
+            SKColor.Parse("#5894d1")
         };
-        private Chart stepsChart;
+
 
         public int NumberOfSteps
         {
@@ -38,8 +37,8 @@ namespace StepMaster.ViewModels
 
         public Chart StepsChart
         {
-            get => stepsChart;
-            set => SetProperty(ref stepsChart, value);
+            get => _stepsChart;
+            set => SetProperty(ref _stepsChart, value);
         }
 
         public string StartStopButtonText
@@ -49,22 +48,35 @@ namespace StepMaster.ViewModels
         }
 
         public Command CountStepsCommand { get; }
-       
+        public Command RefreshChartInfoCommand { get; }
+
+        public ObservableCollection<StepsChartInfo> ChartInfos { get; }
 
         public StartViewModel()
         {
-            
             CountStepsCommand = new Command(StartStopCountingSteps);
+            RefreshChartInfoCommand = new Command(RefreshChartInfo);
 
+            ChartInfos = new ObservableCollection<StepsChartInfo>();
 
             StepsChart = new RadialGaugeChart
             {
-                Entries = chartEntries,
                 LabelTextSize = 40,
                 IsAnimated = true,
                 AnimationDuration = TimeSpan.FromSeconds(1.5),
                 BackgroundColor = SKColor.Empty
             };
+
+            ChartInfos.Add(new StepsChartInfo("Twoje kroki", 1563, Color.FromRgb(_chartColors[0].Red, _chartColors[0].Green, _chartColors[0].Blue),
+                "currentSteps"));
+            ChartInfos.Add(new StepsChartInfo("Cel dnia", 5000, Color.FromRgb(_chartColors[1].Red, _chartColors[1].Green, _chartColors[1].Blue),
+                "dailyTarget"));
+
+            ChartInfos.Add(new StepsChartInfo("Pobij wynik! (Tomek154)", 7563, Color.FromRgb(_chartColors[2].Red,
+                _chartColors[2].Green, _chartColors[2].Blue), "competeWithTomek154"));
+
+            SetStepsChartEntries();
+
             
         }
 
@@ -72,7 +84,11 @@ namespace StepMaster.ViewModels
         {
             NumberOfSteps = DependencyService.Get<IStepCounter>().Steps;
 
-            setStepsChartEntries(NumberOfSteps);
+            ChartInfos.Find(x => x.Name == "currentSteps").Value = NumberOfSteps;
+
+            SetStepsChartEntries();
+
+            
         }
 
         private void StartStopCountingSteps()
@@ -86,7 +102,7 @@ namespace StepMaster.ViewModels
 
                 StartStopButtonText = "STOP!";
 
-                setStepsChartEntries(1356);
+                SetStepsChartEntries();
             }
             else
             {
@@ -101,27 +117,24 @@ namespace StepMaster.ViewModels
             
         }
 
-        private void setStepsChartEntries(int steps)
+        private void SetStepsChartEntries()
         {
-            chartEntries = new[]
+            List<ChartEntry> entries = new List<ChartEntry>();
+
+            foreach (StepsChartInfo c in ChartInfos)
             {
-                new ChartEntry(steps)
+                entries.Add(new ChartEntry(c.Value)
                 {
+                    Color = SKColor.Parse(c.Color.ToHex())
+                }); 
+            }
 
-                    Color = SKColor.Parse("#4585fa"),
-
-                },
-                new ChartEntry(5000)
-                {
-
-                    Color = SKColor.Parse("#4cc5fa"),
-
-                }
-            };
-
-            StepsChart.Entries = chartEntries;
+            StepsChart.Entries = entries.ToArray();
         }
 
+        private void RefreshChartInfo()
+        {
 
+        }
     }
 }

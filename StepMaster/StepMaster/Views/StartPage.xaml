@@ -20,31 +20,59 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <StackLayout BackgroundColor="{StaticResource backgroundColor}">
+    
+    <Grid>
 
-        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5">
+        <BoxView x:Name="bdGradient" Scale="2" AnchorX="1" AnchorY="0">
+            <BoxView.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#70e1f5" Offset="0.1"></GradientStop>
+                    <GradientStop Color="#ffd194" Offset="1.0"></GradientStop>
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
 
-            <material:MaterialButton BackgroundColor="#edb287" HorizontalOptions="Center"
-                Text="{Binding StartStopButtonText}" TextColor="White" VerticalOptions="Center"
-                Command="{Binding CountStepsCommand}" HeightRequest="70" WidthRequest="160"
-                FontSize="25" FontAttributes="Bold" BorderColor="{StaticResource Primary}" BorderWidth="3" ButtonType="Flat" FontFamily="Exo-Bold"/>
+        <StackLayout>
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5" VerticalOptions="Start">
+
+        <material:MaterialButton BackgroundColor="#edb287" HorizontalOptions="Center"
+            Text="{Binding StartStopButtonText}" TextColor="White" VerticalOptions="Center"
+            Command="{Binding CountStepsCommand}" HeightRequest="70" WidthRequest="160"
+            FontSize="25" FontAttributes="Bold" BorderColor="{StaticResource Primary}" BorderWidth="3" ButtonType="Flat" FontFamily="Exo-Bold"/>
 
 
         </StackLayout>
 
-        <microcharts:ChartView x:Name="chartNumberOfSteps" Chart="{Binding StepsChart}" HeightRequest="370" Margin="-10"/>
+        <microcharts:ChartView x:Name="chartNumberOfSteps" Chart="{Binding StepsChart}" HeightRequest="380" Margin="-43"/>
 
-        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5">
-            <material:MaterialChip BackgroundColor="#4585fa" Text="Twoje kroki:" TextColor="White" FontSize="24" FontFamily="Exo-Bold"/>
-            <material:MaterialChip BackgroundColor="#4585fa" Text="{Binding NumberOfSteps}" TextColor="White" FontSize="24" FontFamily="Exo-Bold"/>
+            
+        <RefreshView Command="{Binding RefreshChartInfoCommand}">
+                <CollectionView x:Name="ChartInfosListView"
+            ItemsSource="{Binding ChartInfos}"
+            SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="3" VerticalOptions="Center">
+
+                                    <material:MaterialChip BackgroundColor="{Binding Color}" Text="{Binding InfoText}" TextColor="White"
+                                        FontSize="24" FontFamily="Exo-Bold"/>
+
+                                    <material:MaterialChip BackgroundColor="{Binding Color}" Text="{Binding Value}" TextColor="White"
+                                        FontSize="24" FontFamily="Exo-Bold"/>
+
+                                </StackLayout>
+                            </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+
         </StackLayout>
 
-        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5">
-            <material:MaterialChip BackgroundColor="#4cc5fa" Text="Cel:" TextColor="White" FontSize="24" FontFamily="Exo-Bold"/>
-            <material:MaterialChip BackgroundColor="#4cc5fa" Text="5000" TextColor="White" FontSize="24" FontFamily="Exo-Bold"/>
-        </StackLayout>
-
-    </StackLayout>
+    </Grid>
     
 
 </ContentPage>
