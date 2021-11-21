@@ -1,12 +1,56 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:StepMaster.ViewModels"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              x:Class="StepMaster.Views.AchievementsPage">
+
+    <ContentPage.BindingContext>
+        <local:AchievementsViewModel />
+    </ContentPage.BindingContext>
+    
+    
     <ContentPage.Content>
-        <StackLayout>
-            
-            
-            
-        </StackLayout>
+        <RefreshView>
+            <CollectionView x:Name="RankingListView"
+                ItemsSource="{Binding AchievementsEntries}"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <material:MaterialCard CornerRadius="25" Elevation="4"
+                                                           HorizontalOptions="FillAndExpand" IsClickable="False"
+                                                           BackgroundColor="#ffd194" Margin="7" Padding="10" Opacity="{Binding Opacity}">
+
+
+                                <StackLayout Orientation="Vertical" Margin="0">
+
+                                    <StackLayout Orientation="Horizontal">
+                                    
+                                        <Image Source="{Binding IconName}" WidthRequest="35" HeightRequest="35" />
+
+                                        <material:MaterialChip BackgroundColor="{StaticResource First}"
+                                                    Text="{Binding Name}" TextColor="White"
+                                                    FontSize="24" FontFamily="Exo-Bold" HorizontalOptions="StartAndExpand"/>
+
+                                    </StackLayout>
+
+                                    <material:MaterialCard CornerRadius="20" Elevation="0" BackgroundColor="{StaticResource Second}" Padding="8">
+
+                                        <Label Text="{Binding Description}" LineBreakMode="WordWrap"
+                                               TextColor="White" FontSize="19" FontFamily="Exo-Regular"/>
+
+                                    </material:MaterialCard>
+
+
+                                </StackLayout>
+
+                            </material:MaterialCard>
+
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
     </ContentPage.Content>
 </ContentPage>
