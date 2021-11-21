@@ -22,7 +22,7 @@
                 <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
                 <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
                 <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="Black"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
                 
             </Style>
             
@@ -35,6 +35,7 @@
         <ShellContent Title="Start" Icon="icon_home.png" Route="StartPage" ContentTemplate="{DataTemplate local:StartPage}"/>
         <ShellContent Title="Statystyki" Icon="icon_statistics.png" ContentTemplate="{DataTemplate local:StatisticsPage}" />
         <ShellContent Title="Rywalizuj" Icon="icon_compete.png" ContentTemplate="{DataTemplate local:CompetePage}" />
+        <ShellContent Title="Osiągnięcia" Icon="icon_achievements.png" ContentTemplate="{DataTemplate local:AchievementsPage}" />
     </TabBar>
 
     <!--

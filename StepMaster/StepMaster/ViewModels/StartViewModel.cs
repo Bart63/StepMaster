@@ -48,14 +48,14 @@ namespace StepMaster.ViewModels
         }
 
         public Command CountStepsCommand { get; }
-        public Command RefreshChartInfoCommand { get; }
+        
 
         public ObservableCollection<StepsChartInfo> ChartInfos { get; }
 
         public StartViewModel()
         {
             CountStepsCommand = new Command(StartStopCountingSteps);
-            RefreshChartInfoCommand = new Command(RefreshChartInfo);
+            
 
             ChartInfos = new ObservableCollection<StepsChartInfo>();
 
@@ -132,9 +132,6 @@ namespace StepMaster.ViewModels
             StepsChart.Entries = entries.ToArray();
         }
 
-        private void RefreshChartInfo()
-        {
-
-        }
+        
     }
 }

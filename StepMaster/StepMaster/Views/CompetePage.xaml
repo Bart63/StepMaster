@@ -5,9 +5,56 @@
              Shell.PresentationMode="ModalAnimated"
              Title="{Binding Title}"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:local="clr-namespace:StepMaster.ViewModels"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              ios:Page.UseSafeArea="true">
+
+    
+
+    <ContentPage.BindingContext>
+        <local:CompeteViewModel />
+    </ContentPage.BindingContext>
+
     <ContentPage.Content>
-        <Label Text="Tutaj będziemy rywalizować ze znajomymi" />
+
+        
+            <RefreshView Command="{Binding UpdateRankingCommand}">
+                <CollectionView x:Name="RankingListView"
+                ItemsSource="{Binding RankingEntries}"
+                SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                        <StackLayout>
+                            <material:MaterialCard CornerRadius="25" Elevation="4" HeightRequest="32"
+                                                           HorizontalOptions="FillAndExpand" IsClickable="False"
+                                                           BackgroundColor="{Binding Color}" Margin="7" Padding="10">
+
+                                    
+                                    <StackLayout Orientation="Horizontal" Margin="0">
+
+                                            <material:MaterialChip BackgroundColor="{StaticResource First}"
+                                                Text="{Binding PositionNumber}" TextColor="White"
+                                                FontSize="24" FontFamily="Exo-Bold" HorizontalOptions="StartAndExpand"/>
+
+                                            <material:MaterialChip BackgroundColor="{StaticResource Second}"
+                                                Text="{Binding Username}" TextColor="White"
+                                                FontSize="24" FontFamily="Exo-Regular"/>
+
+                                            <material:MaterialChip BackgroundColor="{StaticResource Third}"
+                                                Text="{Binding Steps}" TextColor="White"
+                                                FontSize="24" FontFamily="Exo-Regular"/>
+
+                                    </StackLayout>  
+
+                                </material:MaterialCard>
+
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+        
+        
     </ContentPage.Content>
     
 </ContentPage>

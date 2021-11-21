@@ -7,6 +7,10 @@
     -->
     <Application.Resources>
         <ResourceDictionary>
+            <Color x:Key="First">#04c9db</Color>
+            <Color x:Key="Second">#3e50b6</Color>
+            <Color x:Key="Third">#5894d1</Color>
+
             <Color x:Key="Primary">#345B63</Color>
             <Color x:Key="PrimaryButtonColor">#ca6702</Color>
             <Color x:Key="DisabledButtonColor">#b5a696</Color>

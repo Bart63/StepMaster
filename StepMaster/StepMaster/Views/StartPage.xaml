@@ -47,7 +47,7 @@
         <microcharts:ChartView x:Name="chartNumberOfSteps" Chart="{Binding StepsChart}" HeightRequest="380" Margin="-43"/>
 
             
-        <RefreshView Command="{Binding RefreshChartInfoCommand}">
+        <RefreshView>
                 <CollectionView x:Name="ChartInfosListView"
             ItemsSource="{Binding ChartInfos}"
             SelectionMode="None">
