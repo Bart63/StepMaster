@@ -7,12 +7,12 @@ namespace StepMaster.Models
 {
     public class RankingEntry
     {
-        public RankingEntry(string username, string positionNumber, int steps, Color color)
+        public RankingEntry(string username, string positionNumber, int steps, bool isCurrentUser = false)
         {
             Username = username;
             PositionNumber = positionNumber;
             Steps = steps;
-            Color = color;
+            Color = Color.FromHex( isCurrentUser ? "#70e1f5" : "#ffd194");
         }
 
         public string Username { get; set; }

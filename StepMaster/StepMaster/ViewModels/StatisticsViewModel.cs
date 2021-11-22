@@ -37,37 +37,37 @@ namespace StepMaster.ViewModels
             {
                 new ChartEntry(1256)
                 {
-                    Color = _chartColors[0],
+                    Color = _chartColors[6],
                     Label = "Pon",
                     ValueLabel = "1256"
                 },
                 new ChartEntry(5693)
                 {
-                    Color = _chartColors[1],
+                    Color = _chartColors[6],
                     Label = "Wt",
                     ValueLabel = "5693"
                 },
                 new ChartEntry(10025)
                 {
-                    Color = _chartColors[2],
+                    Color = _chartColors[6],
                     Label = "Śr",
                     ValueLabel = "10025"
                 },
                 new ChartEntry(512)
                 {
-                    Color = _chartColors[3],
+                    Color = _chartColors[6],
                     Label = "Czw",
                     ValueLabel = "512"
                 },
                 new ChartEntry(1250)
                 {
-                    Color = _chartColors[4],
+                    Color = _chartColors[6],
                     Label = "Pt",
                     ValueLabel = "1250"
                 },
                 new ChartEntry(11254)
                 {
-                    Color = _chartColors[5],
+                    Color = _chartColors[6],
                     Label = "Sob",
                     ValueLabel = "11254"
                 },
@@ -83,11 +83,12 @@ namespace StepMaster.ViewModels
             WeeklyStepsChart = new PointChart
             {
                 Entries = entries,
-                PointSize = 50,
+                PointSize = 60,
                 PointMode = PointMode.Circle,
                 LabelOrientation = Orientation.Horizontal,
-                LabelTextSize = 45,
+                LabelTextSize = 43,
                 ValueLabelOrientation = Orientation.Horizontal,
+                BackgroundColor = SKColor.Empty
                 
             };
             

@@ -16,27 +16,22 @@ namespace StepMaster.ViewModels
 
         public Command UpdateRankingCommand { get; }
 
-        private Color[] _entryBackroundColors = new Color[]
-        {
-            Color.FromHex("#ffd194"),
-            Color.FromHex("#70e1f5")
-        };
-
+        
         public CompeteViewModel()
         {
             UpdateRankingCommand = new Command(async () => await UpdateRanking());
 
             RankingEntries = new ObservableCollection<RankingEntry>()
             {
-                new RankingEntry("domek15", "1.", 16125, _entryBackroundColors[1]),
-                new RankingEntry("klekot789", "2.", 15478, _entryBackroundColors[0]),
-                new RankingEntry("graczFortnite", "3.", 12482, _entryBackroundColors[1]),
-                new RankingEntry("gracz36", "4.", 11482, _entryBackroundColors[1]),
-                new RankingEntry("zielony", "5.", 10256, _entryBackroundColors[1]),
-                new RankingEntry("bla", "6.", 7896, _entryBackroundColors[1]),
-                new RankingEntry("skbd", "7.", 156, _entryBackroundColors[1]),
-                new RankingEntry("abcd", "8.", 56, _entryBackroundColors[1]),
-                new RankingEntry("qwertY", "9.", 20, _entryBackroundColors[1])
+                new RankingEntry("domek15", "1.", 16125),
+                new RankingEntry("klekot789", "2.", 15478, true),
+                new RankingEntry("graczFortnite", "3.", 12482),
+                new RankingEntry("gracz36", "4.", 11482),
+                new RankingEntry("zielony", "5.", 10256),
+                new RankingEntry("bla", "6.", 7896),
+                new RankingEntry("skbd", "7.", 156),
+                new RankingEntry("abcd", "8.", 56),
+                new RankingEntry("qwertY", "9.", 20)
             };
             
         }

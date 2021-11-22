@@ -14,18 +14,28 @@
 
     <Grid>
 
+        <BoxView x:Name="bdGradient" Scale="2" AnchorX="1" AnchorY="0">
+            <BoxView.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#70e1f5" Offset="0.1"></GradientStop>
+                    <GradientStop Color="#ffd194" Offset="1.0"></GradientStop>
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+        
+        
         <ScrollView Orientation="Vertical">
 
             <StackLayout HorizontalOptions="Center">
 
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="15" VerticalOptions="Center">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="25" VerticalOptions="Center">
 
                     <material:MaterialChip BackgroundColor="#F9564F" Text="Średnio dziennie: 5215" TextColor="White"
                                             FontSize="25" FontFamily="Exo-Bold" />
 
                 </StackLayout>
 
-                <microcharts:ChartView x:Name="chartStepsPerDay" Chart="{Binding WeeklyStepsChart}" WidthRequest="400" HeightRequest="400" Margin="5"/>
+                <microcharts:ChartView x:Name="chartStepsPerDay" Chart="{Binding WeeklyStepsChart}" WidthRequest="450"  HeightRequest="450" Margin="0"/>
             </StackLayout>
 
         </ScrollView>
