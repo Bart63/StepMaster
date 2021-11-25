@@ -17,8 +17,8 @@
         <BoxView x:Name="bdGradient" Scale="2" AnchorX="1" AnchorY="0">
             <BoxView.Background>
                 <LinearGradientBrush>
-                    <GradientStop Color="#70e1f5" Offset="0.1"></GradientStop>
-                    <GradientStop Color="#ffd194" Offset="1.0"></GradientStop>
+                    <GradientStop Color="#77CFDA" Offset="0.1"></GradientStop>
+                    <GradientStop Color="#AAFF9F" Offset="1.0"></GradientStop>
                 </LinearGradientBrush>
             </BoxView.Background>
         </BoxView>
@@ -30,7 +30,7 @@
 
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="25" VerticalOptions="Center">
 
-                    <material:MaterialChip BackgroundColor="#F9564F" Text="Średnio dziennie: 5215" TextColor="White"
+                    <material:MaterialChip BackgroundColor="#3875B3" Text="Średnio dziennie: 5215" TextColor="White"
                                             FontSize="25" FontFamily="Exo-Bold" />
 
                 </StackLayout>

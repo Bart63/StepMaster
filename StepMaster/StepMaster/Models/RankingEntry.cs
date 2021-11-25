@@ -12,7 +12,7 @@ namespace StepMaster.Models
             Username = username;
             PositionNumber = positionNumber;
             Steps = steps;
-            Color = Color.FromHex( isCurrentUser ? "#70e1f5" : "#ffd194");
+            Color = Color.FromHex( isCurrentUser ? "#70e1f5" : "#9EE493");
         }
 
         public string Username { get; set; }

@@ -21,9 +21,9 @@ namespace StepMaster.ViewModels
 
         private readonly SKColor[] _chartColors = new SKColor[]
         {
-            SKColor.Parse("#020887"),
-            SKColor.Parse("#3e50b6"),
-            SKColor.Parse("#04c9db"),
+            SKColor.Parse("#04C9DB"),
+            SKColor.Parse("#3875B3"),
+            SKColor.Parse("#119DA4"),
             SKColor.Parse("#567674"),
             SKColor.Parse("#5894d1")
         };

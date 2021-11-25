@@ -13,9 +13,9 @@
     
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Color x:Key="Accent">#96d1ff</Color>
-            <Color x:Key="numberOfStepsColor">#96d1ff</Color>
-            <Color x:Key="backgroundColor">#D4ECDD</Color>
+            <Color x:Key="Accent">#04C9DB</Color>
+            <Color x:Key="numberOfStepsColor">#3875B3</Color>
+            <Color x:Key="backgroundColor">#119DA4</Color>
          
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -26,8 +26,8 @@
         <BoxView x:Name="bdGradient" Scale="2" AnchorX="1" AnchorY="0">
             <BoxView.Background>
                 <LinearGradientBrush>
-                    <GradientStop Color="#70e1f5" Offset="0.1"></GradientStop>
-                    <GradientStop Color="#ffd194" Offset="1.0"></GradientStop>
+                    <GradientStop Color="#77CFDA" Offset="0.1"></GradientStop>
+                    <GradientStop Color="#AAFF9F" Offset="1.0"></GradientStop>
                 </LinearGradientBrush>
             </BoxView.Background>
         </BoxView>
@@ -36,7 +36,7 @@
 
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5" VerticalOptions="Start">
 
-        <material:MaterialButton BackgroundColor="#edb287" HorizontalOptions="Center"
+                <material:MaterialButton BackgroundColor="#3875B3" HorizontalOptions="Center"
             Text="{Binding StartStopButtonText}" TextColor="White" VerticalOptions="Center"
             Command="{Binding CountStepsCommand}" HeightRequest="70" WidthRequest="160"
             FontSize="25" FontAttributes="Bold" BorderColor="{StaticResource Primary}" BorderWidth="3" ButtonType="Flat" FontFamily="Exo-Bold"/>

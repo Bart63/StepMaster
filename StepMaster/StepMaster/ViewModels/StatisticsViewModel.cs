@@ -22,7 +22,7 @@ namespace StepMaster.ViewModels
             SKColor.Parse("#52b69a"),
             SKColor.Parse("#34a0a4"),
             SKColor.Parse("#1a759f"),
-            SKColor.Parse("#184e77"),
+            SKColor.Parse("#3875B3"),
         };
 
         public Chart WeeklyStepsChart

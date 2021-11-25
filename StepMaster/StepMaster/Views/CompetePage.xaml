@@ -17,7 +17,17 @@
 
     <ContentPage.Content>
 
-        
+        <Grid>
+
+            <BoxView x:Name="bdGradient" Scale="2" AnchorX="1" AnchorY="0">
+                <BoxView.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#77CFDA" Offset="0.1"></GradientStop>
+                        <GradientStop Color="#AAFF9F" Offset="1.0"></GradientStop>
+                    </LinearGradientBrush>
+                </BoxView.Background>
+            </BoxView>
+
             <RefreshView Command="{Binding UpdateRankingCommand}">
                 <CollectionView x:Name="RankingListView"
                 ItemsSource="{Binding RankingEntries}"
@@ -53,8 +63,9 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </RefreshView>
-        
-        
+
+        </Grid>
+
     </ContentPage.Content>
     
 </ContentPage>
