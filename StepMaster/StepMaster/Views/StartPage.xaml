@@ -35,9 +35,9 @@
         <Grid>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="{Binding ChartHeight}"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <material:MaterialButton Grid.Row="0" BackgroundColor="#3875B3" HorizontalOptions="Center"

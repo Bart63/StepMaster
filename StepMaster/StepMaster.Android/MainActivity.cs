@@ -7,7 +7,9 @@ using Android.OS;
 using AndroidX.Core.Content;
 using Android;
 using AndroidX.Core.App;
-
+using Android.Gms.Auth.Api.SignIn;
+using Android.Gms.Auth.Api;
+using StepMaster.Droid.Managers;
 
 namespace StepMaster.Droid
 {
@@ -37,6 +39,16 @@ namespace StepMaster.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        
+        protected override void OnActivityResult(int requestCode, Result resultCode, Android.Content.Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (requestCode == 1)
+            {
+                GoogleSignInResult result = Auth.GoogleSignInApi.GetSignInResultFromIntent(data);
+                GoogleManager.Instance.OnAuthCompleted(result);
+            }
+        }
+
+
     }
 }

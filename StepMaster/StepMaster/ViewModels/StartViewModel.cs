@@ -9,6 +9,7 @@ using StepMaster.Models;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using StepMaster.Extensions;
+using Xamarin.Forms.Internals;
 
 namespace StepMaster.ViewModels
 {
@@ -55,6 +56,7 @@ namespace StepMaster.ViewModels
             set => SetProperty(ref _chartHeight, value);
         }
 
+        
         public Command CountStepsCommand { get; }
         
 
@@ -148,5 +150,6 @@ namespace StepMaster.ViewModels
         }
 
         
+
     }
 }
