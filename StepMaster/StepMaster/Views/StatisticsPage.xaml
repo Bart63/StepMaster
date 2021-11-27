@@ -35,7 +35,8 @@
 
                 </StackLayout>
 
-                <microcharts:ChartView x:Name="chartStepsPerDay" Chart="{Binding WeeklyStepsChart}" WidthRequest="450"  HeightRequest="450" Margin="0"/>
+                <microcharts:ChartView x:Name="chartStepsPerDay" Chart="{Binding WeeklyStepsChart}"
+                                       WidthRequest="{Binding ChartHeight}"  HeightRequest="{Binding ChartHeight}" Margin="0"/>
             </StackLayout>
 
         </ScrollView>

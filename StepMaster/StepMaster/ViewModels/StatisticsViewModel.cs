@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Microcharts;
 using SkiaSharp;
+using StepMaster.Services;
 
 namespace StepMaster.ViewModels
 {
     public class StatisticsViewModel : BaseViewModel
     {
         private Chart _weeklyStepsChart;
-        
-
+        private int _chartHeight;
         private readonly SKColor[] _chartColors = new SKColor[]
         {
             SKColor.Parse("#d9ed92"),
@@ -29,6 +29,12 @@ namespace StepMaster.ViewModels
         {
             get => _weeklyStepsChart;
             set => SetProperty(ref _weeklyStepsChart, value);
+        }
+
+        public int ChartHeight
+        {
+            get => _chartHeight;
+            set => SetProperty(ref _chartHeight, value);
         }
 
         public StatisticsViewModel()
@@ -91,7 +97,11 @@ namespace StepMaster.ViewModels
                 BackgroundColor = SKColor.Empty
                 
             };
-            
+
+            float dpi = DependencyService.Get<IDisplayInfo>().GetDisplayDpi();
+
+            ChartHeight = (int)(420 / dpi * 450);
+
         }
 
     }

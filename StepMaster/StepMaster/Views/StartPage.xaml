@@ -23,7 +23,7 @@
     
     <Grid>
 
-        <BoxView x:Name="bdGradient" Scale="2" AnchorX="1" AnchorY="0">
+        <BoxView x:Name="bdGradient" Scale="3" AnchorX="0" AnchorY="0">
             <BoxView.Background>
                 <LinearGradientBrush>
                     <GradientStop Color="#77CFDA" Offset="0.1"></GradientStop>
@@ -32,46 +32,52 @@
             </BoxView.Background>
         </BoxView>
 
-        <StackLayout>
+        <Grid>
 
-        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5" VerticalOptions="Start">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="{Binding ChartHeight}"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
 
-                <material:MaterialButton BackgroundColor="#3875B3" HorizontalOptions="Center"
+            <material:MaterialButton Grid.Row="0" BackgroundColor="#3875B3" HorizontalOptions="Center"
             Text="{Binding StartStopButtonText}" TextColor="White" VerticalOptions="Center"
             Command="{Binding CountStepsCommand}" HeightRequest="70" WidthRequest="160"
             FontSize="25" FontAttributes="Bold" BorderColor="{StaticResource Primary}" BorderWidth="3" ButtonType="Flat" FontFamily="Exo-Bold"/>
 
 
-        </StackLayout>
-
-        <microcharts:ChartView x:Name="chartNumberOfSteps" Chart="{Binding StepsChart}" HeightRequest="380" Margin="-43"/>
-
-            
-        <RefreshView>
-                <CollectionView x:Name="ChartInfosListView"
-            ItemsSource="{Binding ChartInfos}"
-            SelectionMode="None">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="3" VerticalOptions="Center">
-
-                                    <material:MaterialChip BackgroundColor="{Binding Color}" Text="{Binding InfoText}" TextColor="White"
-                                        FontSize="24" FontFamily="Exo-Bold"/>
-
-                                    <material:MaterialChip BackgroundColor="{Binding Color}" Text="{Binding Value}" TextColor="White"
-                                        FontSize="24" FontFamily="Exo-Bold"/>
-
-                                </StackLayout>
-                            </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </RefreshView>
+        <microcharts:ChartView Grid.Row="1" x:Name="chartNumberOfSteps" Chart="{Binding StepsChart}" Margin="0"/>
 
 
-        </StackLayout>
+                    <CollectionView Grid.Column="0" Grid.Row="2" x:Name="ChartInfosListView" 
+                    ItemsSource="{Binding ChartInfos}"
+                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
 
+                    <StackLayout>
+                                
+                                    <material:MaterialCard CornerRadius="20" Elevation="0" BackgroundColor="{Binding Color}" Padding="5" Margin="3">
+
+                                        <StackLayout Orientation="Horizontal">
+
+                                            <Label Text="{Binding InfoText}" LineBreakMode="CharacterWrap"
+                                                       TextColor="White" FontSize="22" FontFamily="Exo-Regular" HorizontalOptions="Center"/>
+
+
+                                            <Label Text="{Binding Value}"
+                                                       TextColor="White" FontSize="22" FontFamily="Exo-Bold" HorizontalOptions="EndAndExpand"/>
+
+                                        </StackLayout>
+
+                                    </material:MaterialCard>
+</StackLayout>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+        </Grid>
     </Grid>
     
 

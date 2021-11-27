@@ -18,6 +18,8 @@ namespace StepMaster.ViewModels
         private bool _startedCountingSteps = false;
         private string _startStopButtonText = "START!";
         private Chart _stepsChart;
+        private int _chartHeight;
+        
 
         private readonly SKColor[] _chartColors = new SKColor[]
         {
@@ -47,6 +49,12 @@ namespace StepMaster.ViewModels
             set => SetProperty(ref _startStopButtonText, value);
         }
 
+        public int ChartHeight
+        {
+            get => _chartHeight;
+            set => SetProperty(ref _chartHeight, value);
+        }
+
         public Command CountStepsCommand { get; }
         
 
@@ -59,20 +67,27 @@ namespace StepMaster.ViewModels
 
             ChartInfos = new ObservableCollection<StepsChartInfo>();
 
+
+
             StepsChart = new RadialGaugeChart
             {
                 LabelTextSize = 40,
                 IsAnimated = true,
                 AnimationDuration = TimeSpan.FromSeconds(1.5),
-                BackgroundColor = SKColor.Empty
-            };
+                BackgroundColor = SKColor.Empty,
+
+        };
+
+            float dpi = DependencyService.Get<IDisplayInfo>().GetDisplayDpi();
+            ChartHeight =  (int)(420 / dpi * 350);
+            
 
             ChartInfos.Add(new StepsChartInfo("Twoje kroki", 1563, Color.FromRgb(_chartColors[0].Red, _chartColors[0].Green, _chartColors[0].Blue),
                 "currentSteps"));
             ChartInfos.Add(new StepsChartInfo("Cel dnia", 5000, Color.FromRgb(_chartColors[1].Red, _chartColors[1].Green, _chartColors[1].Blue),
                 "dailyTarget"));
 
-            ChartInfos.Add(new StepsChartInfo("Pobij wynik! (Tomek154)", 7563, Color.FromRgb(_chartColors[2].Red,
+            ChartInfos.Add(new StepsChartInfo("Pobij wynik! (Tomek154)", 17563, Color.FromRgb(_chartColors[2].Red,
                 _chartColors[2].Green, _chartColors[2].Blue), "competeWithTomek154"));
 
             SetStepsChartEntries();
