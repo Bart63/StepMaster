@@ -4,6 +4,7 @@ using Android.Gms.Auth.Api;
 using Android.Gms.Auth.Api.SignIn;
 using Android.Gms.Common;
 using Android.Gms.Common.Apis;
+using Android.Gms.Plus;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -15,7 +16,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Essentials;
+using Xamarin.Auth;
+
 
 [assembly: Dependency(typeof(GoogleManager))]
 namespace StepMaster.Droid.Managers
@@ -31,6 +36,7 @@ namespace StepMaster.Droid.Managers
             Instance = this;
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultSignIn)
                                                              .RequestEmail()
+                                                             .RequestIdToken("695961368940-0s5v5ejrdr1pfrq2kdmqrvjsfh2s1o2d.apps.googleusercontent.com")
                                                              .Build();
 
             _googleApiClient = new GoogleApiClient.Builder(((MainActivity)Forms.Context).ApplicationContext)
@@ -59,18 +65,31 @@ namespace StepMaster.Droid.Managers
         {
             if (result.IsSuccess)
             {
+                
                 GoogleSignInAccount account = result.SignInAccount;
-                _onLoginComplete?.Invoke(new GoogleUser()
-                {
-                    Name = account.DisplayName,
-                    Email = account.Email,
-                    Picture = new Uri((account.PhotoUrl != null ? $"{account.PhotoUrl}" : $"https://autisticdating.net/imgs/profile-placeholder.jpg"))
-                }, string.Empty);
+                
+                Task.Factory.StartNew(() => {
+
+                    
+                    CreateNewGoogleUser("", account);
+                });
+                
             }
             else
             {
                 _onLoginComplete?.Invoke(null, "An error occured!");
             }
+        }
+
+        private void CreateNewGoogleUser(string token, GoogleSignInAccount account)
+        {
+            _onLoginComplete?.Invoke(new GoogleUser()
+            {
+                Name = account.DisplayName,
+                Email = account.Email,
+                Picture = new Uri((account.PhotoUrl != null ? $"{account.PhotoUrl}" : $"https://autisticdating.net/imgs/profile-placeholder.jpg")),
+                Token = token
+            }, string.Empty);
         }
 
         public void OnConnected(Bundle connectionHint)
