@@ -1,4 +1,5 @@
 ﻿
+using StepMaster.Services;
 using StepMaster.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace StepMaster.Views
         public CompetePage()
         {
             InitializeComponent();
-            BindingContext = new CompeteViewModel();
+            BindingContext = new CompeteViewModel(DependencyService.Get<IGoogleManager>(), DependencyService.Get<IFirebaseManager>());
         }
     }
 }

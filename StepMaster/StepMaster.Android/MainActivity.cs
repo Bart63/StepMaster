@@ -31,6 +31,8 @@ namespace StepMaster.Droid
             {
                 ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.ActivityRecognition }, 1);
             }
+
+           
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

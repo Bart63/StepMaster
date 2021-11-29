@@ -20,7 +20,8 @@ namespace StepMaster.ViewModels
         private string _startStopButtonText = "START!";
         private Chart _stepsChart;
         private int _chartHeight;
-        
+
+        private IGoogleManager _googleManager;
 
         private readonly SKColor[] _chartColors = new SKColor[]
         {
@@ -62,8 +63,12 @@ namespace StepMaster.ViewModels
 
         public ObservableCollection<StepsChartInfo> ChartInfos { get; }
 
-        public StartViewModel()
+        public StartViewModel(IGoogleManager googleManager)
         {
+            _googleManager = googleManager;
+
+            googleManager.Login(OnLoginComplete);
+
             CountStepsCommand = new Command(StartStopCountingSteps);
             
 
@@ -96,6 +101,12 @@ namespace StepMaster.ViewModels
 
             
         }
+
+        public StartViewModel()
+        {
+
+        }
+            
 
         private void UpdateNumberOfSteps()
         {
@@ -149,7 +160,17 @@ namespace StepMaster.ViewModels
             StepsChart.Entries = entries.ToArray();
         }
 
-        
+        private void OnLoginComplete(GoogleUser googleUser, string message)
+        {
+            if (googleUser != null)
+            {
+                
+            }
+            else
+            {
+                Log.Warning("log in", message);
+            }
+        }
 
     }
 }

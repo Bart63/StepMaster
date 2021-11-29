@@ -1,4 +1,6 @@
-﻿using System;
+﻿using StepMaster.Services;
+using StepMaster.ViewModels;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -13,6 +15,8 @@ namespace StepMaster.Views
             InitializeComponent();
 
             Task.Run(AnimateBackground);
+
+            BindingContext = new StartViewModel(DependencyService.Get<IGoogleManager>());
         }
 
 

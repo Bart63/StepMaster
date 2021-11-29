@@ -22,6 +22,9 @@ namespace StepMaster.ViewModels
 
         private GoogleUser _googleUser;
 
+        private IGoogleManager _googleManager;
+        private IFirebaseManager _firebaseManager;
+
         public GoogleUser GoogleUser
         {
             get { return _googleUser; }
@@ -29,20 +32,23 @@ namespace StepMaster.ViewModels
         }
         private bool _isLogedIn;
         private bool _isLogedOut;
-        public bool IsLogedIn
+        public bool IsLoggedIn
         {
             get { return _isLogedIn; }
             set { SetProperty(ref _isLogedIn, value); }
         }
 
-        public bool IsLogedOut
+        public bool IsLoggedOut
         {
             get { return _isLogedOut; }
             set { SetProperty(ref _isLogedOut, value); }
         }
 
-        public CompeteViewModel()
+        public CompeteViewModel(IGoogleManager googleManager, IFirebaseManager firebaseManager)
         {
+            _googleManager = googleManager;
+            _firebaseManager = firebaseManager;
+
             UpdateRankingCommand = new Command(async () => await UpdateRanking());
 
             RankingEntries = new ObservableCollection<RankingEntry>()
@@ -61,9 +67,21 @@ namespace StepMaster.ViewModels
             GoogleLoginCommand = new Command(GoogleLogin);
             GoogleLogoutCommand = new Command(GoogleLogout);
 
-            IsLogedOut = true;
+            IsLoggedIn = _googleManager.IsLoggedIn;
+            IsLoggedOut = !_googleManager.IsLoggedIn;
 
-            GoogleLogin();
+            if (IsLoggedIn)
+            {
+                GoogleUser = _googleManager.User;
+
+                _firebaseManager.Auth(GoogleUser, OnFirebaseAuthCompleted);
+            }
+            
+        }
+
+        public CompeteViewModel()
+        {
+
         }
 
         async Task UpdateRanking()
@@ -74,14 +92,14 @@ namespace StepMaster.ViewModels
 
         private void GoogleLogout()
         {
-            DependencyService.Get<IGoogleManager>().Logout();
-            IsLogedIn = false;
-            IsLogedOut = true;
+            _googleManager.Logout();
+            IsLoggedIn = false;
+            IsLoggedOut = true;
         }
 
         private void GoogleLogin()
         {
-            DependencyService.Get<IGoogleManager>().Login(OnLoginComplete);
+            _googleManager.Login(OnLoginComplete);
 
         }
 
@@ -90,12 +108,24 @@ namespace StepMaster.ViewModels
             if (googleUser != null)
             {
                 GoogleUser = googleUser;
-                IsLogedIn = true;
-                IsLogedOut = false;
+                IsLoggedIn = true;
+                IsLoggedOut = false;
             }
             else
             {
                 Log.Warning("log in", message);
+            }
+        }
+
+        private void OnFirebaseAuthCompleted(bool success)
+        {
+            if (success)
+            {
+
+            }
+            else
+            {
+                //TODO: some message box warning
             }
         }
     }

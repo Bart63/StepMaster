@@ -50,18 +50,18 @@
                         Text="Zaloguj sie przez Google" TextColor="White"
                         Command="{Binding GoogleLoginCommand}"
                         FontSize="12" FontAttributes="Bold" BorderColor="{StaticResource Primary}" ButtonType="Flat" FontFamily="Exo-Bold"
-                        IsVisible="{Binding IsLogedOut}"/>
+                        IsVisible="{Binding IsLoggedOut}"/>
 
                     <material:MaterialChip Grid.Column="1" Grid.Row="0" BackgroundColor="{StaticResource PrimaryButtonColor}"
                         Text="{Binding GoogleUser.Name}" TextColor="White"
                         FontSize="24" FontFamily="Exo-Regular" 
-                        IsVisible="{Binding IsLogedIn}" Margin="6"/>
+                        IsVisible="{Binding IsLoggedIn}" Margin="6"/>
 
                     <material:MaterialButton Grid.Column="0" Grid.Row="0" BackgroundColor="#3875B3" HorizontalOptions="Start"
                         Text="Wyloguj" TextColor="White" VerticalOptions="Center"
                         Command="{Binding GoogleLogoutCommand}"
                         FontSize="12" FontAttributes="Bold" BorderColor="{StaticResource Primary}" ButtonType="Flat" FontFamily="Exo-Bold"
-                        IsVisible="{Binding IsLogedIn}"/>
+                        IsVisible="{Binding IsLoggedIn}"/>
 
                 </Grid>
 

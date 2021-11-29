@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using Xamarin.Auth;
-
+using Android.Gms.Auth;
 
 [assembly: Dependency(typeof(GoogleManager))]
 namespace StepMaster.Droid.Managers
@@ -30,6 +30,12 @@ namespace StepMaster.Droid.Managers
         public Action<GoogleUser, string> _onLoginComplete;
         public static GoogleApiClient _googleApiClient { get; set; }
         public static GoogleManager Instance { get; private set; }
+
+        private bool _isLoggedIn;
+        public bool IsLoggedIn { get => _isLoggedIn; set => _isLoggedIn = value; }
+
+        private GoogleUser _currentUser;
+        public GoogleUser User { get => _currentUser ; set => _currentUser = value; }
 
         public GoogleManager()
         {
@@ -65,31 +71,45 @@ namespace StepMaster.Droid.Managers
         {
             if (result.IsSuccess)
             {
-                
-                GoogleSignInAccount account = result.SignInAccount;
-                
-                Task.Factory.StartNew(() => {
 
+                IsLoggedIn = true;
+
+                GoogleSignInAccount account = result.SignInAccount;
+
+
+                Task.Factory.StartNew(() => {
                     
-                    CreateNewGoogleUser("", account);
+                    var accessToken = GoogleAuthUtil.GetToken(Android.App.Application.Context, result.SignInAccount.Account,
+                        $"oauth2:{Scopes.Email} {Scopes.Profile}");
+
+
+                    CreateNewGoogleUser(account.IdToken, accessToken, account);
                 });
+
                 
             }
             else
             {
+                IsLoggedIn = false;
+
                 _onLoginComplete?.Invoke(null, "An error occured!");
+
             }
         }
 
-        private void CreateNewGoogleUser(string token, GoogleSignInAccount account)
+        private void CreateNewGoogleUser(string Idtoken, string accessToken, GoogleSignInAccount account)
         {
-            _onLoginComplete?.Invoke(new GoogleUser()
+            
+            User = new GoogleUser()
             {
                 Name = account.DisplayName,
                 Email = account.Email,
                 Picture = new Uri((account.PhotoUrl != null ? $"{account.PhotoUrl}" : $"https://autisticdating.net/imgs/profile-placeholder.jpg")),
-                Token = token
-            }, string.Empty);
+                IDToken = Idtoken,
+                AccessToken = accessToken
+            };
+
+            _onLoginComplete?.Invoke(User, string.Empty);
         }
 
         public void OnConnected(Bundle connectionHint)
