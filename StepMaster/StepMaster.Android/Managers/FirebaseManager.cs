@@ -15,18 +15,21 @@ using Firebase;
 
 
 using Application = Android.App.Application;
-using Firebase.Database;
+
 using Firebase.Auth;
 using StepMaster.Models;
+using Java.Util;
+using Firebase.Firestore;
 
 [assembly: Dependency(typeof(FirebaseManager))]
 namespace StepMaster.Droid.Managers
 {
     class FirebaseManager : IFirebaseManager
     {
-        private FirebaseDatabase _database;
+        private FirebaseFirestore _database;
 
         private string _token;
+        private string _userUID;
 
         private FirebaseApp _firebaseApp;
 
@@ -39,13 +42,14 @@ namespace StepMaster.Droid.Managers
                 var options = new FirebaseOptions.Builder()
                     .SetApplicationId("stepmaster-333414")
                     .SetApiKey("AIzaSyA8lbTADDAoSH4o2UFzXNNB5tkcXwt5sNs")
-                    .SetDatabaseUrl("https://stepmaster-333414-default-rtdb.europe-west1.firebasedatabase.app/")
+                    .SetDatabaseUrl("https://stepmaster-333414-default-rtdb.europe-west1.firebasedatabase.app")
                     .SetStorageBucket("stepmaster-333414.appspot.com")
+                    .SetProjectId("stepmaster-333414")
                     .Build();
 
                 _firebaseApp = FirebaseApp.InitializeApp(Application.Context, options);
 
-                _database = FirebaseDatabase.GetInstance(_firebaseApp);
+                _database = FirebaseFirestore.GetInstance(_firebaseApp);
             }
 
         }
@@ -60,6 +64,7 @@ namespace StepMaster.Droid.Managers
             if (user.User != null)
             {
                 _token = (string)user.User.GetIdToken(true);
+                _userUID = FirebaseAuth.Instance.CurrentUser.Uid;
 
                 callback(true);
             }
@@ -67,6 +72,26 @@ namespace StepMaster.Droid.Managers
             {
                 callback(false);
             }
+
+        }
+
+        public List<RankingEntry> GetRankingEntries()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveStepsToRanking(int numberOfSteps)
+        {
+            
+            DocumentReference databaseReference = _database.Collection("StepsRanking").Document(_userUID);
+
+            HashMap entryInfo = new HashMap();
+            entryInfo.Put("StepsNumber", numberOfSteps);
+            entryInfo.Put("Date", DateTime.Now.ToString("yyyyMMddHHmmssffff"));
+
+
+            databaseReference.Set(entryInfo);
+            
 
         }
     }

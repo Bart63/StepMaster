@@ -108,8 +108,15 @@ namespace StepMaster.ViewModels
             if (googleUser != null)
             {
                 GoogleUser = googleUser;
-                IsLoggedIn = true;
-                IsLoggedOut = false;
+                
+                IsLoggedIn = _googleManager.IsLoggedIn;
+                IsLoggedOut = !_googleManager.IsLoggedIn;
+
+                
+                GoogleUser = _googleManager.User;
+
+                _firebaseManager.Auth(GoogleUser, OnFirebaseAuthCompleted);
+                
             }
             else
             {
@@ -121,7 +128,7 @@ namespace StepMaster.ViewModels
         {
             if (success)
             {
-
+                //_firebaseManager.SaveStepsToRanking(24523);
             }
             else
             {
