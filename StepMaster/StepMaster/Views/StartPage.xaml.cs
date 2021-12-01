@@ -16,7 +16,7 @@ namespace StepMaster.Views
 
             Task.Run(AnimateBackground);
 
-            BindingContext = new StartViewModel(DependencyService.Get<IGoogleManager>());
+            BindingContext = new StartViewModel(DependencyService.Get<IGoogleManager>(), DependencyService.Get<IFirebaseManager>());
         }
 
 

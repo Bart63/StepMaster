@@ -22,6 +22,7 @@ namespace StepMaster.ViewModels
         private int _chartHeight;
 
         private IGoogleManager _googleManager;
+        private IFirebaseManager _firebaseManager;
 
         private readonly SKColor[] _chartColors = new SKColor[]
         {
@@ -63,9 +64,10 @@ namespace StepMaster.ViewModels
 
         public ObservableCollection<StepsChartInfo> ChartInfos { get; }
 
-        public StartViewModel(IGoogleManager googleManager)
+        public StartViewModel(IGoogleManager googleManager, IFirebaseManager firebaseManager)
         {
             _googleManager = googleManager;
+            _firebaseManager = firebaseManager;
 
             googleManager.Login(OnLoginComplete);
 
@@ -164,7 +166,7 @@ namespace StepMaster.ViewModels
         {
             if (googleUser != null)
             {
-                
+                _firebaseManager.Auth(googleUser, OnFirebaseAuthCompleted);
             }
             else
             {
@@ -172,5 +174,17 @@ namespace StepMaster.ViewModels
             }
         }
 
+        private void OnFirebaseAuthCompleted(bool success)
+        {
+            if (success)
+            {
+                //_firebaseManager.SaveStepsToRanking(NumberOfSteps, _googleManager.User.Name);
+                _firebaseManager.SaveStepsToRanking(11452, _googleManager.User.Name);
+            }
+            else
+            {
+                //TODO: some message box warning
+            }
+        }
     }
 }

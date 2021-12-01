@@ -9,9 +9,9 @@ namespace StepMaster.Services
     {
         void Auth(GoogleUser googleUser, Action<bool> callback);
 
-        List<RankingEntry> GetRankingEntries();
+        void GetRankingEntries(Action<List<RankingEntry>> callback);
 
-        void SaveStepsToRanking(int numberOfSteps);
+        void SaveStepsToRanking(int numberOfSteps, string username);
         
     }
 }

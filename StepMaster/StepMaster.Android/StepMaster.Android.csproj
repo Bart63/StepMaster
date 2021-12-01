@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisplayInfo\DisplayInfo.cs" />
+    <Compile Include="Helpers\GetRankingEventListener.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Managers\FirebaseManager.cs" />
     <Compile Include="Managers\GoogleManager.cs" />

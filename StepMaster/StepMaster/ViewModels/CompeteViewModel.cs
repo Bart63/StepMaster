@@ -51,18 +51,8 @@ namespace StepMaster.ViewModels
 
             UpdateRankingCommand = new Command(async () => await UpdateRanking());
 
-            RankingEntries = new ObservableCollection<RankingEntry>()
-            {
-                new RankingEntry("domek15", "1.", 16125),
-                new RankingEntry("klekot789", "2.", 15478, true),
-                new RankingEntry("graczFortnite", "3.", 12482),
-                new RankingEntry("gracz36", "4.", 11482),
-                new RankingEntry("zielony", "5.", 10256),
-                new RankingEntry("bla", "6.", 7896),
-                new RankingEntry("skbd", "7.", 156),
-                new RankingEntry("abcd", "8.", 56),
-                new RankingEntry("qwertY", "9.", 20)
-            };
+            RankingEntries = new ObservableCollection<RankingEntry>();
+            
 
             GoogleLoginCommand = new Command(GoogleLogin);
             GoogleLogoutCommand = new Command(GoogleLogout);
@@ -75,6 +65,10 @@ namespace StepMaster.ViewModels
                 GoogleUser = _googleManager.User;
 
                 _firebaseManager.Auth(GoogleUser, OnFirebaseAuthCompleted);
+            }
+            else
+            {
+                RankingEntries.Add(new RankingEntry("Zaloguj się aby rywalizować z innymi!", "", 0, false));
             }
             
         }
@@ -95,6 +89,10 @@ namespace StepMaster.ViewModels
             _googleManager.Logout();
             IsLoggedIn = false;
             IsLoggedOut = true;
+
+            RankingEntries.Clear();
+
+            RankingEntries.Add(new RankingEntry("Zaloguj się!", "0.", 0, false));
         }
 
         private void GoogleLogin()
@@ -128,11 +126,23 @@ namespace StepMaster.ViewModels
         {
             if (success)
             {
-                //_firebaseManager.SaveStepsToRanking(24523);
+                _firebaseManager.SaveStepsToRanking(24523, GoogleUser.Name);
+
+                _firebaseManager.GetRankingEntries(OnFirebaseRankingLoaded);
             }
             else
             {
                 //TODO: some message box warning
+            }
+        }
+
+        private void OnFirebaseRankingLoaded(List<RankingEntry> entries)
+        {
+            RankingEntries.Clear();
+
+            foreach (RankingEntry entry in entries)
+            {
+                RankingEntries.Add(entry);
             }
         }
     }

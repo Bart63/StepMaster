@@ -20,6 +20,7 @@ using Firebase.Auth;
 using StepMaster.Models;
 using Java.Util;
 using Firebase.Firestore;
+using StepMaster.Droid.Helpers;
 
 [assembly: Dependency(typeof(FirebaseManager))]
 namespace StepMaster.Droid.Managers
@@ -75,12 +76,17 @@ namespace StepMaster.Droid.Managers
 
         }
 
-        public List<RankingEntry> GetRankingEntries()
+        public void GetRankingEntries(Action<List<RankingEntry>> callback)
         {
-            throw new NotImplementedException();
+            Query allRankingEntries = _database.Collection("StepsRanking");
+
+            allRankingEntries.OrderBy("StepsNumber", Query.Direction.Descending);
+
+            allRankingEntries.AddSnapshotListener(new GetRankingEventListener(callback, _userUID));
         }
 
-        public void SaveStepsToRanking(int numberOfSteps)
+
+        public void SaveStepsToRanking(int numberOfSteps, string username)
         {
             
             DocumentReference databaseReference = _database.Collection("StepsRanking").Document(_userUID);
@@ -88,7 +94,7 @@ namespace StepMaster.Droid.Managers
             HashMap entryInfo = new HashMap();
             entryInfo.Put("StepsNumber", numberOfSteps);
             entryInfo.Put("Date", DateTime.Now.ToString("yyyyMMddHHmmssffff"));
-
+            entryInfo.Put("Username", username);
 
             databaseReference.Set(entryInfo);
             
