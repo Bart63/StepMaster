@@ -39,10 +39,18 @@ namespace StepMaster.Droid.Helpers
 
                 foreach (DocumentSnapshot item in documents)
                 {
-                    RankingEntry entry = new RankingEntry(item.Get("Username").ToString(), i.ToString() + ".", (int)item.Get("StepsNumber"),
-                        item.Id == currentUserUID);
+                    DateTime date = DateTime.ParseExact(item.Get("Date").ToString(), "yyyyMMddHHmmssffff",
+                        System.Globalization.CultureInfo.InvariantCulture);
+                    
+                    if (date.Date == DateTime.Now.Date)
+                    {
+                        RankingEntry entry = new RankingEntry(item.Get("Username").ToString(), i.ToString() + ".", (int)item.Get("StepsNumber"),
+                            item.Id == currentUserUID);
 
-                    entries.Add(entry);
+                        entries.Add(entry);
+
+                        i++;
+                    }
                 }
 
                 callback(entries);
