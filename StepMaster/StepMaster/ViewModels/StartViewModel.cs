@@ -23,6 +23,8 @@ namespace StepMaster.ViewModels
 
         private IGoogleManager _googleManager;
         private IFirebaseManager _firebaseManager;
+        private int _currentColorIndex = 2;
+        private string _lastCompetitionName;
 
         private readonly SKColor[] _chartColors = new SKColor[]
         {
@@ -91,13 +93,12 @@ namespace StepMaster.ViewModels
             ChartHeight =  (int)(420 / dpi * 350);
             
 
-            ChartInfos.Add(new StepsChartInfo("Twoje kroki", 1563, Color.FromRgb(_chartColors[0].Red, _chartColors[0].Green, _chartColors[0].Blue),
+            ChartInfos.Add(new StepsChartInfo("Twoje kroki", 11452, Color.FromRgb(_chartColors[0].Red, _chartColors[0].Green, _chartColors[0].Blue),
                 "currentSteps"));
             ChartInfos.Add(new StepsChartInfo("Cel dnia", 5000, Color.FromRgb(_chartColors[1].Red, _chartColors[1].Green, _chartColors[1].Blue),
                 "dailyTarget"));
 
-            ChartInfos.Add(new StepsChartInfo("Pobij wynik! (Tomek154)", 17563, Color.FromRgb(_chartColors[2].Red,
-                _chartColors[2].Green, _chartColors[2].Blue), "competeWithTomek154"));
+            
 
             SetStepsChartEntries();
 
@@ -180,11 +181,45 @@ namespace StepMaster.ViewModels
             {
                 //_firebaseManager.SaveStepsToRanking(NumberOfSteps, _googleManager.User.Name);
                 _firebaseManager.SaveStepsToRanking(11452, _googleManager.User.Name);
+
+                _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete);
             }
             else
             {
                 //TODO: some message box warning
             }
+        }
+
+        private void OnSelectedEntryToCompete(RankingEntry rankingEntry)
+        {
+            if (_lastCompetitionName != "" && _lastCompetitionName != "competeWith" + rankingEntry.Username)
+            {
+                int i = ChartInfos.FindIndex(x => x.Name == _lastCompetitionName);
+
+                if (i != -1)
+                {
+                    ChartInfos.RemoveAt(i);
+                }
+            }
+
+
+            int index = ChartInfos.FindIndex(x => x.Name == "competeWith" + rankingEntry.Username);
+
+            if (index != -1)
+            {
+                ChartInfos[index].Value = rankingEntry.Steps;
+            }
+            else
+            {
+
+                ChartInfos.Add(new StepsChartInfo("Rywalizuj (" + rankingEntry.Username + " )", rankingEntry.Steps,
+                    Color.FromRgb(_chartColors[_currentColorIndex].Red, _chartColors[_currentColorIndex].Green, _chartColors[_currentColorIndex].Blue),
+                    "competeWith" + rankingEntry.Username));
+
+                _lastCompetitionName = "competeWith" + rankingEntry.Username;
+            }
+
+            SetStepsChartEntries();
         }
     }
 }

@@ -126,7 +126,7 @@ namespace StepMaster.ViewModels
         {
             if (success)
             {
-                _firebaseManager.SaveStepsToRanking(24523, GoogleUser.Name);
+                //_firebaseManager.SaveStepsToRanking(24523, GoogleUser.Name);
 
                 _firebaseManager.GetRankingEntries(OnFirebaseRankingLoaded);
             }

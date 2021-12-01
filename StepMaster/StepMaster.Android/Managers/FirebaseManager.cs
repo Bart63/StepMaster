@@ -85,6 +85,15 @@ namespace StepMaster.Droid.Managers
             allRankingEntries.AddSnapshotListener(new GetRankingEventListener(callback, _userUID));
         }
 
+        public void GetResultToCompeteWith(Action<RankingEntry> callback)
+        {
+            Query allRankingEntries = _database.Collection("StepsRanking");
+
+            allRankingEntries.OrderBy("StepsNumber", Query.Direction.Descending);
+
+            allRankingEntries.AddSnapshotListener(new GetResultToCompeteEventListener(callback, _userUID));
+        }
+
 
         public void SaveStepsToRanking(int numberOfSteps, string username)
         {
