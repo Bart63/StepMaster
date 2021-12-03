@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using StepMaster.Extensions;
 using Xamarin.Forms.Internals;
+using StepMaster.Database;
 
 namespace StepMaster.ViewModels
 {
@@ -25,6 +26,7 @@ namespace StepMaster.ViewModels
         private IFirebaseManager _firebaseManager;
         private int _currentColorIndex = 2;
         private string _lastCompetitionName;
+        
 
         private readonly SKColor[] _chartColors = new SKColor[]
         {
@@ -91,18 +93,22 @@ namespace StepMaster.ViewModels
 
             float dpi = DependencyService.Get<IDisplayInfo>().GetDisplayDpi();
             ChartHeight =  (int)(420 / dpi * 350);
-            
 
-            ChartInfos.Add(new StepsChartInfo("Twoje kroki", 11452, Color.FromRgb(_chartColors[0].Red, _chartColors[0].Green, _chartColors[0].Blue),
-                "currentSteps"));
+            StepsDatabase.Init();
+
+            StepsDatabase.RemoveSteps(2);
+
+            NumberOfSteps = StepsDatabase.GetSteps(DateTime.Now.Date);
+
+
+            ChartInfos.Add(new StepsChartInfo("Twoje kroki", NumberOfSteps,
+                Color.FromRgb(_chartColors[0].Red, _chartColors[0].Green, _chartColors[0].Blue), "currentSteps"));
             ChartInfos.Add(new StepsChartInfo("Cel dnia", 5000, Color.FromRgb(_chartColors[1].Red, _chartColors[1].Green, _chartColors[1].Blue),
                 "dailyTarget"));
 
-            
 
             SetStepsChartEntries();
 
-            
         }
 
         public StartViewModel()
@@ -119,7 +125,7 @@ namespace StepMaster.ViewModels
 
             SetStepsChartEntries();
 
-            
+            StepsDatabase.updateDailySteps(NumberOfSteps);
         }
 
         private void StartStopCountingSteps()
@@ -168,6 +174,8 @@ namespace StepMaster.ViewModels
             if (googleUser != null)
             {
                 _firebaseManager.Auth(googleUser, OnFirebaseAuthCompleted);
+
+
             }
             else
             {
@@ -180,9 +188,21 @@ namespace StepMaster.ViewModels
             if (success)
             {
                 //_firebaseManager.SaveStepsToRanking(NumberOfSteps, _googleManager.User.Name);
-                _firebaseManager.SaveStepsToRanking(11452, _googleManager.User.Name);
+                _firebaseManager.SaveStepsToRanking(NumberOfSteps, _googleManager.User.Name);
 
-                _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete);
+                Device.StartTimer(TimeSpan.FromMinutes(5), () =>
+                {
+                    _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete);
+
+                    return true; 
+                });
+
+                Device.StartTimer(TimeSpan.FromMinutes(5), () =>
+                {
+                    _firebaseManager.SaveStepsToRanking(NumberOfSteps, DependencyService.Get<IGoogleManager>().User.Name);
+
+                    return true;
+                });
             }
             else
             {
@@ -192,6 +212,9 @@ namespace StepMaster.ViewModels
 
         private void OnSelectedEntryToCompete(RankingEntry rankingEntry)
         {
+            if (rankingEntry == null)
+                return;
+
             if (_lastCompetitionName != "" && _lastCompetitionName != "competeWith" + rankingEntry.Username)
             {
                 int i = ChartInfos.FindIndex(x => x.Name == _lastCompetitionName);
