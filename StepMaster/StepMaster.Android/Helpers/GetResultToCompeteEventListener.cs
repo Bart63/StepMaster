@@ -51,8 +51,17 @@ namespace StepMaster.Droid.Helpers
                         i++;
                     }
                 }
+
                 if (entries.Count > 1)
                 {
+                    entries.Sort(delegate (RankingEntry x1, RankingEntry x2) {
+                        if (x1.Steps < x2.Steps) return 1;
+                        if (x1.Steps > x2.Steps) return -1;
+                        else
+                            return 0;
+
+                    });
+
                     int index = entries.FindIndex(x => x.IsCurrentUser);
 
                     if (index > 0)

@@ -16,6 +16,8 @@ namespace StepMaster.ViewModels
 {
     public class StartViewModel : BaseViewModel
     {
+        public static StartViewModel Instance;
+
         private int _numberOfSteps;
         private bool _startedCountingSteps = false;
         private string _startStopButtonText = "START!";
@@ -25,7 +27,7 @@ namespace StepMaster.ViewModels
         private IGoogleManager _googleManager;
         private IFirebaseManager _firebaseManager;
         private int _currentColorIndex = 2;
-        private string _lastCompetitionName;
+       
         
 
         private readonly SKColor[] _chartColors = new SKColor[]
@@ -70,6 +72,8 @@ namespace StepMaster.ViewModels
 
         public StartViewModel(IGoogleManager googleManager, IFirebaseManager firebaseManager)
         {
+            Instance = this;
+
             _googleManager = googleManager;
             _firebaseManager = firebaseManager;
 
@@ -85,8 +89,7 @@ namespace StepMaster.ViewModels
             StepsChart = new RadialGaugeChart
             {
                 LabelTextSize = 40,
-                IsAnimated = true,
-                AnimationDuration = TimeSpan.FromSeconds(1.5),
+                IsAnimated = false,
                 BackgroundColor = SKColor.Empty,
 
         };
@@ -119,13 +122,14 @@ namespace StepMaster.ViewModels
 
         private void UpdateNumberOfSteps()
         {
-            NumberOfSteps = DependencyService.Get<IStepCounter>().Steps;
+            NumberOfSteps += 1;
 
-            ChartInfos.Find(x => x.Name == "currentSteps").Value = NumberOfSteps;
+            int index = ChartInfos.FindIndex(x => x.Name == "currentSteps");
 
-            SetStepsChartEntries();
+            ChartInfos.RemoveAt(index);
 
-            StepsDatabase.updateDailySteps(NumberOfSteps);
+            ChartInfos.Insert(index, new StepsChartInfo("Twoje kroki", NumberOfSteps,
+                Color.FromRgb(_chartColors[0].Red, _chartColors[0].Green, _chartColors[0].Blue), "currentSteps"));
         }
 
         private void StartStopCountingSteps()
@@ -140,6 +144,20 @@ namespace StepMaster.ViewModels
                 StartStopButtonText = "STOP!";
 
                 SetStepsChartEntries();
+
+                if (_googleManager.IsLoggedIn)
+                {
+                    _firebaseManager.Auth(_googleManager.User, OnFirebaseAuthCompleted);
+                }
+
+                Device.StartTimer(TimeSpan.FromSeconds(2), () =>
+                {
+                    SetStepsChartEntries();
+
+                    StepsDatabase.updateDailySteps(NumberOfSteps);
+
+                    return _startedCountingSteps;
+                });
             }
             else
             {
@@ -149,7 +167,6 @@ namespace StepMaster.ViewModels
 
                 StartStopButtonText = "START!";
 
-                
             }
             
         }
@@ -179,34 +196,37 @@ namespace StepMaster.ViewModels
             }
             else
             {
-                Log.Warning("log in", message);
+                DependencyService.Get<IDialogService>().ShowErrorAsync(message, "Błąd", "Zamknij");
             }
         }
 
-        private void OnFirebaseAuthCompleted(bool success)
+        private void OnFirebaseAuthCompleted(bool success, string message)
         {
             if (success)
             {
                 //_firebaseManager.SaveStepsToRanking(NumberOfSteps, _googleManager.User.Name);
                 _firebaseManager.SaveStepsToRanking(NumberOfSteps, _googleManager.User.Name);
+                _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete);
 
-                Device.StartTimer(TimeSpan.FromMinutes(5), () =>
+                Device.StartTimer(TimeSpan.FromMinutes(1), () =>
                 {
+
                     _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete);
 
-                    return true; 
+                    return true;
                 });
 
-                Device.StartTimer(TimeSpan.FromMinutes(5), () =>
+                Device.StartTimer(TimeSpan.FromSeconds(30), () =>
                 {
+
                     _firebaseManager.SaveStepsToRanking(NumberOfSteps, DependencyService.Get<IGoogleManager>().User.Name);
 
-                    return true;
+                    return _startedCountingSteps;
                 });
             }
             else
             {
-                //TODO: some message box warning
+                DependencyService.Get<IDialogService>().ShowErrorAsync(message, "Błąd", "Zamknij");
             }
         }
 
@@ -215,32 +235,24 @@ namespace StepMaster.ViewModels
             if (rankingEntry == null)
                 return;
 
-            if (_lastCompetitionName != "" && _lastCompetitionName != "competeWith" + rankingEntry.Username)
+            
+            int i = ChartInfos.FindIndex(x => x.Name == "competeWith" + rankingEntry.Username);
+
+            if (i != -1)
             {
-                int i = ChartInfos.FindIndex(x => x.Name == _lastCompetitionName);
-
-                if (i != -1)
-                {
-                    ChartInfos.RemoveAt(i);
-                }
+                ChartInfos.RemoveAt(i);
             }
+            
 
+            ChartInfos.Add(new StepsChartInfo("Rywalizuj (" + rankingEntry.Username + ")", rankingEntry.Steps,
+                Color.FromRgb(_chartColors[_currentColorIndex].Red, _chartColors[_currentColorIndex].Green, _chartColors[_currentColorIndex].Blue),
+                "competeWith" + rankingEntry.Username));
 
-            int index = ChartInfos.FindIndex(x => x.Name == "competeWith" + rankingEntry.Username);
-
-            if (index != -1)
+            ChartInfos.Sort(delegate (StepsChartInfo x1, StepsChartInfo x2)
             {
-                ChartInfos[index].Value = rankingEntry.Steps;
-            }
-            else
-            {
-
-                ChartInfos.Add(new StepsChartInfo("Rywalizuj (" + rankingEntry.Username + " )", rankingEntry.Steps,
-                    Color.FromRgb(_chartColors[_currentColorIndex].Red, _chartColors[_currentColorIndex].Green, _chartColors[_currentColorIndex].Blue),
-                    "competeWith" + rankingEntry.Username));
-
-                _lastCompetitionName = "competeWith" + rankingEntry.Username;
-            }
+                if (x1.Value > x2.Value) return 1;
+                if (x1.Value < x2.Value) return -1; else return 0;
+            });
 
             SetStepsChartEntries();
         }

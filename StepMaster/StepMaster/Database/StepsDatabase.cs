@@ -67,11 +67,11 @@ namespace StepMaster.Database
                 return 0;
         }
 
-        public static void RemoveSteps(int numberOfWeeks)
+        public static void RemoveSteps(int numberOfWeeksToLeave)
         {
             DateTime date = DateTime.Now.Date;
 
-            date = date.AddDays(numberOfWeeks * -7);
+            date = date.AddDays(numberOfWeeksToLeave * -7);
 
             db.Table<StepsModel>().Delete(x => x.Date <= date);
           

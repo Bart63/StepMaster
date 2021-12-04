@@ -66,10 +66,7 @@ namespace StepMaster.ViewModels
 
                 _firebaseManager.Auth(GoogleUser, OnFirebaseAuthCompleted);
             }
-            else
-            {
-                RankingEntries.Add(new RankingEntry("Zaloguj się aby rywalizować z innymi!", "", 0, false));
-            }
+            
             
         }
 
@@ -118,21 +115,32 @@ namespace StepMaster.ViewModels
             }
             else
             {
-                Log.Warning("log in", message);
+                DependencyService.Get<IDialogService>().ShowErrorAsync(message, "Błąd", "Zamknij");
             }
         }
 
-        private void OnFirebaseAuthCompleted(bool success)
+        private void OnFirebaseAuthCompleted(bool success, string errors)
         {
             if (success)
             {
-                //_firebaseManager.SaveStepsToRanking(24523, GoogleUser.Name);
+                _firebaseManager.SaveStepsToRanking(StartViewModel.Instance.NumberOfSteps, GoogleUser.Name);
 
                 _firebaseManager.GetRankingEntries(OnFirebaseRankingLoaded);
+
+                Device.StartTimer(TimeSpan.FromMinutes(1), () =>
+                {
+                    _firebaseManager.GetRankingEntries(OnFirebaseRankingLoaded);
+
+                    return DependencyService.Get<IGoogleManager>().IsLoggedIn;
+                });
+
             }
             else
             {
-                //TODO: some message box warning
+                RankingEntries.Clear();
+                RankingEntries.Add(new RankingEntry("Błąd", "0.", 0, false));
+
+                DependencyService.Get<IDialogService>().ShowErrorAsync(errors, "Błąd", "Zamknij");
             }
         }
 
@@ -145,5 +153,7 @@ namespace StepMaster.ViewModels
                 RankingEntries.Add(entry);
             }
         }
+
+        
     }
 }

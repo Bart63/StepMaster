@@ -111,6 +111,7 @@
     <Compile Include="Helpers\GetRankingEventListener.cs" />
     <Compile Include="Helpers\GetResultToCompeteEventListener.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Managers\DialogManager.cs" />
     <Compile Include="Managers\FirebaseManager.cs" />
     <Compile Include="Managers\GoogleManager.cs" />
     <Compile Include="Resources\Resource.designer.cs" />

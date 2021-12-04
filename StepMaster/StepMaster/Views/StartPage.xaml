@@ -62,7 +62,7 @@
                                         <StackLayout Orientation="Horizontal">
 
                                             <Label Text="{Binding InfoText}" LineBreakMode="CharacterWrap"
-                                                       TextColor="White" FontSize="22" FontFamily="Exo-Regular" HorizontalOptions="Center"/>
+                                                       TextColor="White" FontSize="20" FontFamily="Exo-Regular" HorizontalOptions="Center"/>
 
 
                                             <Label Text="{Binding Value}"

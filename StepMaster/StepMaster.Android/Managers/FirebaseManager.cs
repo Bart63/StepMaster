@@ -56,31 +56,37 @@ namespace StepMaster.Droid.Managers
         }
         
 
-        public async void Auth(GoogleUser googleUser, Action<bool> callback)
+        public async void Auth(GoogleUser googleUser, Action<bool, string> callback)
         {
-            var credential = GoogleAuthProvider.GetCredential(googleUser.IDToken, googleUser.AccessToken);
-
-            var user = await FirebaseAuth.Instance.SignInWithCredentialAsync(credential);
-
-            if (user.User != null)
+            try
             {
-                _token = (string)user.User.GetIdToken(true);
-                _userUID = FirebaseAuth.Instance.CurrentUser.Uid;
+                var credential = GoogleAuthProvider.GetCredential(googleUser.IDToken, googleUser.AccessToken);
 
-                callback(true);
+                var user = await FirebaseAuth.Instance.SignInWithCredentialAsync(credential);
+
+                if (user.User != null)
+                {
+                    _token = (string)user.User.GetIdToken(true);
+                    _userUID = FirebaseAuth.Instance.CurrentUser.Uid;
+
+                    callback(true, null);
+                }
+                else
+                {
+                    callback(false, "Unable to authenticate user");
+                }
             }
-            else
+            catch (FirebaseNetworkException e)
             {
-                callback(false);
+                callback(false, e.LocalizedMessage);
             }
+            
 
         }
 
         public void GetRankingEntries(Action<List<RankingEntry>> callback)
         {
             Query allRankingEntries = _database.Collection("StepsRanking");
-
-            allRankingEntries.OrderBy("StepsNumber", Query.Direction.Descending);
 
             allRankingEntries.AddSnapshotListener(new GetRankingEventListener(callback, _userUID));
         }

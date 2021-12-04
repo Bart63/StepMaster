@@ -86,7 +86,7 @@
 
                                             <material:MaterialChip BackgroundColor="{StaticResource Second}"
                                                 Text="{Binding Username}" TextColor="White"
-                                                FontSize="24" FontFamily="Exo-Regular"/>
+                                                FontSize="20" FontFamily="Exo-Regular"/>
 
                                             <material:MaterialChip BackgroundColor="{StaticResource Third}"
                                                 Text="{Binding Steps}" TextColor="White"

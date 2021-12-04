@@ -7,7 +7,8 @@ namespace StepMaster.Services
 {
     public interface IFirebaseManager
     {
-        void Auth(GoogleUser googleUser, Action<bool> callback);
+        
+        void Auth(GoogleUser googleUser, Action<bool, string> callback);
 
         void GetRankingEntries(Action<List<RankingEntry>> callback);
 

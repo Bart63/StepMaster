@@ -16,8 +16,6 @@ namespace StepMaster.Droid.StepDetection
 
         private Action ValueChangedCallback;
 
-        
-
         public int Steps
         {
             get { return StepsCounter; }
@@ -32,8 +30,6 @@ namespace StepMaster.Droid.StepDetection
 
         public void InitSensorService()
         {
-            
-                
             sManager = Android.App.Application.Context.GetSystemService(Context.SensorService) as SensorManager;
             sManager.RegisterListener(this, sManager.GetDefaultSensor(SensorType.StepDetector), SensorDelay.Normal);
             
@@ -46,9 +42,8 @@ namespace StepMaster.Droid.StepDetection
 
         public void OnSensorChanged(SensorEvent e)
         {
-            Steps += 1;
-
             ValueChangedCallback();
+                
         }
 
         public void SetValueChangedCallbackAction(Action action)
@@ -60,7 +55,6 @@ namespace StepMaster.Droid.StepDetection
         {
             sManager.UnregisterListener(this);
 
-            Steps = 0;
         }
 
     }

@@ -37,6 +37,8 @@ namespace StepMaster.Droid.Helpers
 
                 int i = 1;
 
+                
+
                 foreach (DocumentSnapshot item in documents)
                 {
                     DateTime date = DateTime.ParseExact(item.Get("Date").ToString(), "yyyyMMddHHmmssffff",
@@ -51,6 +53,21 @@ namespace StepMaster.Droid.Helpers
 
                         i++;
                     }
+                }
+
+                entries.Sort(delegate (RankingEntry x1, RankingEntry x2) {
+                if (x1.Steps < x2.Steps) return 1;
+                    if (x1.Steps > x2.Steps) return -1;
+                    else
+                        return 0;
+               
+                });
+
+                i = 1;
+                foreach (var item in entries)
+                {
+                    item.PositionNumber = i + ".";
+                    i++;
                 }
 
                 callback(entries);
