@@ -27,7 +27,7 @@ namespace StepMaster.ViewModels
         private IGoogleManager _googleManager;
         private IFirebaseManager _firebaseManager;
         private int _currentColorIndex = 2;
-       
+        private string _lastCompetition;
         
 
         private readonly SKColor[] _chartColors = new SKColor[]
@@ -239,7 +239,14 @@ namespace StepMaster.ViewModels
             {
                 ChartInfos.RemoveAt(i);
             }
-            
+
+
+            i = ChartInfos.FindIndex(x => x.Name == "competeWith" + _lastCompetition);
+
+            if (i != -1)
+            {
+                ChartInfos.RemoveAt(i);
+            }
 
             ChartInfos.Add(new StepsChartInfo("Rywalizuj (" + rankingEntry.Username + ")", rankingEntry.Steps,
                 Color.FromRgb(_chartColors[_currentColorIndex].Red, _chartColors[_currentColorIndex].Green, _chartColors[_currentColorIndex].Blue),
@@ -250,6 +257,8 @@ namespace StepMaster.ViewModels
                 if (x1.Value > x2.Value) return 1;
                 if (x1.Value < x2.Value) return -1; else return 0;
             });
+
+            _lastCompetition = "competeWith" + rankingEntry.Username;
 
             SetStepsChartEntries();
         }
