@@ -54,5 +54,27 @@ namespace StepMaster.Extensions
            
         }
 
+        public static DateTime GetStartDateOfTheWeek(this DateTime date)
+        {
+            while (true)
+            {
+                if (date.DayOfWeek == DayOfWeek.Monday)
+                    return date;
+
+                date = date.AddDays(-1);
+            }
+        }
+
+        public static DateTime GetEndDateOfTheWeek(this DateTime date)
+        {
+            while (true)
+            {
+                if (date.DayOfWeek == DayOfWeek.Sunday)
+                    return date;
+
+                date = date.AddDays(1);
+            }
+        }
+
     }
 }

@@ -31,6 +31,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 
@@ -39,8 +40,10 @@
                                             FontSize="25" FontFamily="Exo-Bold" HorizontalOptions="Center" Margin="4"/>
 
 
-                <microcharts:ChartView Grid.Row="1" x:Name="chartStepsPerDay" Chart="{Binding WeeklyStepsChart}"
-                                       WidthRequest="{Binding ChartHeight}" Margin="0"/>
+                <microcharts:ChartView Grid.Row="1" x:Name="chartStepsPerDay" Chart="{Binding WeeklyStepsChart}" Margin="0"/>
+
+                <microcharts:ChartView Grid.Row="2" x:Name="previousWeek" Chart="{Binding PreviousWeekStepsChart}" Margin="0"/>
+                
             </Grid>
 
         </ScrollView>
