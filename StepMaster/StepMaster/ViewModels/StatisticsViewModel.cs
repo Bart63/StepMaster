@@ -92,7 +92,7 @@ namespace StepMaster.ViewModels
                 PointSize = 60,
                 PointMode = PointMode.Circle,
                 LabelOrientation = Orientation.Horizontal,
-                LabelTextSize = 43,
+                LabelTextSize = 40,
                 ValueLabelOrientation = Orientation.Horizontal,
                 BackgroundColor = SKColor.Empty
                 
@@ -100,7 +100,7 @@ namespace StepMaster.ViewModels
 
             float dpi = DependencyService.Get<IDisplayInfo>().GetDisplayDpi();
 
-            ChartHeight = (int)(420 / dpi * 450);
+            
 
         }
 

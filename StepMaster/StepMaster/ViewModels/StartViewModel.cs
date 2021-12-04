@@ -126,10 +126,7 @@ namespace StepMaster.ViewModels
 
             int index = ChartInfos.FindIndex(x => x.Name == "currentSteps");
 
-            ChartInfos.RemoveAt(index);
-
-            ChartInfos.Insert(index, new StepsChartInfo("Twoje kroki", NumberOfSteps,
-                Color.FromRgb(_chartColors[0].Red, _chartColors[0].Green, _chartColors[0].Blue), "currentSteps"));
+            ChartInfos[index].Value = NumberOfSteps;
         }
 
         private void StartStopCountingSteps()

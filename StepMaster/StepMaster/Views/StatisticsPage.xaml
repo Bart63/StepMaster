@@ -26,18 +26,22 @@
         
         <ScrollView Orientation="Vertical">
 
-            <StackLayout HorizontalOptions="Center">
+            <Grid>
 
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="25" VerticalOptions="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
 
-                    <material:MaterialChip BackgroundColor="#3875B3" Text="Średnio dziennie: 5215" TextColor="White"
-                                            FontSize="25" FontFamily="Exo-Bold" />
+                
 
-                </StackLayout>
+                <material:MaterialChip Grid.Row="0" BackgroundColor="#3875B3" Text="Średnio dziennie: 5215" TextColor="White"
+                                            FontSize="25" FontFamily="Exo-Bold" HorizontalOptions="Center" Margin="4"/>
 
-                <microcharts:ChartView x:Name="chartStepsPerDay" Chart="{Binding WeeklyStepsChart}"
-                                       WidthRequest="{Binding ChartHeight}"  HeightRequest="{Binding ChartHeight}" Margin="0"/>
-            </StackLayout>
+
+                <microcharts:ChartView Grid.Row="1" x:Name="chartStepsPerDay" Chart="{Binding WeeklyStepsChart}"
+                                       WidthRequest="{Binding ChartHeight}" Margin="0"/>
+            </Grid>
 
         </ScrollView>
 
