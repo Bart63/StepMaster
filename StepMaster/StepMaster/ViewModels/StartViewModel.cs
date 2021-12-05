@@ -103,6 +103,7 @@ namespace StepMaster.ViewModels
 
             NumberOfSteps = StepsDatabase.GetSteps(DateTime.Now.Date);
 
+            StepsDatabase.updateDailySteps(NumberOfSteps);
 
             ChartInfos.Add(new StepsChartInfo("Twoje kroki", NumberOfSteps,
                 Color.FromRgb(_chartColors[0].Red, _chartColors[0].Green, _chartColors[0].Blue), "currentSteps"));

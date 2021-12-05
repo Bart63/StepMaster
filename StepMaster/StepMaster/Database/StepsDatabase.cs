@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using StepMaster.Extensions;
 
 namespace StepMaster.Database
 {
@@ -20,7 +21,7 @@ namespace StepMaster.Database
             pathDB = Path.Combine(folderPath, dbName);
             db = new SQLiteConnection(pathDB);
             db.CreateTable<StepsModel>();
-            
+            db.CreateTable<AverageWeeklyStepsModel>();
         }
 
         public static void AddSteps(StepsModel stepsModel)
@@ -44,6 +45,8 @@ namespace StepMaster.Database
                     NumberOfSteps = steps
                 });
             }
+
+            UpdateAverageStepsPerWeek();
         }
 
         public static IEnumerable<StepsModel> GetSteps()
@@ -75,6 +78,77 @@ namespace StepMaster.Database
 
             db.Table<StepsModel>().Delete(x => x.Date <= date);
           
+        }
+
+        private static void UpdateAverageStepsPerWeek()
+        {
+            DateTime startDate = DateTime.Now.Date.GetStartDateOfTheWeek();
+            DateTime endDate = DateTime.Now.Date.GetEndDateOfTheWeek();
+
+            List<StepsModel> steps = new List<StepsModel>();
+            steps.AddRange(GetSteps(startDate, endDate));
+
+            int sum = 0;
+
+            foreach (var element in steps)
+            {
+                sum += element.NumberOfSteps;
+            }
+
+            sum /= 7;
+
+            int n = db.Update(new AverageWeeklyStepsModel()
+            {
+                NumberOfSteps = sum,
+                StartDate = startDate,
+                EndDate = endDate
+            });
+
+            if (n == 0)
+            {
+                AddAverageStepsPerWeek(new AverageWeeklyStepsModel
+                {
+                    NumberOfSteps = sum,
+                    StartDate = startDate,
+                    EndDate = endDate
+                });
+            }
+
+            
+        }
+
+        public static void DeleteAverageWeeklySteps(int weeksToLeave = 7)
+        {
+            DateTime date = DateTime.Now.Date;
+
+            date = date.AddDays(weeksToLeave * -7);
+
+            db.Table<AverageWeeklyStepsModel>().Delete(x => x.StartDate < date);
+        }
+
+        public static IEnumerable<AverageWeeklyStepsModel> GetAverageWeeklySteps(int numberOfWeeks = 7)
+        {
+            DateTime startDate = DateTime.Now.Date.AddDays(-7 * numberOfWeeks).GetStartDateOfTheWeek();
+
+            return db.Table<AverageWeeklyStepsModel>().Where(x => x.StartDate >= startDate);
+        }
+
+        public static int GetCurrentAverageWeeklySteps()
+        {
+            DateTime startDate = DateTime.Now.Date.GetStartDateOfTheWeek();
+
+            AverageWeeklyStepsModel steps = db.Find<AverageWeeklyStepsModel>(x => x.StartDate == startDate);
+
+            if (steps != null)
+                return steps.NumberOfSteps;
+            else
+                return 0;
+        }
+
+        private static void AddAverageStepsPerWeek(AverageWeeklyStepsModel averageWeeklySteps)
+        {
+            db.Insert(averageWeeklySteps);
+            
         }
 
         public static void clearDB()

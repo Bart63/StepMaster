@@ -17,6 +17,8 @@ namespace StepMaster.ViewModels
     {
         private Chart _weeklyStepsChart;
         private Chart _previousWeekStepsChart;
+        private Chart _averageStepsPerWeekChart;
+        private int _averageStepsPerDay;
 
         private readonly SKColor[] _chartColors = new SKColor[]
         {
@@ -41,11 +43,22 @@ namespace StepMaster.ViewModels
             set => SetProperty(ref _previousWeekStepsChart, value);
         }
 
+        public Chart AverageStepsPerWeekChart
+        {
+            get => _averageStepsPerWeekChart;
+            set => SetProperty(ref _averageStepsPerWeekChart, value);
+        }
+
+        public int AverageStepsPerDay
+        {
+            get => _averageStepsPerDay;
+            set => SetProperty(ref _averageStepsPerDay, value);
+        }
 
         public StatisticsViewModel()
         {
 
-            WeeklyStepsChart = new PointChart
+            WeeklyStepsChart = new LineChart
             {
                 
                 PointSize = 60,
@@ -53,11 +66,12 @@ namespace StepMaster.ViewModels
                 LabelOrientation = Orientation.Vertical,
                 LabelTextSize = 40,
                 ValueLabelOrientation = Orientation.Horizontal,
-                BackgroundColor = SKColor.Empty
+                BackgroundColor = SKColor.Empty,
+                LineSize = 5
                 
             };
 
-            PreviousWeekStepsChart = new PointChart
+            PreviousWeekStepsChart = new LineChart
             {
 
                 PointSize = 60,
@@ -65,13 +79,43 @@ namespace StepMaster.ViewModels
                 LabelOrientation = Orientation.Vertical,
                 LabelTextSize = 40,
                 ValueLabelOrientation = Orientation.Horizontal,
-                BackgroundColor = SKColor.Empty
+                BackgroundColor = SKColor.Empty,
+                LineSize = 5
 
             };
+
+            AverageStepsPerWeekChart = new LineChart
+            {
+
+                PointSize = 60,
+                PointMode = PointMode.Circle,
+                LabelOrientation = Orientation.Vertical,
+                LabelTextSize = 40,
+                ValueLabelOrientation = Orientation.Horizontal,
+                BackgroundColor = SKColor.Empty,
+                LineSize = 5
+
+            };
+
 
             UpdateCharts(DateTime.Now, ref _weeklyStepsChart);
             UpdateCharts(DateTime.Now.AddDays(-7), ref _previousWeekStepsChart);
 
+            AverageStepsPerDay = StepsDatabase.GetCurrentAverageWeeklySteps();
+            UpdateAverageWeeklyChart(ref _averageStepsPerWeekChart);
+
+
+            Device.StartTimer(TimeSpan.FromSeconds(30), () =>
+            {
+                UpdateCharts(DateTime.Now, ref _weeklyStepsChart);
+                UpdateCharts(DateTime.Now.AddDays(-7), ref _previousWeekStepsChart);
+
+                AverageStepsPerDay = StepsDatabase.GetCurrentAverageWeeklySteps();
+
+                UpdateAverageWeeklyChart(ref _averageStepsPerWeekChart);
+
+                return true;
+            });
         }
 
         private void UpdateCharts(DateTime currentDate, ref Chart chart)
@@ -81,6 +125,8 @@ namespace StepMaster.ViewModels
 
             List<StepsModel> steps = new List<StepsModel>();
             steps.AddRange(StepsDatabase.GetSteps(startDate, endDate));
+
+            
 
             List<ChartEntry> chartEntries = new List<ChartEntry>();
 
@@ -115,7 +161,55 @@ namespace StepMaster.ViewModels
             
 
             chart.Entries = chartEntries.ToArray();
+
+            StepsDatabase.DeleteAverageWeeklySteps();
+        }
+
+        private void UpdateAverageWeeklyChart(ref Chart chart, int numberOfWeeks = 7)
+        {
+            List<AverageWeeklyStepsModel> averages = new List<AverageWeeklyStepsModel>();
+
+            averages.AddRange(StepsDatabase.GetAverageWeeklySteps(numberOfWeeks));
+
+            DateTime startDate = DateTime.Now.Date.GetStartDateOfTheWeek();
+            DateTime endDate = DateTime.Now.Date.GetEndDateOfTheWeek();
+
+            List<DateTime> startDates = new List<DateTime>();
+            List<DateTime> endDates = new List<DateTime>();
+
             
+
+            List<ChartEntry> chartEntries = new List<ChartEntry>();
+
+            for (int i = 0; i < numberOfWeeks; i++)
+            {
+                startDates.Insert(0, startDate);
+                endDates.Insert(0, endDate);
+                startDate = startDate.AddDays(-7);
+                endDate = endDate.AddDays(-7);
+            }
+
+            Random r = new Random();
+
+            for (int i = 0; i < numberOfWeeks; i++)
+            {
+                AverageWeeklyStepsModel step = averages.Find(x => x.StartDate.Date == startDates[i].Date);
+                int value;
+
+                if (step != null)
+                    value = step.NumberOfSteps;
+                else
+                    value = 0;
+
+                chartEntries.Add(new ChartEntry(value)
+                {
+                    Label = startDates[i].Date.ToString("MM/dd") + "-" + endDates[i].Date.ToString("MM/dd"),
+                    ValueLabel = value.ToString(),
+                    Color = _chartColors[i]
+                });
+            }
+
+            chart.Entries = chartEntries;
         }
 
     }
