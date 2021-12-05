@@ -57,44 +57,49 @@ namespace StepMaster.ViewModels
 
         public StatisticsViewModel()
         {
+            int dpi = DependencyService.Get<IDisplayInfo>().GetDisplayDpi();
+
+            float pointSize = 60 * (dpi / 420);
+            float lineSize = 5 * (dpi / 420);
+            float textSize = 40 * (dpi / 420);
 
             WeeklyStepsChart = new LineChart
             {
                 
-                PointSize = 60,
+                PointSize = pointSize,
                 PointMode = PointMode.Circle,
                 LabelOrientation = Orientation.Vertical,
-                LabelTextSize = 40,
+                LabelTextSize = textSize,
                 ValueLabelOrientation = Orientation.Horizontal,
                 BackgroundColor = SKColor.Empty,
-                LineSize = 5
+                LineSize = lineSize
                 
             };
 
             PreviousWeekStepsChart = new LineChart
             {
 
-                PointSize = 60,
+                PointSize = pointSize,
                 PointMode = PointMode.Circle,
                 LabelOrientation = Orientation.Vertical,
-                LabelTextSize = 40,
+                LabelTextSize = textSize,
                 ValueLabelOrientation = Orientation.Horizontal,
                 BackgroundColor = SKColor.Empty,
-                LineSize = 5
+                LineSize = lineSize
 
             };
 
             AverageStepsPerWeekChart = new LineChart
             {
 
-                PointSize = 60,
+                PointSize = pointSize,
                 PointMode = PointMode.Circle,
                 LabelOrientation = Orientation.Vertical,
-                LabelTextSize = 40,
+                LabelTextSize = textSize,
                 ValueLabelOrientation = Orientation.Horizontal,
                 BackgroundColor = SKColor.Empty,
-                LineSize = 5
-
+                LineSize = lineSize
+          
             };
 
 
