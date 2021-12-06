@@ -57,7 +57,7 @@ namespace StepMaster.ViewModels
 
         public StatisticsViewModel()
         {
-            int dpi = DependencyService.Get<IDisplayInfo>().GetDisplayDpi();
+            float dpi = DependencyService.Get<IDisplayInfo>().GetDisplayDpi();
 
             float pointSize = 60 * (dpi / 420);
             float lineSize = 5 * (dpi / 420);
