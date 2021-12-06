@@ -129,7 +129,7 @@ namespace StepMaster.ViewModels
             DateTime endDate = currentDate.GetEndDateOfTheWeek();
 
             List<StepsModel> steps = new List<StepsModel>();
-            steps.AddRange(StepsDatabase.GetSteps(startDate, endDate));
+            steps.AddRange(StepsDatabase.GetSteps(startDate.Date, endDate.Date));
 
             
 

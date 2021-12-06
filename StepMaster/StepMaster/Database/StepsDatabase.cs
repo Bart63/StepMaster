@@ -56,7 +56,7 @@ namespace StepMaster.Database
 
         public static IEnumerable<StepsModel> GetSteps(DateTime dateFrom, DateTime dateTo)
         {
-            return db.Table<StepsModel>().Where(x => x.Date >= dateFrom && x.Date <= dateTo).OrderBy(x => x.Date);
+            return db.Table<StepsModel>().Where(x => x.Date >= dateFrom && x.Date <= dateTo); 
         }
 
         public static int GetSteps(DateTime date)
