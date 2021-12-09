@@ -34,8 +34,11 @@ namespace StepMaster.Droid.Managers
 
         private FirebaseApp _firebaseApp;
 
+        public List<RankingEntry> RankingEntries { get; private set; }
+
         public FirebaseManager()
         {
+
             _firebaseApp = FirebaseApp.InitializeApp(Application.Context);
 
             if (_firebaseApp == null)
@@ -69,7 +72,10 @@ namespace StepMaster.Droid.Managers
                     _token = (string)user.User.GetIdToken(true);
                     _userUID = FirebaseAuth.Instance.CurrentUser.Uid;
 
+                    GetRankingEntries();
+
                     callback(true, null);
+
                 }
                 else
                 {
@@ -88,16 +94,59 @@ namespace StepMaster.Droid.Managers
         {
             Query allRankingEntries = _database.Collection("StepsRanking");
 
-            allRankingEntries.AddSnapshotListener(new GetRankingEventListener(callback, _userUID));
+            allRankingEntries.AddSnapshotListener(new GetRankingEventListener(callback, SetRankingEntries, _userUID));
         }
 
-        public void GetResultToCompeteWith(Action<RankingEntry> callback)
+        public void GetRankingEntries()
         {
             Query allRankingEntries = _database.Collection("StepsRanking");
 
-            allRankingEntries.OrderBy("StepsNumber", Query.Direction.Descending);
+            allRankingEntries.AddSnapshotListener(new GetRankingEventListener(null, SetRankingEntries, _userUID));
+        }
 
-            allRankingEntries.AddSnapshotListener(new GetResultToCompeteEventListener(callback, _userUID));
+        private void SetRankingEntries(List<RankingEntry> rankingEntries)
+        {
+            RankingEntries = rankingEntries;
+        }
+
+        public void GetResultToCompeteWith(Action<RankingEntry> callback, string UID = null)
+        {
+            if (UID != null)
+            {
+                int index = RankingEntries.FindIndex(x => x.UID == UID);
+
+                if (index > 0)
+                    callback(RankingEntries[index]);
+            }
+            else
+            {
+                if (RankingEntries != null)
+                {
+                    if (RankingEntries.Count > 1)
+                    {
+                        RankingEntries.Sort(delegate (RankingEntry x1, RankingEntry x2)
+                        {
+                            if (x1.Steps < x2.Steps) return 1;
+                            if (x1.Steps > x2.Steps) return -1;
+                            else
+                                return 0;
+
+                        });
+
+                        int index = RankingEntries.FindIndex(x => x.IsCurrentUser);
+
+                        if (index > 0)
+                        {
+                            if (RankingEntries[index].Steps < RankingEntries[index - 1].Steps)
+                                callback(RankingEntries[index - 1]);
+                            else
+                                callback(null);
+                        }
+                        else
+                            callback(null);
+                    }
+                }
+            }
         }
 
 

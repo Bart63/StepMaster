@@ -16,12 +16,14 @@ namespace StepMaster.Droid.Helpers
     public class GetRankingEventListener : Java.Lang.Object, IEventListener
     {
 
-        private Action<List<RankingEntry>> callback;
+        private Action<List<RankingEntry>> _callback;
+        private Action<List<RankingEntry>> _callbackToManager;
         private string currentUserUID;
 
-        public GetRankingEventListener(Action<List<RankingEntry>> callback, string userUID)
+        public GetRankingEventListener(Action<List<RankingEntry>> callback, Action<List<RankingEntry>> callbackToManager, string userUID)
         {
-            this.callback = callback;
+            _callback = callback;
+            _callbackToManager = callbackToManager;
             currentUserUID = userUID;
         }
 
@@ -47,7 +49,7 @@ namespace StepMaster.Droid.Helpers
                     if (date.Date == DateTime.Now.Date)
                     {
                         RankingEntry entry = new RankingEntry(item.Get("Username").ToString(), i.ToString() + ".", (int)item.Get("StepsNumber"),
-                            item.Id == currentUserUID);
+                            item.Id == currentUserUID, item.Id);
 
                         entries.Add(entry);
 
@@ -69,8 +71,13 @@ namespace StepMaster.Droid.Helpers
                     item.PositionNumber = i + ".";
                     i++;
                 }
+                
+                if (_callbackToManager != null)
+                    _callbackToManager(entries);
 
-                callback(entries);
+                if (_callback != null)
+                    _callback(entries);
+                
                 return;
             }
 

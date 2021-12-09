@@ -63,6 +63,10 @@ namespace StepMaster.ViewModels
             float lineSize = 5 * (dpi / 420);
             float textSize = 40 * (dpi / 420);
 
+            pointSize = (pointSize > 60) ? 60 : pointSize;
+            lineSize = (lineSize > 5) ? 5 : lineSize;
+            textSize = (textSize > 40) ? 40 : textSize;
+
             WeeklyStepsChart = new LineChart
             {
                 

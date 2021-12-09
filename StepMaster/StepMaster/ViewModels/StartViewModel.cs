@@ -39,7 +39,7 @@ namespace StepMaster.ViewModels
             SKColor.Parse("#5894d1")
         };
 
-
+        public string UIDToCompeteWith = null;
         public int NumberOfSteps
         {
             get => _numberOfSteps;
@@ -205,12 +205,12 @@ namespace StepMaster.ViewModels
             {
                 //_firebaseManager.SaveStepsToRanking(NumberOfSteps, _googleManager.User.Name);
                 _firebaseManager.SaveStepsToRanking(NumberOfSteps, _googleManager.User.Name);
-                _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete);
+                _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete, UIDToCompeteWith);
 
-                Device.StartTimer(TimeSpan.FromMinutes(1), () =>
+                Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                 {
-
-                    _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete);
+                    
+                    _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete, UIDToCompeteWith);
 
                     return true;
                 });
@@ -231,24 +231,28 @@ namespace StepMaster.ViewModels
 
         private void OnSelectedEntryToCompete(RankingEntry rankingEntry)
         {
-            if (rankingEntry == null)
-                return;
-
             
-            int i = ChartInfos.FindIndex(x => x.Name == "competeWith" + rankingEntry.Username);
+            int i = ChartInfos.FindIndex(x => x.Name == _lastCompetition);
+
+            if (i != -1)
+            {
+                ChartInfos.RemoveAt(i);
+            }
+            
+            if (rankingEntry == null)
+            {
+                SetStepsChartEntries();
+                return;
+            }
+                
+
+            i = ChartInfos.FindIndex(x => x.Name == "competeWith" + rankingEntry.Username);
 
             if (i != -1)
             {
                 ChartInfos.RemoveAt(i);
             }
 
-
-            i = ChartInfos.FindIndex(x => x.Name == "competeWith" + _lastCompetition);
-
-            if (i != -1)
-            {
-                ChartInfos.RemoveAt(i);
-            }
 
             ChartInfos.Add(new StepsChartInfo("Rywalizuj (" + rankingEntry.Username + ")", rankingEntry.Steps,
                 Color.FromRgb(_chartColors[_currentColorIndex].Red, _chartColors[_currentColorIndex].Green, _chartColors[_currentColorIndex].Blue),
@@ -263,6 +267,14 @@ namespace StepMaster.ViewModels
             _lastCompetition = "competeWith" + rankingEntry.Username;
 
             SetStepsChartEntries();
+        }
+
+        public void SetUIDToCompeteWith(string UID)
+        {
+            UIDToCompeteWith = UID;
+
+            _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete, UIDToCompeteWith);
+
         }
     }
 }

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StepMaster.Views.RankingEntryDetailsPopup"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:vm="clr-namespace:StepMaster.ViewModels"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup">
+
+    <pages:PopupPage.BindingContext>
+        <vm:RankingEntryDetailsViewModel />
+    </pages:PopupPage.BindingContext>
+
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Center"
+            PositionOut="Center"
+            ScaleIn="1.4"
+            ScaleOut="0.8"
+            DurationIn="200"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+
+    <material:MaterialCard Grid.Row="0" HorizontalOptions="Center" Margin="6" Padding="30" CornerRadius="15"
+                           VerticalOptions="Center" BackgroundColor="{Binding Entry.Color}">
+        <StackLayout Orientation="Vertical">
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <material:MaterialChip BackgroundColor="{StaticResource First}"
+                                                    Text="{Binding Entry.PositionNumber}" TextColor="White"
+                                                    FontSize="24" FontFamily="Exo-Bold"/>
+
+                <material:MaterialChip BackgroundColor="{StaticResource Second}"
+                                                Text="{Binding Entry.Username}" TextColor="White"
+                                                FontSize="24" FontFamily="Exo-Regular"/>
+            </StackLayout>
+
+            <material:MaterialChip BackgroundColor="{StaticResource Third}"
+                                                Text="{Binding Entry.Steps}" TextColor="White"
+                                                FontSize="24" FontFamily="Exo-Regular" HorizontalOptions="Center"/>
+
+            <material:MaterialButton BackgroundColor="#3875B3" HorizontalOptions="Center"
+                        Text="{Binding CompeteButtonText}" TextColor="White"
+                        Command="{Binding CompeteCommand}"
+                        FontSize="16" FontAttributes="Bold" BorderColor="{StaticResource Primary}" FontFamily="Exo-Bold"
+                        />
+
+
+        </StackLayout>
+    </material:MaterialCard>
+</pages:PopupPage>

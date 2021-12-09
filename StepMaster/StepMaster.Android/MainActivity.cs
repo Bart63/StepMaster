@@ -25,6 +25,8 @@ namespace StepMaster.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Rg.Plugins.Popup.Popup.Init(this);
+
             LoadApplication(new App());
 
             if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ActivityRecognition) == Permission.Denied)
@@ -51,6 +53,9 @@ namespace StepMaster.Droid
             }
         }
 
-
+        public override void OnBackPressed()
+        {
+            Rg.Plugins.Popup.Popup.SendBackPressed(base.OnBackPressed);
+        }
     }
 }

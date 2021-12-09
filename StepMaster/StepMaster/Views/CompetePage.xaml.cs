@@ -1,5 +1,4 @@
-﻿
-using StepMaster.Services;
+﻿using StepMaster.Services;
 using StepMaster.ViewModels;
 using System;
 using System.Collections.Generic;

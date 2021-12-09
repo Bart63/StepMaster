@@ -12,7 +12,7 @@ namespace StepMaster.Services
 
         void GetRankingEntries(Action<List<RankingEntry>> callback);
 
-        void GetResultToCompeteWith(Action<RankingEntry> callback);
+        void GetResultToCompeteWith(Action<RankingEntry> callback, string UID = null);
 
         void SaveStepsToRanking(int numberOfSteps, string username);
         

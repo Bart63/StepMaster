@@ -1,5 +1,7 @@
-﻿using StepMaster.Models;
+﻿using Rg.Plugins.Popup.Services;
+using StepMaster.Models;
 using StepMaster.Services;
+using StepMaster.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,6 +21,8 @@ namespace StepMaster.ViewModels
 
         public Command GoogleLoginCommand { get; set; }
         public Command GoogleLogoutCommand { get; set; }
+
+        public Command RankingTapped { get; set; }
 
         private GoogleUser _googleUser;
 
@@ -50,6 +54,7 @@ namespace StepMaster.ViewModels
             _firebaseManager = firebaseManager;
 
             UpdateRankingCommand = new Command(async () => await UpdateRanking());
+            RankingTapped = new Command<RankingEntry>(RankingEntryTapped);
 
             RankingEntries = new ObservableCollection<RankingEntry>();
             
@@ -154,6 +159,19 @@ namespace StepMaster.ViewModels
             }
         }
 
+        private void RankingEntryTapped (RankingEntry entry)
+        {
+            if (!entry.IsCurrentUser)
+                PopupNavigation.Instance.PushAsync(new RankingEntryDetailsPopup(entry, OnRankingEntryCompete,
+                    StartViewModel.Instance.UIDToCompeteWith));
+        }
+
+        private async void OnRankingEntryCompete(RankingEntry entry)
+        {
+            StartViewModel.Instance.SetUIDToCompeteWith((entry == null) ? null : entry.UID);
+
+            await Shell.Current.GoToAsync("//StartPage");
+        }
         
     }
 }
