@@ -115,7 +115,7 @@ namespace StepMaster.Droid.Managers
             {
                 int index = RankingEntries.FindIndex(x => x.UID == UID);
 
-                if (index > 0)
+                if (index >= 0)
                     callback(RankingEntries[index]);
             }
             else

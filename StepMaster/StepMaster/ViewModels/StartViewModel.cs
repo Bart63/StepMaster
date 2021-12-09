@@ -207,7 +207,7 @@ namespace StepMaster.ViewModels
                 _firebaseManager.SaveStepsToRanking(NumberOfSteps, _googleManager.User.Name);
                 _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete, UIDToCompeteWith);
 
-                Device.StartTimer(TimeSpan.FromSeconds(2), () =>
+                Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
                     
                     _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete, UIDToCompeteWith);
