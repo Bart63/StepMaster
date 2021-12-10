@@ -164,5 +164,10 @@ namespace StepMaster.Droid.Managers
             
 
         }
+
+        public RankingEntry GetRankingEntry(string UID)
+        {
+            return RankingEntries.Find(x => x.UID == UID);
+        }
     }
 }

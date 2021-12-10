@@ -23,6 +23,7 @@ namespace StepMaster.Models
         public Color Color { get; set; }
         public bool IsCurrentUser { get; set; }
         public string UID { get; set; }
+        
 }
 }
 

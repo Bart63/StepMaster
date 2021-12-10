@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using StepMaster.Extensions;
 using Xamarin.Forms.Internals;
 using StepMaster.Database;
+using Rg.Plugins.Popup.Services;
+using StepMaster.Views;
+using StepMaster.Managers;
 
 namespace StepMaster.ViewModels
 {
@@ -28,8 +31,9 @@ namespace StepMaster.ViewModels
         private IFirebaseManager _firebaseManager;
         private int _currentColorIndex = 2;
         private string _lastCompetition;
+        private int _dailyStepsTarget;
+        private bool _setUserToCompeteWith = true;
         
-
         private readonly SKColor[] _chartColors = new SKColor[]
         {
             SKColor.Parse("#04C9DB"),
@@ -105,9 +109,18 @@ namespace StepMaster.ViewModels
 
             StepsDatabase.updateDailySteps(NumberOfSteps);
 
+            _dailyStepsTarget = PreferencesManager.GetValueInt(PreferencesKeysManager.DailyStepsTarget);
+
+            if (_dailyStepsTarget == -1)
+            {
+                _dailyStepsTarget = 5000;
+                PreferencesManager.SetValueInt(_dailyStepsTarget, PreferencesKeysManager.DailyStepsTarget);
+            }
+
             ChartInfos.Add(new StepsChartInfo("Twoje kroki", NumberOfSteps,
                 Color.FromRgb(_chartColors[0].Red, _chartColors[0].Green, _chartColors[0].Blue), "currentSteps"));
-            ChartInfos.Add(new StepsChartInfo("Cel dnia", 5000, Color.FromRgb(_chartColors[1].Red, _chartColors[1].Green, _chartColors[1].Blue),
+            ChartInfos.Add(new StepsChartInfo("Cel dnia", _dailyStepsTarget,
+                Color.FromRgb(_chartColors[1].Red, _chartColors[1].Green, _chartColors[1].Blue),
                 "dailyTarget"));
 
 
@@ -205,12 +218,15 @@ namespace StepMaster.ViewModels
             {
                 //_firebaseManager.SaveStepsToRanking(NumberOfSteps, _googleManager.User.Name);
                 _firebaseManager.SaveStepsToRanking(NumberOfSteps, _googleManager.User.Name);
-                _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete, UIDToCompeteWith);
+
+                if (UIDToCompeteWith != null || _setUserToCompeteWith)
+                    _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete, UIDToCompeteWith);
 
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
                     
-                    _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete, UIDToCompeteWith);
+                    if (UIDToCompeteWith != null || _setUserToCompeteWith)
+                        _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete, UIDToCompeteWith);
 
                     return true;
                 });
@@ -256,7 +272,7 @@ namespace StepMaster.ViewModels
 
             ChartInfos.Add(new StepsChartInfo("Rywalizuj (" + rankingEntry.Username + ")", rankingEntry.Steps,
                 Color.FromRgb(_chartColors[_currentColorIndex].Red, _chartColors[_currentColorIndex].Green, _chartColors[_currentColorIndex].Blue),
-                "competeWith" + rankingEntry.Username));
+                "competeWith" + rankingEntry.Username, rankingEntry.UID, ShowCompeteOptions));
 
             ChartInfos.Sort(delegate (StepsChartInfo x1, StepsChartInfo x2)
             {
@@ -265,6 +281,8 @@ namespace StepMaster.ViewModels
             });
 
             _lastCompetition = "competeWith" + rankingEntry.Username;
+            UIDToCompeteWith = rankingEntry.UID;
+            _setUserToCompeteWith = false;
 
             SetStepsChartEntries();
         }
@@ -273,8 +291,28 @@ namespace StepMaster.ViewModels
         {
             UIDToCompeteWith = UID;
 
-            _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete, UIDToCompeteWith);
+            if (UIDToCompeteWith == null)
+            {
+                OnSelectedEntryToCompete(null);
+            }
+            else
+            {
+                _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete, UIDToCompeteWith);
+            }
 
+            
+
+        }
+
+        private void ShowCompeteOptions(StepsChartInfo stepsChartInfo)
+        {
+            PopupNavigation.Instance.PushAsync(new RankingEntryDetailsPopup(_firebaseManager.GetRankingEntry(stepsChartInfo.UID),
+                OnShowCompeteOptions, UIDToCompeteWith));
+        }
+
+        private void OnShowCompeteOptions(RankingEntry entry)
+        {
+            SetUIDToCompeteWith(entry?.UID);
         }
     }
 }

@@ -10,11 +10,14 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
+using StepMaster.Extensions;
 
 namespace StepMaster.ViewModels
 {
     public class CompeteViewModel : BaseViewModel
     {
+
+        public static CompeteViewModel Instance;
         public ObservableCollection<RankingEntry> RankingEntries { get; private set; }
 
         public Command UpdateRankingCommand { get; }
@@ -50,6 +53,8 @@ namespace StepMaster.ViewModels
 
         public CompeteViewModel(IGoogleManager googleManager, IFirebaseManager firebaseManager)
         {
+            Instance = this;
+
             _googleManager = googleManager;
             _firebaseManager = firebaseManager;
 
@@ -168,10 +173,11 @@ namespace StepMaster.ViewModels
 
         private async void OnRankingEntryCompete(RankingEntry entry)
         {
-            StartViewModel.Instance.SetUIDToCompeteWith((entry == null) ? null : entry.UID);
+            StartViewModel.Instance.SetUIDToCompeteWith(entry?.UID);
 
             await Shell.Current.GoToAsync("//StartPage");
         }
         
+       
     }
 }

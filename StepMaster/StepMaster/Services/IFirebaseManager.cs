@@ -15,6 +15,9 @@ namespace StepMaster.Services
         void GetResultToCompeteWith(Action<RankingEntry> callback, string UID = null);
 
         void SaveStepsToRanking(int numberOfSteps, string username);
-        
+
+        RankingEntry GetRankingEntry(string UID);
+
+
     }
 }
