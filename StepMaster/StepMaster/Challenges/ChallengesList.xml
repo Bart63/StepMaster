@@ -6,26 +6,23 @@
         <name>Pierwsze kroki</name>
         <description>Pokonaj w ciągu jednego dnia 5000 kroków.</description>
         <icon>achievement_icon_3</icon>
-        <numberOfDays>1</numberOfDays>
         <numberOfSteps>5000</numberOfSteps>
       </challenge>
       <challenge id ="sd2">
         <name>Mini zapaleniec</name>
         <description>W ciągu dnia pokonaj co najmniej 15000 kroków.</description>
         <icon>achievement_icon_6</icon>
-        <numberOfDays>1</numberOfDays>
         <numberOfSteps>15000</numberOfSteps>
       </challenge>
       <challenge id ="sd3">
         <name>Zapaleniec</name>
         <description>W ciągu dnia pokonaj co najmniej 25000 kroków.</description>
         <icon>achievement_icon_2</icon>
-        <numberOfDays>1</numberOfDays>
         <numberOfSteps>25000</numberOfSteps>
       </challenge>
     </dailyChallenges>
       
-    <periodicChallenges>
+    <multidayChallenges>
       <challenge id ="sp1">
         <name>Systematyczny</name>
         <description>Przez 5 dni pod rząd pokonaj codziennie min. 3000 kroków.</description>
@@ -33,34 +30,11 @@
         <numberOfSteps>3000</numberOfSteps>
         <numberOfDays>5</numberOfDays>
       </challenge>
-    </periodicChallenges>
+    </multidayChallenges>
 
     <otherChallenges>
     
     </otherChallenges> 
   </stepsChallenges>
 
-  <competitionChallenges>
-
-    <dailyChallenges>
-      <challenge id ="cd1">
-        <name>Gotowy do starcia</name>
-        <description>Pokonaj znajomego w rywalizacji.</description>
-        <icon>achievement_icon_4</icon>
-        <numberOfCompetitions>1</numberOfCompetitions>
-        <numberOfDays>1</numberOfDays>        
-      </challenge>
-      <challenge id ="cd1">
-        <name>Niepokonany</name>
-        <description>Pokonaj min. 10 znajomych w ciągu jednego dnia.</description>
-        <icon>achievement_icon_5</icon>
-        <numberOfCompetitions>1</numberOfCompetitions>
-        <numberOfDays>5</numberOfDays>
-
-      </challenge>
-    </dailyChallenges>
-
-    
-    
-  </competitionChallenges>
 </challenges>

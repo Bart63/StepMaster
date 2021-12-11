@@ -5,10 +5,10 @@ using Xamarin.Forms;
 
 namespace StepMaster.Models
 {
-    public class AchievementsEntry
+    public abstract class AchievementsEntry
     {
         public AchievementsEntry(string name, string description, bool isOwned, string iconName,
-            string groupName, string typeName, string iD, int numberOfSteps = 0, int numberOfDays = 0, int numberOfCompetitions = 0)
+            string groupName, string typeName, string iD)
         {
             Name = name;
             Description = description;
@@ -18,9 +18,7 @@ namespace StepMaster.Models
             GroupName = groupName;
             TypeName = typeName;
             ID = iD;
-            NumberOfSteps = numberOfSteps;
-            NumberOfDays = numberOfDays;
-            NumberOfCompetitions = numberOfCompetitions;
+            
         }
 
         public string Name { get; set; }
@@ -34,10 +32,14 @@ namespace StepMaster.Models
 
         public string ID { get; set; }
 
-        public int NumberOfSteps { get; set; }
+        public virtual bool Check(int steps)
+        {
+            return false;
+        }
 
-        public int NumberOfDays { get; set; }
-
-        public int NumberOfCompetitions { get; set; }
+        public virtual bool Check(List<int> steps)
+        {
+            return false;
+        }
     }
 }

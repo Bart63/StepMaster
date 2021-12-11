@@ -79,7 +79,6 @@ namespace StepMaster.ViewModels
         {
             StepsDatabase.Init();
             AchievementsDatabase.Init();
-
             ChallengesManager.Init();
 
             Instance = this;
@@ -108,7 +107,7 @@ namespace StepMaster.ViewModels
 
             NumberOfSteps = StepsDatabase.GetSteps(DateTime.Now.Date);
 
-            StepsDatabase.updateDailySteps(NumberOfSteps);
+            StepsDatabase.UpdateDailySteps(NumberOfSteps);
 
             _dailyStepsTarget = PreferencesManager.GetValueInt(PreferencesKeysManager.DailyStepsTarget);
 
@@ -167,7 +166,10 @@ namespace StepMaster.ViewModels
                 {
                     SetStepsChartEntries();
 
-                    StepsDatabase.updateDailySteps(NumberOfSteps);
+                    StepsDatabase.UpdateDailySteps(NumberOfSteps);
+
+                    ChallengesManager.Check(ChallengesManager.AchievementType.dailySteps);
+                    ChallengesManager.Check(ChallengesManager.AchievementType.multidaySteps);
 
                     return _startedCountingSteps;
                 });

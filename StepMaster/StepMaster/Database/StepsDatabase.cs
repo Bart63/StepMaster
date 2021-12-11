@@ -29,7 +29,7 @@ namespace StepMaster.Database
             db.Insert(stepsModel);
         }
 
-        public static void updateDailySteps(int steps)
+        public static void UpdateDailySteps(int steps)
         {
             int n = db.Update(new StepsModel()
             {
@@ -56,7 +56,7 @@ namespace StepMaster.Database
 
         public static IEnumerable<StepsModel> GetSteps(DateTime dateFrom, DateTime dateTo)
         {
-            return db.Table<StepsModel>().Where(x => x.Date >= dateFrom && x.Date <= dateTo); 
+            return db.Table<StepsModel>().Where(x => x.Date >= dateFrom && x.Date <= dateTo).OrderBy(x => x.Date); 
         }
 
         public static int GetSteps(DateTime date)

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+using StepMaster.Extensions;
 
 namespace StepMaster.Challenges
 {
@@ -14,9 +15,16 @@ namespace StepMaster.Challenges
     {
         private static string name = "ChallengesList.xml";
         private static string resourcePath;
-
+        private static Action<List<AchievementsEntry>> _callbackAchievementViewModel;
         
-        private static List<AchievementsEntry> _challenges;
+        private static List<DailyStepsAchievement> _dailyStepsChallenges;
+        private static List<MultidayStepsAchievement> _multidayStepsChallenges;
+
+        public enum AchievementType
+        {
+            dailySteps,
+            multidaySteps
+        }
 
         public static void Init()
         {
@@ -25,7 +33,8 @@ namespace StepMaster.Challenges
             .Single(str => str.EndsWith(name));
 
             
-            _challenges = new List<AchievementsEntry>();
+            _dailyStepsChallenges = new List<DailyStepsAchievement>();
+            _multidayStepsChallenges = new List<MultidayStepsAchievement>();
 
             string result;
 
@@ -35,18 +44,27 @@ namespace StepMaster.Challenges
                 result = reader.ReadToEnd();
             }
 
-            AddAchievements("stepsChallenges", "dailyChallenges", ref result);
-            AddAchievements("stepsChallenges", "periodicChallenges", ref result);
-            AddAchievements("competitionChallenges", "dailyChallenges", ref result);
+            AddDailyStepsAchievements("stepsChallenges", "dailyChallenges", ref result);
+            AddMultidayStepsAchievements("stepsChallenges", "multidayChallenges", ref result);
             
+        }
+
+        public static void SetCallbackAchievementViewModel(Action<List<AchievementsEntry>> callback)
+        {
+            _callbackAchievementViewModel = callback;
         }
 
         public static List<AchievementsEntry> GetAchievementEntries()
         {
-            return _challenges;
+            List<AchievementsEntry> achievements = new List<AchievementsEntry>();
+
+            achievements.AddRange(_dailyStepsChallenges);
+            achievements.AddRange(_multidayStepsChallenges);
+
+            return achievements;
         }
 
-        private static void AddAchievements(string groupName, string typeName, ref string xml)
+        private static void AddDailyStepsAchievements(string groupName, string typeName, ref string xml)
         {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xml);
@@ -58,17 +76,86 @@ namespace StepMaster.Challenges
                 int steps = int.Parse((childrenNode.SelectSingleNode("numberOfSteps") != null) ?
                     childrenNode.SelectSingleNode("numberOfSteps").InnerText.ToString() : "0");
 
-                int days = int.Parse((childrenNode.SelectSingleNode("numberOfDays") != null) ?
-                    childrenNode.SelectSingleNode("numberOfDays").InnerText.ToString() : "0");
 
-                int competitions = int.Parse((childrenNode.SelectSingleNode("numberOfCompetitions") != null) ?
-                    childrenNode.SelectSingleNode("numberOfCompetitions").InnerText.ToString() : "0");
-
-                _challenges.Add(new AchievementsEntry(childrenNode.SelectSingleNode("name").InnerText.ToString(),
+                _dailyStepsChallenges.Add(new DailyStepsAchievement(childrenNode.SelectSingleNode("name").InnerText.ToString(),
                     childrenNode.SelectSingleNode("description").InnerText.ToString(),
                     AchievementsDatabase.IsAchievementOwned(childrenNode.SelectSingleNode("@id").Value.ToString()),
                     childrenNode.SelectSingleNode("icon").InnerText.ToString(), groupName, typeName,
-                    childrenNode.SelectSingleNode("@id").Value.ToString(), steps, days, competitions));
+                    childrenNode.SelectSingleNode("@id").Value.ToString(), steps));
+            }
+        }
+
+        
+        private static void AddMultidayStepsAchievements(string groupName, string typeName, ref string xml)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xml);
+
+            var nodes = xmlDoc.SelectNodes("challenges/" + groupName + "/" + typeName + "/challenge");
+
+            foreach (XmlNode childrenNode in nodes)
+            {
+                int days = int.Parse((childrenNode.SelectSingleNode("numberOfDays") != null) ?
+                    childrenNode.SelectSingleNode("numberOfDays").InnerText.ToString() : "0");
+
+                int steps = int.Parse((childrenNode.SelectSingleNode("numberOfSteps") != null) ?
+                    childrenNode.SelectSingleNode("numberOfSteps").InnerText.ToString() : "0");
+
+
+                _multidayStepsChallenges.Add(new MultidayStepsAchievement(childrenNode.SelectSingleNode("name").InnerText.ToString(),
+                    childrenNode.SelectSingleNode("description").InnerText.ToString(),
+                    AchievementsDatabase.IsAchievementOwned(childrenNode.SelectSingleNode("@id").Value.ToString()),
+                    childrenNode.SelectSingleNode("icon").InnerText.ToString(), groupName, typeName,
+                    childrenNode.SelectSingleNode("@id").Value.ToString(), steps, days));
+            }
+        }
+
+        public static void Check(AchievementType achievementType)
+        {
+            switch(achievementType)
+            {
+                case AchievementType.dailySteps:
+
+                    int steps = StepsDatabase.GetSteps(DateTime.Now.Date);
+
+                    foreach (var challenge in _dailyStepsChallenges)
+                    {
+                        if (challenge.Check(steps))
+                        {
+                            AchievementsDatabase.SetAchievementOwned(challenge.ID);
+
+                            if (_callbackAchievementViewModel != null)
+                                _callbackAchievementViewModel(GetAchievementEntries());
+
+                            //TODO: some nice popup window with gratulations
+                        }
+                    }
+
+                    break;
+
+                case AchievementType.multidaySteps:
+
+                    List<int> weeklySteps = new List<int>();
+
+                    foreach (var element in StepsDatabase.GetSteps(DateTime.Now.GetStartDateOfTheWeek().Date, DateTime.Now.GetEndDateOfTheWeek().Date))
+                    {
+                        weeklySteps.Add(element.NumberOfSteps);
+                    }
+
+                    foreach (var challenge in _multidayStepsChallenges)
+                    {
+                        if (challenge.Check(weeklySteps))
+                        {
+                            AchievementsDatabase.SetAchievementOwned(challenge.ID);
+
+                            if (_callbackAchievementViewModel != null)
+                                _callbackAchievementViewModel(GetAchievementEntries());
+
+                            //TODO: some nice popup window with gratulations
+                        }
+                    }
+
+                    break;
             }
         }
     }

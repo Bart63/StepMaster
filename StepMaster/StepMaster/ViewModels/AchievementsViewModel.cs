@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using StepMaster.Challenges;
+using Xamarin.Forms;
 
 namespace StepMaster.ViewModels
 {
@@ -17,7 +18,12 @@ namespace StepMaster.ViewModels
 
             AchievementsEntries = new ObservableCollection<AchievementsEntry>(ChallengesManager.GetAchievementEntries());
 
-            
+            ChallengesManager.SetCallbackAchievementViewModel(UpdateView);
+        }
+
+        private void UpdateView(List<AchievementsEntry> entries)
+        {
+            AchievementsEntries = new ObservableCollection<AchievementsEntry>(entries);
         }
     }
 }

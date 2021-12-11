@@ -41,5 +41,14 @@ namespace StepMaster.Database
                 return false;
             }
         }
+
+        public static void SetAchievementOwned(string ID)
+        {
+            db.Update(new AchievementModel()
+            {
+                ID = ID,
+                IsOwned = true
+            }); 
+        }
     }
 }
