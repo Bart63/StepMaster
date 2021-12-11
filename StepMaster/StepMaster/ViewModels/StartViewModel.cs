@@ -14,6 +14,7 @@ using StepMaster.Database;
 using Rg.Plugins.Popup.Services;
 using StepMaster.Views;
 using StepMaster.Managers;
+using StepMaster.Challenges;
 
 namespace StepMaster.ViewModels
 {
@@ -76,6 +77,11 @@ namespace StepMaster.ViewModels
 
         public StartViewModel(IGoogleManager googleManager, IFirebaseManager firebaseManager)
         {
+            StepsDatabase.Init();
+            AchievementsDatabase.Init();
+
+            ChallengesManager.Init();
+
             Instance = this;
 
             _googleManager = googleManager;
@@ -85,10 +91,7 @@ namespace StepMaster.ViewModels
 
             CountStepsCommand = new Command(StartStopCountingSteps);
             
-
             ChartInfos = new ObservableCollection<StepsChartInfo>();
-
-
 
             StepsChart = new RadialGaugeChart
             {
@@ -100,8 +103,6 @@ namespace StepMaster.ViewModels
 
             float dpi = DependencyService.Get<IDisplayInfo>().GetDisplayDpi();
             ChartHeight =  (int)(420 / dpi * 350);
-
-            StepsDatabase.Init();
 
             StepsDatabase.RemoveSteps(2);
 

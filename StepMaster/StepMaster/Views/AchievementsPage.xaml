@@ -24,47 +24,47 @@
                 </BoxView.Background>
             </BoxView>
 
-            <RefreshView>
-                <CollectionView x:Name="RankingListView"
-                    ItemsSource="{Binding AchievementsEntries}"
-                    SelectionMode="None">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout>
-                                <material:MaterialCard CornerRadius="25" Elevation="4"
-                                                               HorizontalOptions="FillAndExpand" IsClickable="False"
-                                                               BackgroundColor="#9ee493" Margin="7" Padding="10" Opacity="{Binding Opacity}">
+
+            <CollectionView x:Name="RankingListView"
+                ItemsSource="{Binding AchievementsEntries}"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <material:MaterialCard CornerRadius="25" Elevation="4"
+                                                            HorizontalOptions="FillAndExpand" IsClickable="False"
+                                                            BackgroundColor="#9ee493" Margin="7" Padding="10" Opacity="{Binding Opacity}">
 
 
-                                    <StackLayout Orientation="Vertical" Margin="0">
+                                <StackLayout Orientation="Vertical" Margin="0">
 
-                                        <StackLayout Orientation="Horizontal">
-                                        
-                                            <Image Source="{Binding IconName}" WidthRequest="35" HeightRequest="35" />
+                                    <StackLayout Orientation="Horizontal">
 
-                                            <material:MaterialChip BackgroundColor="{StaticResource First}"
-                                                        Text="{Binding Name}" TextColor="White"
-                                                        FontSize="24" FontFamily="Exo-Bold" HorizontalOptions="StartAndExpand"/>
+                                        <Image Source="{Binding IconName}" WidthRequest="35" HeightRequest="35" />
 
-                                        </StackLayout>
-
-                                        <material:MaterialCard CornerRadius="20" Elevation="0" BackgroundColor="{StaticResource Second}" Padding="8">
-
-                                            <Label Text="{Binding Description}" LineBreakMode="WordWrap"
-                                                   TextColor="White" FontSize="19" FontFamily="Exo-Regular"/>
-
-                                        </material:MaterialCard>
-
+                                        <material:MaterialChip BackgroundColor="{StaticResource First}"
+                                                    Text="{Binding Name}" TextColor="White"
+                                                    FontSize="24" FontFamily="Exo-Bold" HorizontalOptions="StartAndExpand"/>
 
                                     </StackLayout>
 
-                                </material:MaterialCard>
+                                    <material:MaterialCard CornerRadius="20" Elevation="0" BackgroundColor="{StaticResource Second}" Padding="8">
 
-                            </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </RefreshView>
+                                        <Label Text="{Binding Description}" LineBreakMode="WordWrap"
+                                                TextColor="White" FontSize="19" FontFamily="Exo-Regular"/>
+
+                                    </material:MaterialCard>
+
+
+                                </StackLayout>
+
+                            </material:MaterialCard>
+
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
         </Grid>
     </ContentPage.Content>
 </ContentPage>
