@@ -140,13 +140,7 @@ namespace StepMaster.ViewModels
                 LocalNotificationsManager.ShowNotification("Chodzenie", "Czas pójść na spacer", 12563, DateTime.ParseExact("14.00", @"HH\.mm",
                     CultureInfo.InvariantCulture), NotificationRepeat.Daily);
             }
-            else
-            {
-                LocalNotificationsManager.ShowNotification("Chodzenie", "Czas pójść na spacer", 12563, DateTime.ParseExact(notificationTime, @"HH\.mm",
-                    CultureInfo.InvariantCulture), NotificationRepeat.Daily);
-
-                
-            }
+            
         }
 
         private void ShowNotificationOptions()

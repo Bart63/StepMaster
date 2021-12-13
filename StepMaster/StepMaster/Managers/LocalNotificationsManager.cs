@@ -29,7 +29,7 @@ namespace StepMaster.Managers
                 }
 
             };
-
+           
             NotificationCenter.Current.Show(notification);
         }
 
