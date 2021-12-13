@@ -31,8 +31,10 @@ namespace StepMaster.Droid
 
             NotificationCenter.CreateNotificationChannel(new Plugin.LocalNotification.Platform.Droid.NotificationChannelRequest
             {
-                Id = "currentSteps",
+                Id = "default",
                 EnableVibration = false,
+                ShowBadge = true,
+                Importance = NotificationImportance.High
             }); 
 
             NotificationCenter.NotifyNotificationTapped(Intent);
