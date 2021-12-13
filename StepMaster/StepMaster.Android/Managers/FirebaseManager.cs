@@ -111,39 +111,42 @@ namespace StepMaster.Droid.Managers
 
         public void GetResultToCompeteWith(Action<RankingEntry> callback, string UID = null)
         {
-            if (UID != null)
+            if (RankingEntries != null)
             {
-                int index = RankingEntries.FindIndex(x => x.UID == UID);
-
-                if (index >= 0)
-                    callback(RankingEntries[index]);
-            }
-            else
-            {
-                if (RankingEntries != null)
+                if (UID != null)
                 {
-                    if (RankingEntries.Count > 1)
+                    int index = RankingEntries.FindIndex(x => x.UID == UID);
+
+                    if (index >= 0)
+                        callback(RankingEntries[index]);
+                }
+                else
+                {
+                    if (RankingEntries != null)
                     {
-                        RankingEntries.Sort(delegate (RankingEntry x1, RankingEntry x2)
+                        if (RankingEntries.Count > 1)
                         {
-                            if (x1.Steps < x2.Steps) return 1;
-                            if (x1.Steps > x2.Steps) return -1;
-                            else
-                                return 0;
+                            RankingEntries.Sort(delegate (RankingEntry x1, RankingEntry x2)
+                            {
+                                if (x1.Steps < x2.Steps) return 1;
+                                if (x1.Steps > x2.Steps) return -1;
+                                else
+                                    return 0;
 
-                        });
+                            });
 
-                        int index = RankingEntries.FindIndex(x => x.IsCurrentUser);
+                            int index = RankingEntries.FindIndex(x => x.IsCurrentUser);
 
-                        if (index > 0)
-                        {
-                            if (RankingEntries[index].Steps < RankingEntries[index - 1].Steps)
-                                callback(RankingEntries[index - 1]);
+                            if (index > 0)
+                            {
+                                if (RankingEntries[index].Steps < RankingEntries[index - 1].Steps)
+                                    callback(RankingEntries[index - 1]);
+                                else
+                                    callback(null);
+                            }
                             else
                                 callback(null);
                         }
-                        else
-                            callback(null);
                     }
                 }
             }

@@ -8,7 +8,7 @@ namespace StepMaster.Managers
     public static class LocalNotificationsManager
     {
         public static void ShowNotification(string title, string description, int id,
-            int value, int maxValue, DateTime time)
+             DateTime time, NotificationRepeat repeat)
         {
             var notification = new NotificationRequest
             {
@@ -19,15 +19,13 @@ namespace StepMaster.Managers
                 Schedule = new NotificationRequestSchedule
                 {
                     NotifyTime = time,
-
+                    RepeatType = repeat,
                 },
                 Android = new Plugin.LocalNotification.AndroidOption.AndroidOptions()
                 {
                     ChannelId = "default",
-                    ProgressBarMax = maxValue,
-                    ProgressBarProgress = value,
                     VisibilityType = Plugin.LocalNotification.AndroidOption.AndroidVisibilityType.Public,
-                    IsProgressBarIndeterminate = false
+                    
                 }
 
             };
@@ -53,6 +51,11 @@ namespace StepMaster.Managers
             };
 
             NotificationCenter.Current.Show(notification);
+        }
+
+        public static void CancelNotification(int id)
+        {
+            NotificationCenter.Current.Cancel(new int[] { id });
         }
     }
 }

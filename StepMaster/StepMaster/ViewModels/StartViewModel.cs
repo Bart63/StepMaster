@@ -16,6 +16,7 @@ using StepMaster.Views;
 using StepMaster.Managers;
 using StepMaster.Challenges;
 using Plugin.LocalNotification;
+using System.Globalization;
 
 namespace StepMaster.ViewModels
 {
@@ -72,7 +73,7 @@ namespace StepMaster.ViewModels
 
         
         public Command CountStepsCommand { get; }
-        
+        public Command ShowNotificationOptionsCommand { get; }
 
         public ObservableCollection<StepsChartInfo> ChartInfos { get; }
 
@@ -87,9 +88,12 @@ namespace StepMaster.ViewModels
             _googleManager = googleManager;
             _firebaseManager = firebaseManager;
 
+            UIDToCompeteWith = PreferencesManager.GetValueString(PreferencesKeysManager.UIDToCompeteWith);
+
             googleManager.Login(OnLoginComplete);
 
             CountStepsCommand = new Command(StartStopCountingSteps);
+            ShowNotificationOptionsCommand = new Command(ShowNotificationOptions);
             
             ChartInfos = new ObservableCollection<StepsChartInfo>();
 
@@ -127,6 +131,27 @@ namespace StepMaster.ViewModels
 
             SetStepsChartEntries();
 
+            string notificationTime = PreferencesManager.GetValueString(PreferencesKeysManager.NotificationTime);
+
+            if (notificationTime == null)
+            {
+                PreferencesManager.SetValueString("14.00", PreferencesKeysManager.NotificationTime);
+
+                LocalNotificationsManager.ShowNotification("Chodzenie", "Czas pójść na spacer", 12563, DateTime.ParseExact("14.00", @"HH\.mm",
+                    CultureInfo.InvariantCulture), NotificationRepeat.Daily);
+            }
+            else
+            {
+                LocalNotificationsManager.ShowNotification("Chodzenie", "Czas pójść na spacer", 12563, DateTime.ParseExact(notificationTime, @"HH\.mm",
+                    CultureInfo.InvariantCulture), NotificationRepeat.Daily);
+
+                
+            }
+        }
+
+        private void ShowNotificationOptions()
+        {
+            PopupNavigation.Instance.PushAsync(new NotificationSettingsPopup());
         }
 
         public StartViewModel()
@@ -163,7 +188,7 @@ namespace StepMaster.ViewModels
                     _firebaseManager.Auth(_googleManager.User, OnFirebaseAuthCompleted);
                 }
 
-                LocalNotificationsManager.ShowNotification("test", "test", 1452, 1452, 5000, DateTime.Now.AddSeconds(5));
+                
 
                 Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                 {
@@ -305,6 +330,8 @@ namespace StepMaster.ViewModels
             }
             else
             {
+                PreferencesManager.SetValueString(UID, PreferencesKeysManager.UIDToCompeteWith);
+
                 _firebaseManager.GetResultToCompeteWith(OnSelectedEntryToCompete, UIDToCompeteWith);
             }
 

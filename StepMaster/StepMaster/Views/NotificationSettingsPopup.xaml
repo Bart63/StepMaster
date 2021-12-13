@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StepMaster.Views.NotificationSettingsPopup"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:vm="clr-namespace:StepMaster.ViewModels"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup">
+
+    <pages:PopupPage.BindingContext>
+        <vm:NotificationOptionsViewModel />
+    </pages:PopupPage.BindingContext>
+
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Center"
+            PositionOut="Center"
+            ScaleIn="1.4"
+            ScaleOut="0.8"
+            DurationIn="200"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+
+    <material:MaterialCard Grid.Row="0" HorizontalOptions="Center" Margin="6" Padding="30" CornerRadius="15"
+                           VerticalOptions="Center" BackgroundColor="{StaticResource First}">
+        <StackLayout Orientation="Vertical">
+
+            <material:MaterialButton BackgroundColor="#3875B3" HorizontalOptions="Center"
+                        Text="{Binding ManageNotificationButtonText}" TextColor="White"
+                        Command="{Binding ManageNotificationsCommand}"
+                        FontSize="16" FontAttributes="Bold" BorderColor="{StaticResource Primary}" FontFamily="Exo-Bold"
+                        />
+
+            <material:MaterialTimePicker Time="{Binding SelectedTime}"></material:MaterialTimePicker>
+
+            <material:MaterialButton BackgroundColor="#3875B3" HorizontalOptions="Center"
+                        Text="Zapisz" TextColor="White"
+                        Command="{Binding SaveCommand}"
+                        FontSize="16" FontAttributes="Bold" BorderColor="{StaticResource Primary}" FontFamily="Exo-Bold"
+                        />
+
+        </StackLayout>
+    </material:MaterialCard>
+</pages:PopupPage>

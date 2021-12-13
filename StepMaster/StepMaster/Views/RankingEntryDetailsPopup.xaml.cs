@@ -13,6 +13,7 @@ namespace StepMaster.Views
     
     public partial class RankingEntryDetailsPopup : PopupPage
     {
+        
         public RankingEntryDetailsPopup(RankingEntry entry, Action<RankingEntry> competeCallback, string UID)
         {
 

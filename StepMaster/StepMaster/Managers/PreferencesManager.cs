@@ -18,5 +18,25 @@ namespace StepMaster.Managers
         {
             Preferences.Set(name, value);
         }
+
+        public static string GetValueString(string name)
+        {
+            return Preferences.Get(name, null);
+        }
+
+        public static void SetValueString(string value, string name)
+        {
+            Preferences.Set(name, value);
+        }
+        public static bool GetValueBool(string name)
+        {
+            return Preferences.Get(name, true);
+        }
+
+        public static void SetValueBool(bool value, string name)
+        {
+            Preferences.Set(name, value);
+        }
+
     }
 }
