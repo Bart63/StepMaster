@@ -10,6 +10,8 @@ using AndroidX.Core.App;
 using Android.Gms.Auth.Api.SignIn;
 using Android.Gms.Auth.Api;
 using StepMaster.Droid.Managers;
+using Plugin.LocalNotification;
+using Android.Content;
 
 namespace StepMaster.Droid
 {
@@ -27,6 +29,14 @@ namespace StepMaster.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             Rg.Plugins.Popup.Popup.Init(this);
 
+            NotificationCenter.CreateNotificationChannel(new Plugin.LocalNotification.Platform.Droid.NotificationChannelRequest
+            {
+                Id = "currentSteps",
+                EnableVibration = false,
+            }); 
+
+            NotificationCenter.NotifyNotificationTapped(Intent);
+
             LoadApplication(new App());
 
             if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ActivityRecognition) == Permission.Denied)
@@ -36,6 +46,13 @@ namespace StepMaster.Droid
 
            
         }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            NotificationCenter.NotifyNotificationTapped(intent);
+            base.OnNewIntent(intent);
+        }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);

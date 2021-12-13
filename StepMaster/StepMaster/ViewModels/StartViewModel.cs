@@ -15,6 +15,7 @@ using Rg.Plugins.Popup.Services;
 using StepMaster.Views;
 using StepMaster.Managers;
 using StepMaster.Challenges;
+using Plugin.LocalNotification;
 
 namespace StepMaster.ViewModels
 {
@@ -162,6 +163,30 @@ namespace StepMaster.ViewModels
                     _firebaseManager.Auth(_googleManager.User, OnFirebaseAuthCompleted);
                 }
 
+                var notification = new NotificationRequest
+                {
+                    BadgeNumber = 1,
+                    Description = NumberOfSteps.ToString(),
+                    Title = "Twoje kroki",
+                    NotificationId = 1452,
+                    Schedule = new NotificationRequestSchedule
+                    {
+                        NotifyTime = DateTime.Now.AddSeconds(10),
+
+                    },
+                    Android = new Plugin.LocalNotification.AndroidOption.AndroidOptions()
+                    {
+                        ChannelId = "currentSteps",
+                        ProgressBarMax = _dailyStepsTarget,
+                        ProgressBarProgress = (NumberOfSteps > _dailyStepsTarget) ? _dailyStepsTarget : NumberOfSteps,
+                        VisibilityType = Plugin.LocalNotification.AndroidOption.AndroidVisibilityType.Public,
+                        IsProgressBarIndeterminate = false
+                    }
+
+                };
+
+                NotificationCenter.Current.Show(notification);
+
                 Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                 {
                     SetStepsChartEntries();
@@ -170,6 +195,8 @@ namespace StepMaster.ViewModels
 
                     ChallengesManager.Check(ChallengesManager.AchievementType.dailySteps);
                     ChallengesManager.Check(ChallengesManager.AchievementType.multidaySteps);
+
+                    
 
                     return _startedCountingSteps;
                 });
