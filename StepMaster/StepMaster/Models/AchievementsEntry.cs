@@ -13,7 +13,6 @@ namespace StepMaster.Models
             Name = name;
             Description = description;
             this.isOwned = isOwned;
-            Opacity = isOwned ? 1.0f : 0.5f;
             IconName = iconName;
             GroupName = groupName;
             TypeName = typeName;
@@ -21,9 +20,15 @@ namespace StepMaster.Models
             
         }
 
+        private bool _isOwned;
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool isOwned { get; set; }
+        public bool isOwned { get => _isOwned;
+            set 
+            {
+                _isOwned = value;
+                Opacity = isOwned ? 1.0f : 0.5f;
+            } }
         public float Opacity { get; set; }
         public string IconName { get; set; }
         

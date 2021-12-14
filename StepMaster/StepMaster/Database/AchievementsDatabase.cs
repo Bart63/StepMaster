@@ -20,7 +20,8 @@ namespace StepMaster.Database
             pathDB = Path.Combine(folderPath, dbName);
             db = new SQLiteConnection(pathDB);
             db.CreateTable<AchievementModel>();
-            
+
+           
         }
 
         public static bool IsAchievementOwned(string ID)
@@ -49,6 +50,12 @@ namespace StepMaster.Database
                 ID = ID,
                 IsOwned = true
             }); 
+        }
+
+        public static void clearDB()
+        {
+            db.DropTable<AchievementModel>();
+            db.CreateTable<AchievementModel>();
         }
     }
 }

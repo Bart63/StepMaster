@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 using StepMaster.Extensions;
+using StepMaster.Managers;
 
 namespace StepMaster.Challenges
 {
@@ -120,14 +121,18 @@ namespace StepMaster.Challenges
 
                     foreach (var challenge in _dailyStepsChallenges)
                     {
+                        if (!challenge.isOwned)
                         if (challenge.Check(steps))
                         {
+                            challenge.isOwned = true;
                             AchievementsDatabase.SetAchievementOwned(challenge.ID);
 
                             if (_callbackAchievementViewModel != null)
+                            {
                                 _callbackAchievementViewModel(GetAchievementEntries());
+                            }
 
-                            //TODO: some nice popup window with gratulations
+                                ShowGratulations(challenge);
                         }
                     }
 
@@ -144,19 +149,32 @@ namespace StepMaster.Challenges
 
                     foreach (var challenge in _multidayStepsChallenges)
                     {
+                        if (!challenge.isOwned)
                         if (challenge.Check(weeklySteps))
                         {
+                            challenge.isOwned = true;
                             AchievementsDatabase.SetAchievementOwned(challenge.ID);
 
                             if (_callbackAchievementViewModel != null)
+                            {
+                                
                                 _callbackAchievementViewModel(GetAchievementEntries());
+                            }
 
-                            //TODO: some nice popup window with gratulations
+                                ShowGratulations(challenge);
                         }
                     }
 
                     break;
             }
+
+
+        }
+
+        private static void ShowGratulations(AchievementsEntry entry)
+        {
+
+            LocalNotificationsManager.ShowNotification("Zdobyto osiągnięcie: " + entry.Name, entry.Description, 1425);
         }
     }
 }

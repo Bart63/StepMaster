@@ -3,30 +3,49 @@
   <stepsChallenges>    
     <dailyChallenges>
       <challenge id ="sd1">
-        <name>Pierwsze kroki</name>
-        <description>Pokonaj w ciągu jednego dnia 5000 kroków.</description>
+        <name>Coś na start</name>
+        <description>Pokonaj w ciągu jednego dnia 100 kroków.</description>
         <icon>achievement_icon_3</icon>
-        <numberOfSteps>5000</numberOfSteps>
+        <numberOfSteps>100</numberOfSteps>
       </challenge>
       <challenge id ="sd2">
-        <name>Mini zapaleniec</name>
-        <description>W ciągu dnia pokonaj co najmniej 15000 kroków.</description>
-        <icon>achievement_icon_6</icon>
-        <numberOfSteps>15000</numberOfSteps>
+        <name>Pierwsze kroki</name>
+        <description>Pokonaj w ciągu jednego dnia 500 kroków.</description>
+        <icon>achievement_icon_4</icon>
+        <numberOfSteps>500</numberOfSteps>
       </challenge>
       <challenge id ="sd3">
+        <name>Pracowity dzień</name>
+        <description>W ciągu dnia pokonaj co najmniej 5000 kroków.</description>
+        <icon>achievement_icon_6</icon>
+        <numberOfSteps>5000</numberOfSteps>
+      </challenge>
+      <challenge id ="sd4">
+        <name>Mini zapaleniec</name>
+        <description>W ciągu dnia pokonaj co najmniej 15000 kroków.</description>
+        <icon>achievement_icon_5</icon>
+        <numberOfSteps>15000</numberOfSteps>
+      </challenge>
+      <challenge id ="sd5">
         <name>Zapaleniec</name>
         <description>W ciągu dnia pokonaj co najmniej 25000 kroków.</description>
-        <icon>achievement_icon_2</icon>
+        <icon>achievement_icon_5</icon>
         <numberOfSteps>25000</numberOfSteps>
       </challenge>
     </dailyChallenges>
       
     <multidayChallenges>
       <challenge id ="sp1">
+        <name>Dobre nawyki</name>
+        <description>Przez 5 dni pod rząd pokonaj codziennie min. 1000 kroków.</description>
+        <icon>achievement_icon_1</icon>
+        <numberOfSteps>3000</numberOfSteps>
+        <numberOfDays>5</numberOfDays>
+      </challenge>
+      <challenge id ="sp2">
         <name>Systematyczny</name>
         <description>Przez 5 dni pod rząd pokonaj codziennie min. 3000 kroków.</description>
-        <icon>achievement_icon_1</icon>
+        <icon>achievement_icon_7</icon>
         <numberOfSteps>3000</numberOfSteps>
         <numberOfDays>5</numberOfDays>
       </challenge>

@@ -1,15 +1,18 @@
-﻿using Plugin.LocalNotification;
+﻿using Android.Content.Res;
+using Plugin.LocalNotification;
 using System;
 using System.Collections.Generic;
 using System.Text;
+
 
 namespace StepMaster.Managers
 {
     public static class LocalNotificationsManager
     {
         public static void ShowNotification(string title, string description, int id,
-             DateTime time, NotificationRepeat repeat)
+             DateTime time, NotificationRepeat repeat)     
         {
+            
             var notification = new NotificationRequest
             {
                 BadgeNumber = 1,
@@ -25,7 +28,8 @@ namespace StepMaster.Managers
                 {
                     ChannelId = "default",
                     VisibilityType = Plugin.LocalNotification.AndroidOption.AndroidVisibilityType.Public,
-                    
+                    IconLargeName = new Plugin.LocalNotification.AndroidOption.AndroidIcon("icon"),
+                    IconSmallName = new Plugin.LocalNotification.AndroidOption.AndroidIcon("icon")
                 }
 
             };
@@ -45,7 +49,9 @@ namespace StepMaster.Managers
                 {
                     ChannelId = "default",
                     VisibilityType = Plugin.LocalNotification.AndroidOption.AndroidVisibilityType.Public,
-                    IsProgressBarIndeterminate = false
+                    IsProgressBarIndeterminate = false,
+                    IconLargeName = new Plugin.LocalNotification.AndroidOption.AndroidIcon("icon"),
+                    IconSmallName = new Plugin.LocalNotification.AndroidOption.AndroidIcon("icon")
                 }
 
             };

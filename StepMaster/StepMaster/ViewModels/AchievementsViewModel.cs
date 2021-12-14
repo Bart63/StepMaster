@@ -11,7 +11,7 @@ namespace StepMaster.ViewModels
     public class AchievementsViewModel : BaseViewModel
     {
 
-        public ObservableCollection<AchievementsEntry> AchievementsEntries { get; private set; }
+        public ObservableCollection<AchievementsEntry> AchievementsEntries { get; set; }
 
         public AchievementsViewModel()
         {
@@ -23,7 +23,15 @@ namespace StepMaster.ViewModels
 
         private void UpdateView(List<AchievementsEntry> entries)
         {
-            AchievementsEntries = new ObservableCollection<AchievementsEntry>(entries);
+            AchievementsEntries.Clear();
+
+            foreach (var e in entries)
+            {
+                AchievementsEntries.Add(e);
+            }
+
+            
+            
         }
     }
 }
