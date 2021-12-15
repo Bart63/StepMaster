@@ -52,7 +52,8 @@
                 FontSize="25" FontAttributes="Bold" BorderColor="{StaticResource Primary}" BorderWidth="3" ButtonType="Flat" FontFamily="Exo-Bold"/>
 
                 <ImageButton Grid.Row="0" Grid.Column="0" Source="icon_list" HeightRequest="45"
-                             HorizontalOptions="Center" Margin="30, 0, 0, 0" BackgroundColor="Transparent"></ImageButton>
+                             HorizontalOptions="Center" Margin="30, 0, 0, 0" BackgroundColor="Transparent"
+                             Command="{Binding ShowUserPreferencesOptionsCommand}"></ImageButton>
 
             </StackLayout>
 

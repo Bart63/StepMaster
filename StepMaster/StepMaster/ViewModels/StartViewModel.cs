@@ -75,6 +75,8 @@ namespace StepMaster.ViewModels
         public Command CountStepsCommand { get; }
         public Command ShowNotificationOptionsCommand { get; }
 
+        public Command ShowUserPreferencesOptionsCommand { get; }
+
         public ObservableCollection<StepsChartInfo> ChartInfos { get; }
 
         public StartViewModel(IGoogleManager googleManager, IFirebaseManager firebaseManager)
@@ -94,6 +96,7 @@ namespace StepMaster.ViewModels
 
             CountStepsCommand = new Command(StartStopCountingSteps);
             ShowNotificationOptionsCommand = new Command(ShowNotificationOptions);
+            ShowUserPreferencesOptionsCommand = new Command(ShowPreferencesOptions);
             
             ChartInfos = new ObservableCollection<StepsChartInfo>();
 
@@ -141,6 +144,30 @@ namespace StepMaster.ViewModels
                     CultureInfo.InvariantCulture), NotificationRepeat.Daily);
             }
             
+        }
+
+        private void ShowPreferencesOptions(object obj)
+        {
+            PopupNavigation.Instance.PushAsync(new UserPreferencesPopup(OnUserPreferencesChange));
+        }
+
+        private void OnUserPreferencesChange()
+        {
+            _dailyStepsTarget = PreferencesManager.GetValueInt(PreferencesKeysManager.DailyStepsTarget);
+
+            int index = ChartInfos.FindIndex(x => x.Name == "dailyTarget");
+
+            ChartInfos[index] = new StepsChartInfo("Cel dnia", _dailyStepsTarget,
+                Color.FromRgb(_chartColors[1].Red, _chartColors[1].Green, _chartColors[1].Blue),
+                "dailyTarget");
+
+            ChartInfos.Sort(delegate (StepsChartInfo x1, StepsChartInfo x2)
+            {
+                if (x1.Value > x2.Value) return 1;
+                if (x1.Value < x2.Value) return -1; else return 0;
+            });
+
+            SetStepsChartEntries();
         }
 
         private void ShowNotificationOptions()

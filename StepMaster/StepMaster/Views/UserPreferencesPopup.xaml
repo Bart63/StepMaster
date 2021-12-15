@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StepMaster.Views.UserPreferencesPopup"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:vm="clr-namespace:StepMaster.ViewModels"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             xmlns:converter="clr-namespace:StepMaster.Converters">
+
+    <pages:PopupPage.BindingContext>
+        <vm:UserPreferencesViewModel />
+    </pages:PopupPage.BindingContext>
+
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <converter:IntToStringConverter x:Key="intToString" />
+        </ResourceDictionary>
+        
+    </pages:PopupPage.Resources>
+
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Center"
+            PositionOut="Center"
+            ScaleIn="1.4"
+            ScaleOut="0.8"
+            DurationIn="200"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+
+    <material:MaterialCard Grid.Row="0" HorizontalOptions="Center" Margin="6" Padding="30" CornerRadius="15"
+                           VerticalOptions="Center" BackgroundColor="{StaticResource First}">
+        <StackLayout Orientation="Vertical">
+
+            <material:MaterialLabel Text="Codzienny cel" FontSize="20" FontFamily="Exo-Regular" HorizontalOptions="FillAndExpand"
+                                    BackgroundColor="Transparent" TextColor="White"></material:MaterialLabel>
+            
+            <Entry FontSize="Medium" FontFamily="Exo-Bold" Keyboard="Numeric"  HorizontalOptions="FillAndExpand" TextColor="Black"
+                   Text="{Binding DailyStepsTarget, Mode=TwoWay, Converter={StaticResource intToString}}"
+                   Placeholder="{Binding DailyStepsTarget, Converter={StaticResource intToString}}" PlaceholderColor="Black"
+                   MaxLength="5"></Entry>
+
+            <material:MaterialButton BackgroundColor="#3875B3" HorizontalOptions="Center"
+                        Text="Zapisz" TextColor="White"
+                        Command="{Binding SaveCommand}"
+                        FontSize="16" FontAttributes="Bold" BorderColor="{StaticResource Primary}"
+                        FontFamily="Exo-Bold" IsEnabled="{Binding IsSavingEnabled}"
+                        />
+
+        </StackLayout>
+    </material:MaterialCard>
+</pages:PopupPage>
