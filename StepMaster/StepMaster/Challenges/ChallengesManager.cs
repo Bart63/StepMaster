@@ -147,6 +147,9 @@ namespace StepMaster.Challenges
                         weeklySteps.Add(element.NumberOfSteps);
                     }
 
+                    while (weeklySteps.Count < 7)
+                        weeklySteps.Insert(0, 0);
+
                     foreach (var challenge in _multidayStepsChallenges)
                     {
                         if (!challenge.isOwned)

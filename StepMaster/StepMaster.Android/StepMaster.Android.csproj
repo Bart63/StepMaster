@@ -116,9 +116,11 @@
     <Compile Include="DisplayInfo\DisplayInfo.cs" />
     <Compile Include="Helpers\GetRankingEventListener.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Managers\AndroidServiceManager.cs" />
     <Compile Include="Managers\DialogManager.cs" />
     <Compile Include="Managers\FirebaseManager.cs" />
     <Compile Include="Managers\GoogleManager.cs" />
+    <Compile Include="Managers\Notification.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StepDetection\StepCounter.cs" />

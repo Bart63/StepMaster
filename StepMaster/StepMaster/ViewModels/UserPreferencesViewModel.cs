@@ -18,7 +18,7 @@ namespace StepMaster.ViewModels
             get => _dailyStepsTarget;
             set
             {
-                IsSavingEnabled = value != 0;
+                IsSavingEnabled = value > 0;
                 SetProperty(ref _dailyStepsTarget, value);
             }
         }

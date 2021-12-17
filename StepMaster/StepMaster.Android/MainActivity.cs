@@ -43,10 +43,20 @@ namespace StepMaster.Droid
 
             if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ActivityRecognition) == Permission.Denied)
             {
-                ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.ActivityRecognition }, 1);
+                ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.ActivityRecognition}, 1);
+
             }
 
-           
+            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ForegroundService) == Permission.Denied)
+            {
+                ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.ForegroundService }, 1);
+            }
+
+            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.InstantAppForegroundService) == Permission.Denied)
+            {
+                ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.InstantAppForegroundService }, 1);
+            }
+
         }
 
         protected override void OnNewIntent(Intent intent)
@@ -76,5 +86,7 @@ namespace StepMaster.Droid
         {
             Rg.Plugins.Popup.Popup.SendBackPressed(base.OnBackPressed);
         }
+
+        
     }
 }

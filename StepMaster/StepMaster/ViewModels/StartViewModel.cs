@@ -189,6 +189,13 @@ namespace StepMaster.ViewModels
 
             ChartInfos[index] = new StepsChartInfo("Twoje kroki", NumberOfSteps,
                 Color.FromRgb(_chartColors[0].Red, _chartColors[0].Green, _chartColors[0].Blue), "currentSteps");
+
+            DependencyService.Get<IAndroidService>().StartService();
+
+            if (NumberOfSteps >= _dailyStepsTarget)
+            {
+                LocalNotificationsManager.ShowNotification("Zadanie osiągnięte", "Dzienny cel: " + _dailyStepsTarget, 1288965);
+            }
         }
 
         private void StartStopCountingSteps()
@@ -209,7 +216,7 @@ namespace StepMaster.ViewModels
                     _firebaseManager.Auth(_googleManager.User, OnFirebaseAuthCompleted);
                 }
 
-                
+                DependencyService.Get<IAndroidService>().StartService();
 
                 Device.StartTimer(TimeSpan.FromSeconds(2), () =>
                 {
@@ -219,8 +226,6 @@ namespace StepMaster.ViewModels
 
                     ChallengesManager.Check(ChallengesManager.AchievementType.dailySteps);
                     ChallengesManager.Check(ChallengesManager.AchievementType.multidaySteps);
-
-                    
 
                     return _startedCountingSteps;
                 });
@@ -233,9 +238,12 @@ namespace StepMaster.ViewModels
 
                 StartStopButtonText = "START!";
 
+                DependencyService.Get<IAndroidService>().StopService();
+
             }
             
         }
+
 
         private void SetStepsChartEntries()
         {
