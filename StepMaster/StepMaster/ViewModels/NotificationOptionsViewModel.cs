@@ -81,12 +81,12 @@ namespace StepMaster.ViewModels
             }
             else
             {
-                DateTime d = DateTime.ParseExact(
-                    SelectedTime.ToString("hh'.'mm"), @"HH\.mm",
-                    CultureInfo.InvariantCulture);
-                LocalNotificationsManager.ShowNotification("Chodzenie", "Czas pójść na spacer", 12563, DateTime.ParseExact(
-                    SelectedTime.ToString("hh'.'mm"), @"HH\.mm",
-                    CultureInfo.InvariantCulture), NotificationRepeat.Daily);
+                DateTime d = DateTime.ParseExact(SelectedTime.ToString("hh'.'mm"), @"HH\.mm", CultureInfo.InvariantCulture);
+
+                if (d.TimeOfDay < DateTime.Now.TimeOfDay)
+                    d.AddDays(1);
+
+                LocalNotificationsManager.ShowNotification("Chodzenie", "Czas pójść na spacer", 12563, d, NotificationRepeat.Daily);
             }
 
             PopupNavigation.Instance.PopAllAsync(true);

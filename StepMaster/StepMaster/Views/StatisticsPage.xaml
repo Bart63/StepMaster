@@ -30,14 +30,18 @@
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="350"></RowDefinition>
                     <RowDefinition Height="350"></RowDefinition>
                     <RowDefinition Height="350"></RowDefinition>
                 </Grid.RowDefinitions>
 
+                <material:MaterialButton Grid.Row="0" BackgroundColor="#3875B3" HorizontalOptions="Center"
+                Text="{Binding UnitsChoiceButtonText}" TextColor="White" VerticalOptions="Center"
+                Command="{Binding ShowUnitsOptionsCommand}" FontSize="20" FontAttributes="Bold"
+                BorderWidth="3" ButtonType="Flat" FontFamily="Exo-Regular"/>
 
-
-                <material:MaterialCard Grid.Row="0" BackgroundColor="#3875B3" HorizontalOptions="Center" Margin="4" Padding="6" CornerRadius="15">
+                <material:MaterialCard Grid.Row="1" BackgroundColor="#3875B3" HorizontalOptions="Center" Margin="4" Padding="6" CornerRadius="15">
 
                     <Grid>
 
@@ -46,21 +50,9 @@
                             <RowDefinition Height="Auto"></RowDefinition>
                         </Grid.RowDefinitions>
                         
-                        <Label Grid.Row="0" Text="Średnio kroki/dzień" FontFamily="Exo-Bold" FontSize="20" TextColor="White"></Label>
+                        <Label Grid.Row="0" Text="{Binding InfoTextPerDay}" FontFamily="Exo-Bold" FontSize="20" TextColor="White"></Label>
                         <material:MaterialChip Grid.Row ="1" Text="{Binding AverageStepsPerDay}" HorizontalOptions="Center"
                                                FontFamily="Exo-Bold" FontSize="22" TextColor="Black"></material:MaterialChip>
-                    </Grid>
-                </material:MaterialCard>
-
-                <material:MaterialCard Grid.Row="1" Margin="10" CornerRadius="15" Padding="5">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <material:MaterialChip Grid.Row="0" Text="Twoje kroki w tym tygodniu" HorizontalOptions="Center" BackgroundColor="#3875B3"
-                                               TextColor="White" FontFamily="Exo-Bold" FontSize="18"></material:MaterialChip>
-                        <microcharts:ChartView Grid.Row="1" x:Name="chartStepsPerDay" Chart="{Binding WeeklyStepsChart}" Margin="0" />
                     </Grid>
                 </material:MaterialCard>
 
@@ -70,9 +62,9 @@
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <material:MaterialChip Grid.Row="0" Text="Twoje kroki w poprzednim tygodniu" HorizontalOptions="Center" BackgroundColor="#3875B3"
-                                               TextColor="White" FontFamily="Exo-Bold" FontSize="18"></material:MaterialChip>
-                        <microcharts:ChartView Grid.Row="1" x:Name="chartStepsPreviousWeek" Chart="{Binding PreviousWeekStepsChart}" Margin="0" />
+                        <material:MaterialChip Grid.Row="0" Text="{Binding InfoTextChart1}" HorizontalOptions="Center" BackgroundColor="#3875B3"
+                                               TextColor="White" FontFamily="Exo-Bold" FontSize="15"></material:MaterialChip>
+                        <microcharts:ChartView Grid.Row="1" x:Name="chartStepsPerDay" Chart="{Binding WeeklyStepsChart}" Margin="0" />
                     </Grid>
                 </material:MaterialCard>
 
@@ -82,9 +74,21 @@
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
                         </Grid.RowDefinitions>
+                        <material:MaterialChip Grid.Row="0" Text="{Binding InfoTextChart2}" HorizontalOptions="Center" BackgroundColor="#3875B3"
+                                               TextColor="White" FontFamily="Exo-Bold" FontSize="15"></material:MaterialChip>
+                        <microcharts:ChartView Grid.Row="1" x:Name="chartStepsPreviousWeek" Chart="{Binding PreviousWeekStepsChart}" Margin="0" />
+                    </Grid>
+                </material:MaterialCard>
+
+                <material:MaterialCard Grid.Row="4" Margin="10" CornerRadius="15" Padding="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
                         <material:MaterialChip Grid.Row="0
-                                               " Text="Twoje kroki średnio tygodniowo" HorizontalOptions="Center" BackgroundColor="#3875B3"
-                                               TextColor="White" FontFamily="Exo-Bold" FontSize="18"></material:MaterialChip>
+                                               " Text="{Binding InfoTextChart3}" HorizontalOptions="Center" BackgroundColor="#3875B3"
+                                               TextColor="White" FontFamily="Exo-Bold" FontSize="15"></material:MaterialChip>
                         <microcharts:ChartView Grid.Row="1" x:Name="chartStepsWeekly" Chart="{Binding AverageStepsPerWeekChart}" Margin="0" />
                     </Grid>
                 </material:MaterialCard>
