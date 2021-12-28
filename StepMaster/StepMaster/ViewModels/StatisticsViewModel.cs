@@ -102,7 +102,15 @@ namespace StepMaster.ViewModels
 
         public StatisticsViewModel()
         {
-            IDisplayInfo displayInfo = DependencyService.Get<IDisplayInfo>();
+            IDisplayInfo displayInfo = null;
+            try
+            {
+                displayInfo = DependencyService.Get<IDisplayInfo>();
+            }
+            catch
+            {
+
+            }
 
             float dpi = (displayInfo != null) ? displayInfo.GetDisplayDpi() : 420;
 

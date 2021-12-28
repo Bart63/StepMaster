@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace StepMaster.ViewModels
 {
-    class UserPreferencesViewModel : BaseViewModel
+    public class UserPreferencesViewModel : BaseViewModel
     {
         private int _dailyStepsTarget;
         private bool _isSavingEnabled;

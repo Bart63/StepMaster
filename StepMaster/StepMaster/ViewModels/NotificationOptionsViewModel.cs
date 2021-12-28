@@ -9,7 +9,7 @@ using Rg.Plugins.Popup.Services;
 
 namespace StepMaster.ViewModels
 {
-    class NotificationOptionsViewModel : BaseViewModel
+    public class NotificationOptionsViewModel : BaseViewModel
     {
         private bool _areNotificationsEnabled;
         private TimeSpan _time;
@@ -36,7 +36,14 @@ namespace StepMaster.ViewModels
 
         public NotificationOptionsViewModel()
         {
-            _areNotificationsEnabled = PreferencesManager.GetValueBool(PreferencesKeysManager.NotificationsEnabled);
+            try
+            {
+                _areNotificationsEnabled = PreferencesManager.GetValueBool(PreferencesKeysManager.NotificationsEnabled);
+            }
+            catch
+            {
+                _areNotificationsEnabled = true;
+            }
 
             if (_areNotificationsEnabled)
                 ManageNotificationButtonText = "Wyłącz przypomnienia";
@@ -46,7 +53,15 @@ namespace StepMaster.ViewModels
             ManageNotificationsCommand = new Command(ManageNotifications);
             SaveCommand = new Command(Save);
 
-            string t = PreferencesManager.GetValueString(PreferencesKeysManager.NotificationTime);
+            string t = "";
+            try
+            {
+                t = PreferencesManager.GetValueString(PreferencesKeysManager.NotificationTime);
+            }
+            catch
+            {
+                t = null;
+            }
 
             if (t != null) 
             {
@@ -60,7 +75,7 @@ namespace StepMaster.ViewModels
                     
         }
 
-        private void ManageNotifications()
+        public void ManageNotifications()
         {
             _areNotificationsEnabled = !_areNotificationsEnabled;
 

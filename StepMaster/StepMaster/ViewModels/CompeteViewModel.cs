@@ -94,7 +94,7 @@ namespace StepMaster.ViewModels
 
         public CompeteViewModel()
         {
-
+            RankingEntries = new ObservableCollection<RankingEntry>();
         }
 
         async Task UpdateRanking()
@@ -110,24 +110,25 @@ namespace StepMaster.ViewModels
             
         }
 
-        private void GoogleLogout()
+        public void GoogleLogout()
         {
-            _googleManager.Logout();
             IsLoggedIn = false;
             IsLoggedOut = true;
 
             RankingEntries.Clear();
 
             RankingEntries.Add(new RankingEntry("Zaloguj się!", "0.", 0, false));
+            
+            _googleManager.Logout();
         }
 
-        private void GoogleLogin()
+        public void GoogleLogin()
         {
             _googleManager.Login(OnLoginComplete);
 
         }
 
-        private void OnLoginComplete(GoogleUser googleUser, string message)
+        public void OnLoginComplete(GoogleUser googleUser, string message)
         {
             if (googleUser != null)
             {
@@ -173,7 +174,7 @@ namespace StepMaster.ViewModels
             }
         }
 
-        private void OnFirebaseRankingLoaded(List<RankingEntry> entries)
+        public void OnFirebaseRankingLoaded(List<RankingEntry> entries)
         {
             RankingEntries.Clear();
 
@@ -183,6 +184,429 @@ namespace StepMaster.ViewModels
             }
 
             IsRefreshing = false;
+
+            int a = 5;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+            a = 8;
+
         }
 
         private void RankingEntryTapped (RankingEntry entry)

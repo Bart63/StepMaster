@@ -9,6 +9,7 @@ using StepMaster.Managers;
 using StepMaster.Models;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
+using StepMaster.ViewModels;
 
 namespace StepMaster.Tests
 {
@@ -28,11 +29,14 @@ namespace StepMaster.Tests
         {
             Assert.Equal(0, StepsDatabase.GetCurrentAverageWeeklySteps());
 
+            StepsDatabase.RemoveSteps(2);
+            StepsDatabase.DeleteAverageWeeklySteps();
+
             StepsDatabase.UpdateDailySteps(14);
             Assert.True(StepsDatabase.GetSteps(DateTime.Now.Date) == 14);
 
             DateTime startDate = DateTime.Now.GetStartDateOfTheWeek();
-            
+
             StepsDatabase.UpdateDailySteps(0, startDate);
             StepsDatabase.UpdateDailySteps(10, startDate.AddDays(1));
             StepsDatabase.UpdateDailySteps(0, startDate.AddDays(2));
@@ -140,16 +144,32 @@ namespace StepMaster.Tests
             RankingEntry entry2 = new RankingEntry("test", "4.", 425, true, null);
 
             Assert.Equal(452, entry.Steps);
+            Assert.Equal("5.", entry.PositionNumber);
             Assert.Equal("test", entry2.Username);
+            Assert.False(entry.IsCurrentUser);
+            Assert.Null(entry2.UID);
 
             StepsChartInfo chartInfo = new StepsChartInfo("test", 45, Color.Green, "name");
 
             Assert.Equal("test", chartInfo.InfoText);
             Assert.Equal("name", chartInfo.Name);
+            Assert.Equal(Color.Green, chartInfo.Color);
 
-            GoogleUser googleUser = new GoogleUser(){ Name = "test"};
+            GoogleUser googleUser = new GoogleUser() {
+                Name = "test",
+                AccessToken = "testaccess", 
+                Email = "test", 
+                IDToken = "test", 
+                RefreshToken = "test",
+                Picture = new Uri($"https://autisticdating.net/imgs/profile-placeholder.jpg")};
+
 
             Assert.Equal("test", googleUser.Name);
+            Assert.Equal("testaccess", googleUser.AccessToken);
+            Assert.Equal("test", googleUser.Email);
+            Assert.Equal("test", googleUser.IDToken);
+            Assert.Equal("test", googleUser.RefreshToken);
+            Assert.NotNull(googleUser.Picture);
         }
 
         [Fact]
@@ -193,5 +213,86 @@ namespace StepMaster.Tests
             Assert.Equal(1000, entries[0].Steps);
         }
 
+        [Fact]
+        public void TestViewModels()
+        {
+            StartViewModel startViewModel = new StartViewModel();
+
+            Assert.Throws<Xamarin.Essentials.NotImplementedInReferenceAssemblyException> (() => startViewModel = new StartViewModel(null, null));
+
+            Assert.Equal(0, startViewModel.NumberOfSteps);
+
+            Assert.Throws<System.InvalidOperationException>(() => startViewModel.UpdateNumberOfSteps());
+
+            Assert.Equal(1, startViewModel.NumberOfSteps);
+
+            Assert.Throws<System.InvalidOperationException>(() => startViewModel.StartStopCountingSteps());
+
+            startViewModel.OnSelectedEntryToCompete(new RankingEntry("test", "4.", 478));
+
+            Assert.Equal(3, startViewModel.ChartInfos.Count);
+
+            Assert.Equal("START!", startViewModel.StartStopButtonText);
+            Assert.Equal(0, startViewModel.ChartHeight);
+
+            Assert.Throws<Xamarin.Essentials.NotImplementedInReferenceAssemblyException>(() => startViewModel.SetUIDToCompeteWith("test"));
+            startViewModel.SetUIDToCompeteWith(null);
+
+            DateTime startDate = DateTime.Now.GetStartDateOfTheWeek();
+
+            StepsDatabase.UpdateDailySteps(105, startDate);
+            StepsDatabase.UpdateDailySteps(10, startDate.AddDays(1));
+            StepsDatabase.UpdateDailySteps(0, startDate.AddDays(2));
+            StepsDatabase.UpdateDailySteps(15, startDate.AddDays(3));
+            StepsDatabase.UpdateDailySteps(0, startDate.AddDays(4));
+            StepsDatabase.UpdateDailySteps(0, startDate.AddDays(5));
+            StepsDatabase.UpdateDailySteps(785, startDate.AddDays(6));
+
+            StatisticsViewModel statisticsViewModel = null;
+
+            Assert.Throws<System.InvalidOperationException>(() => statisticsViewModel = new StatisticsViewModel());
+
+
+            CompeteViewModel competeViewModel = new CompeteViewModel();
+
+            Assert.Throws<System.NullReferenceException>(() => competeViewModel = new CompeteViewModel(null, null));
+
+            Assert.Null(competeViewModel.GoogleUser);
+            Assert.False(competeViewModel.IsLoggedIn);
+            Assert.False(competeViewModel.IsRefreshing);
+
+            Assert.Throws<System.NullReferenceException>(() => competeViewModel.GoogleLogin());
+
+            Assert.Throws<System.NullReferenceException>(() => competeViewModel.GoogleLogout());
+
+            Assert.Single(competeViewModel.RankingEntries);
+
+            competeViewModel.OnFirebaseRankingLoaded(new List<RankingEntry>() { new RankingEntry("test", "1.", 4785) });
+
+            Assert.Single(competeViewModel.RankingEntries);
+
+            AchievementsViewModel achievementsViewModel = new AchievementsViewModel();
+
+            Assert.Equal(7, achievementsViewModel.AchievementsEntries.Count);
+
+            NotificationOptionsViewModel notificationOptionsViewModel;
+
+            notificationOptionsViewModel = new NotificationOptionsViewModel();
+            notificationOptionsViewModel.ManageNotifications();
+
+            Assert.Equal("Włącz przypomnienia", notificationOptionsViewModel.ManageNotificationButtonText);
+
+            RankingEntryDetailsViewModel rankingEntryDetailsViewModel = new RankingEntryDetailsViewModel();
+
+            Assert.Throws<System.NullReferenceException>(() => rankingEntryDetailsViewModel = new RankingEntryDetailsViewModel(null, null, null));
+
+            Assert.Equal("Rywalizuj", rankingEntryDetailsViewModel.CompeteButtonText);
+
+            UserPreferencesViewModel userPreferencesViewModel;
+
+            Assert.Throws<Xamarin.Essentials.NotImplementedInReferenceAssemblyException>(() => userPreferencesViewModel = new UserPreferencesViewModel(null));
+
+            
+        }
     }
 }

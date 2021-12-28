@@ -202,11 +202,28 @@ namespace StepMaster.ViewModels
 
         public StartViewModel()
         {
+            ChartInfos = new ObservableCollection<StepsChartInfo>();
 
+            ChartInfos.Add(new StepsChartInfo("Twoje kroki", NumberOfSteps,
+                Color.FromRgb(_chartColors[0].Red, _chartColors[0].Green, _chartColors[0].Blue), "currentSteps"));
+            ChartInfos.Add(new StepsChartInfo("Cel dnia", _dailyStepsTarget,
+                Color.FromRgb(_chartColors[1].Red, _chartColors[1].Green, _chartColors[1].Blue),
+                "dailyTarget"));
+
+            StepsChart = new RadialGaugeChart
+            {
+                LabelTextSize = 40,
+                IsAnimated = false,
+                BackgroundColor = SKColor.Empty,
+
+            };
+
+
+            SetStepsChartEntries();
         }
             
 
-        private void UpdateNumberOfSteps()
+        public void UpdateNumberOfSteps()
         {
             NumberOfSteps += 1;
 
@@ -225,7 +242,7 @@ namespace StepMaster.ViewModels
             }
         }
 
-        private void StartStopCountingSteps()
+        public void StartStopCountingSteps()
         {
             if (!_startedCountingSteps)
             {
@@ -334,7 +351,7 @@ namespace StepMaster.ViewModels
             }
         }
 
-        private void OnSelectedEntryToCompete(RankingEntry rankingEntry)
+        public void OnSelectedEntryToCompete(RankingEntry rankingEntry)
         {
             
             int i = ChartInfos.FindIndex(x => x.Name == _lastCompetition);

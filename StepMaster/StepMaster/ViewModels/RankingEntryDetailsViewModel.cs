@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace StepMaster.ViewModels
 {
-    class RankingEntryDetailsViewModel : BaseViewModel
+    public class RankingEntryDetailsViewModel : BaseViewModel
     {
         private RankingEntry _entry;
         private Action<RankingEntry> _competeCallback;
