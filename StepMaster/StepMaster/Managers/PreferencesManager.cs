@@ -38,5 +38,9 @@ namespace StepMaster.Managers
             Preferences.Set(name, value);
         }
 
+        public static void ClearAll()
+        {
+            Preferences.Clear();
+        }
     }
 }

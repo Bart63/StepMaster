@@ -10,12 +10,9 @@ namespace StepMaster.Models
         public int NumberOfDays { get; set; }
         public override bool Check(List<int> steps)
         {
-            
-            steps.RemoveRange(0, 7 - NumberOfDays);
-
-            foreach (int s in steps)
+            for (int i = 0; i < NumberOfDays; i++)
             {
-                if (s < NumberOfSteps)
+                if (steps[steps.Count - 1 - i] < NumberOfSteps)
                     return false;
             }
 

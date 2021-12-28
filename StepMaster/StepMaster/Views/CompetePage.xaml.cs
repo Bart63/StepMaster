@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using StepMaster.Extensions;
+using StepMaster.Models;
 
 namespace StepMaster.Views
 {
@@ -15,5 +17,15 @@ namespace StepMaster.Views
             InitializeComponent();
             BindingContext = new CompeteViewModel(DependencyService.Get<IGoogleManager>(), DependencyService.Get<IFirebaseManager>());
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            RankingEntry entry = CompeteViewModel.Instance.RankingEntries.Find(x => x.IsCurrentUser);
+
+            RankingListView.ScrollTo(entry, ScrollToPosition.Center);
+        }
+
     }
 }

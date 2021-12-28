@@ -36,6 +36,8 @@ namespace StepMaster.ViewModels
         private string _lastCompetition;
         private int _dailyStepsTarget;
         private bool _setUserToCompeteWith = true;
+        private bool _showDailyTargetNotification = true;
+        private DateTime _currentDate;
         
         private readonly SKColor[] _chartColors = new SKColor[]
         {
@@ -111,6 +113,8 @@ namespace StepMaster.ViewModels
             float dpi = DependencyService.Get<IDisplayInfo>().GetDisplayDpi();
             ChartHeight =  (int)(420 / dpi * 350);
 
+            _currentDate = DateTime.Now;
+
             StepsDatabase.RemoveSteps(2);
 
             NumberOfSteps = StepsDatabase.GetSteps(DateTime.Now.Date);
@@ -148,7 +152,22 @@ namespace StepMaster.ViewModels
 
                 LocalNotificationsManager.ShowNotification("Chodzenie", "Czas pójść na spacer", 12563, d, NotificationRepeat.Daily);
             }
-            
+
+            Device.StartTimer(TimeSpan.FromSeconds(0.5f), () =>
+            {
+                if (_currentDate.Date < DateTime.Now.Date)
+                {
+                    StepsDatabase.UpdateDailySteps(NumberOfSteps, _currentDate);
+
+                    NumberOfSteps = 0;
+                    StepsDatabase.UpdateDailySteps(NumberOfSteps);
+
+                    _currentDate = DateTime.Now;
+                }
+
+                return true;
+            });
+
         }
 
         private void ShowPreferencesOptions(object obj)
@@ -159,6 +178,7 @@ namespace StepMaster.ViewModels
         private void OnUserPreferencesChange()
         {
             _dailyStepsTarget = PreferencesManager.GetValueInt(PreferencesKeysManager.DailyStepsTarget);
+            _showDailyTargetNotification = true;
 
             int index = ChartInfos.FindIndex(x => x.Name == "dailyTarget");
 
@@ -197,9 +217,11 @@ namespace StepMaster.ViewModels
 
             DependencyService.Get<IAndroidService>().StartService();
 
-            if (NumberOfSteps >= _dailyStepsTarget)
+            if (NumberOfSteps >= _dailyStepsTarget && _showDailyTargetNotification)
             {
                 LocalNotificationsManager.ShowNotification("Zadanie osiągnięte", "Dzienny cel: " + _dailyStepsTarget, 1288965);
+
+                _showDailyTargetNotification = false;
             }
         }
 

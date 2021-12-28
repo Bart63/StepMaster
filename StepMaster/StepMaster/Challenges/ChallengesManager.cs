@@ -111,7 +111,7 @@ namespace StepMaster.Challenges
             }
         }
 
-        public static void Check(AchievementType achievementType)
+        public static bool Check(AchievementType achievementType)
         {
             switch(achievementType)
             {
@@ -133,6 +133,8 @@ namespace StepMaster.Challenges
                             }
 
                                 ShowGratulations(challenge);
+
+                                return true;
                         }
                     }
 
@@ -142,7 +144,7 @@ namespace StepMaster.Challenges
 
                     List<int> weeklySteps = new List<int>();
 
-                    foreach (var element in StepsDatabase.GetSteps(DateTime.Now.GetStartDateOfTheWeek().Date, DateTime.Now.GetEndDateOfTheWeek().Date))
+                    foreach (var element in StepsDatabase.GetSteps(DateTime.Now.AddDays(-7).Date, DateTime.Now.Date))
                     {
                         weeklySteps.Add(element.NumberOfSteps);
                     }
@@ -165,19 +167,28 @@ namespace StepMaster.Challenges
                             }
 
                                 ShowGratulations(challenge);
+
+                                return true;
                         }
                     }
 
                     break;
             }
 
+            return false;
 
         }
 
         private static void ShowGratulations(AchievementsEntry entry)
         {
+            try
+            {
+                LocalNotificationsManager.ShowNotification("Zdobyto osiągnięcie: " + entry.Name, entry.Description, 1425, entry.IconName);
+            }
+            catch (System.InvalidOperationException)
+            {
 
-            LocalNotificationsManager.ShowNotification("Zdobyto osiągnięcie: " + entry.Name, entry.Description, 1425);
+            }
         }
     }
 }

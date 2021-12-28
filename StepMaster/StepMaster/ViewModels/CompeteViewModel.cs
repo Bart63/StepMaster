@@ -31,14 +31,18 @@ namespace StepMaster.ViewModels
 
         private IGoogleManager _googleManager;
         private IFirebaseManager _firebaseManager;
+        
+        private bool _isLogedIn;
+        private bool _isLogedOut;
+
+        private bool _isRefreshing;
 
         public GoogleUser GoogleUser
         {
             get { return _googleUser; }
             set { SetProperty(ref _googleUser, value); }
         }
-        private bool _isLogedIn;
-        private bool _isLogedOut;
+        
         public bool IsLoggedIn
         {
             get { return _isLogedIn; }
@@ -51,9 +55,17 @@ namespace StepMaster.ViewModels
             set { SetProperty(ref _isLogedOut, value); }
         }
 
+        public bool IsRefreshing
+        {
+            get => _isRefreshing;
+            set => SetProperty(ref _isRefreshing, value);
+        }
+
         public CompeteViewModel(IGoogleManager googleManager, IFirebaseManager firebaseManager)
         {
             Instance = this;
+
+            IsRefreshing = false;
 
             _googleManager = googleManager;
             _firebaseManager = firebaseManager;
@@ -87,8 +99,15 @@ namespace StepMaster.ViewModels
 
         async Task UpdateRanking()
         {
-            await Task.Delay(5000);
-            //throw new NotImplementedException();
+            if (DependencyService.Get<IGoogleManager>().IsLoggedIn)
+            {
+                IsRefreshing = true;
+
+                _firebaseManager.GetRankingEntries(OnFirebaseRankingLoaded);
+            }
+
+            await Task.Delay(500);
+            
         }
 
         private void GoogleLogout()
@@ -162,6 +181,8 @@ namespace StepMaster.ViewModels
             {
                 RankingEntries.Add(entry);
             }
+
+            IsRefreshing = false;
         }
 
         private void RankingEntryTapped (RankingEntry entry)

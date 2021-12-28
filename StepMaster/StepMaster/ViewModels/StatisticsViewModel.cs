@@ -102,7 +102,9 @@ namespace StepMaster.ViewModels
 
         public StatisticsViewModel()
         {
-            float dpi = DependencyService.Get<IDisplayInfo>().GetDisplayDpi();
+            IDisplayInfo displayInfo = DependencyService.Get<IDisplayInfo>();
+
+            float dpi = (displayInfo != null) ? displayInfo.GetDisplayDpi() : 420;
 
             float pointSize = 60 * (dpi / 420);
             float lineSize = 5 * (dpi / 420);
@@ -112,9 +114,10 @@ namespace StepMaster.ViewModels
             lineSize = (lineSize > 5) ? 5 : lineSize;
             textSize = (textSize > 40) ? 40 : textSize;
 
+
             WeeklyStepsChart = new LineChart
             {
-                
+
                 PointSize = pointSize,
                 PointMode = PointMode.Circle,
                 LabelOrientation = Orientation.Vertical,
@@ -122,7 +125,7 @@ namespace StepMaster.ViewModels
                 ValueLabelOrientation = Orientation.Horizontal,
                 BackgroundColor = SKColor.Empty,
                 LineSize = lineSize
-                
+
             };
 
             PreviousWeekStepsChart = new LineChart
@@ -148,7 +151,7 @@ namespace StepMaster.ViewModels
                 ValueLabelOrientation = Orientation.Horizontal,
                 BackgroundColor = SKColor.Empty,
                 LineSize = lineSize
-          
+
             };
 
 
@@ -160,6 +163,8 @@ namespace StepMaster.ViewModels
             InfoTextChart1 = "Twoje kroki w tym tygodniu";
             InfoTextChart2 = "Twoje kroki w poprzednim tygodniu";
             InfoTextChart3 = "Twoje kroki średnio tygodniowo";
+
+            
 
             Device.StartTimer(TimeSpan.FromSeconds(30), () =>
             {

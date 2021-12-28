@@ -46,7 +46,27 @@ namespace StepMaster.Database
                 });
             }
 
-            UpdateAverageStepsPerWeek();
+            UpdateAverageStepsPerWeek(DateTime.Now);
+        }
+
+        public static void UpdateDailySteps(int steps, DateTime date)
+        {
+            int n = db.Update(new StepsModel()
+            {
+                Date = date.Date,
+                NumberOfSteps = steps
+            });
+
+            if (n == 0)
+            {
+                AddSteps(new StepsModel()
+                {
+                    Date = date.Date,
+                    NumberOfSteps = steps
+                });
+            }
+
+            UpdateAverageStepsPerWeek(date);
         }
 
         public static IEnumerable<StepsModel> GetSteps()
@@ -56,13 +76,13 @@ namespace StepMaster.Database
 
         public static IEnumerable<StepsModel> GetSteps(DateTime dateFrom, DateTime dateTo)
         {
-            return db.Table<StepsModel>().Where(x => x.Date >= dateFrom && x.Date <= dateTo).OrderBy(x => x.Date); 
+            return db.Table<StepsModel>().Where(x => x.Date >= dateFrom.Date && x.Date <= dateTo.Date).OrderBy(x => x.Date); 
         }
 
         public static int GetSteps(DateTime date)
         {
             
-            StepsModel stepsModel = db.Find<StepsModel>(x => x.Date == date);
+            StepsModel stepsModel = db.Find<StepsModel>(x => x.Date == date.Date);
 
             if (stepsModel != null)
                 return stepsModel.NumberOfSteps;
@@ -80,10 +100,10 @@ namespace StepMaster.Database
           
         }
 
-        private static void UpdateAverageStepsPerWeek()
+        private static void UpdateAverageStepsPerWeek(DateTime date)
         {
-            DateTime startDate = DateTime.Now.Date.GetStartDateOfTheWeek();
-            DateTime endDate = DateTime.Now.Date.GetEndDateOfTheWeek();
+            DateTime startDate = date.GetStartDateOfTheWeek().Date;
+            DateTime endDate = date.GetEndDateOfTheWeek().Date;
 
             List<StepsModel> steps = new List<StepsModel>();
             steps.AddRange(GetSteps(startDate, endDate));
@@ -137,7 +157,7 @@ namespace StepMaster.Database
         {
             DateTime startDate = DateTime.Now.Date.GetStartDateOfTheWeek();
 
-            AverageWeeklyStepsModel steps = db.Find<AverageWeeklyStepsModel>(x => x.StartDate == startDate);
+            AverageWeeklyStepsModel steps = db.Find<AverageWeeklyStepsModel>(x => x.StartDate == startDate.Date);
 
             if (steps != null)
                 return steps.NumberOfSteps;
@@ -154,7 +174,10 @@ namespace StepMaster.Database
         public static void clearDB()
         {
             db.DropTable<StepsModel>();
+            db.DropTable<AverageWeeklyStepsModel>();
             db.CreateTable<StepsModel>();
+
+            Init();
         }
     }
 }

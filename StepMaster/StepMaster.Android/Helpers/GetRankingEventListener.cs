@@ -39,7 +39,6 @@ namespace StepMaster.Droid.Helpers
 
                 int i = 1;
 
-                
 
                 foreach (DocumentSnapshot item in documents)
                 {
@@ -48,7 +47,7 @@ namespace StepMaster.Droid.Helpers
                     
                     if (date.Date == DateTime.Now.Date)
                     {
-                        RankingEntry entry = new RankingEntry(item.Get("Username").ToString(), i.ToString() + ".", (int)item.Get("StepsNumber"),
+                        RankingEntry entry = new RankingEntry(item.Get("Username").ToString(), "", (int)item.Get("StepsNumber"),
                             item.Id == currentUserUID, item.Id);
 
                         entries.Add(entry);
@@ -64,6 +63,7 @@ namespace StepMaster.Droid.Helpers
                         return 0;
                
                 });
+
 
                 i = 1;
                 foreach (var item in entries)

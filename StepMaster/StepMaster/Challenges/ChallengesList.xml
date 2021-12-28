@@ -39,7 +39,7 @@
         <name>Dobre nawyki</name>
         <description>Przez 5 dni pod rząd pokonaj codziennie min. 1000 kroków.</description>
         <icon>achievement_icon_1</icon>
-        <numberOfSteps>3000</numberOfSteps>
+        <numberOfSteps>1000</numberOfSteps>
         <numberOfDays>5</numberOfDays>
       </challenge>
       <challenge id ="sp2">
