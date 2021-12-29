@@ -24,7 +24,8 @@ namespace StepMaster.Views
 
             RankingEntry entry = CompeteViewModel.Instance.RankingEntries.Find(x => x.IsCurrentUser);
 
-            RankingListView.ScrollTo(entry, ScrollToPosition.Center);
+            if (entry != null)
+                RankingListView.ScrollTo(entry, ScrollToPosition.Center);
         }
 
     }
