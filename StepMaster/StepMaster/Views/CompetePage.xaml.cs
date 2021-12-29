@@ -12,21 +12,18 @@ namespace StepMaster.Views
 {
     public partial class CompetePage : ContentPage
     {
+        public static CompetePage Instance;
         public CompetePage()
         {
+            Instance = this;
             InitializeComponent();
             BindingContext = new CompeteViewModel(DependencyService.Get<IGoogleManager>(), DependencyService.Get<IFirebaseManager>());
         }
 
-        protected override void OnAppearing()
+        public void ScrollToCurrentUser(RankingEntry entry)
         {
-            base.OnAppearing();
-
-            RankingEntry entry = CompeteViewModel.Instance.RankingEntries.Find(x => x.IsCurrentUser);
-
             if (entry != null)
-                RankingListView.ScrollTo(entry, ScrollToPosition.Center);
+                RankingListView.ScrollTo(entry, null, ScrollToPosition.Start, true);
         }
-
     }
 }

@@ -185,6 +185,8 @@ namespace StepMaster.ViewModels
 
             IsRefreshing = false;
 
+            CompetePage.Instance.ScrollToCurrentUser(RankingEntries.Find(x => x.IsCurrentUser));
+
             int a = 5;
             a = 8;
             a = 8;
