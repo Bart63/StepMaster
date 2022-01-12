@@ -15,7 +15,7 @@ StepMaster is a competitive game-like app for every person that needs some movem
 - Reminder and goal settings.
 
 ## Preview
-![Screenshot_20220112-111403](https://user-images.githubusercontent.com/38327738/149121413-f024046a-9a68-4c98-bfda-54451470aae6.png)
-![Screenshot_20220112-111323](https://user-images.githubusercontent.com/38327738/149121419-78f40e93-514c-4fd4-a79f-b75c3ad5b10b.png)
-![Screenshot_20220112-111347](https://user-images.githubusercontent.com/38327738/149121423-99e2a230-ba23-4ebd-b852-48bc37ebf130.png)
-![Screenshot_20220112-111356](https://user-images.githubusercontent.com/38327738/149121428-23013452-a71d-4db7-9a1b-a62c0525c619.png)
+![Screenshot_20220112-111403](https://user-images.githubusercontent.com/38327738/149121413-f024046a-9a68-4c98-bfda-54451470aae6.png | width=40%)
+![Screenshot_20220112-111323](https://user-images.githubusercontent.com/38327738/149121419-78f40e93-514c-4fd4-a79f-b75c3ad5b10b.png | width=40%)
+![Screenshot_20220112-111347](https://user-images.githubusercontent.com/38327738/149121423-99e2a230-ba23-4ebd-b852-48bc37ebf130.png | width=40%)
+![Screenshot_20220112-111356](https://user-images.githubusercontent.com/38327738/149121428-23013452-a71d-4db7-9a1b-a62c0525c619.png | width=40%)
